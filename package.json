@@ -1,0 +1,29 @@
+{
+  "name": "kuraTranspiler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node spec/jasmine-runner.js",
+    "testMon": "nodemon --watch dist spec/jasmine-runner.js",
+    "watch": "webpack --watch --colors --progress",
+    "make": "webpack --colors --progress",
+    "start": "node dist/main.js",
+    "debug": "nodemon --watch dist dist/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jasmine": "^2.5.43",
+    "@types/node": "^7.0.5",
+    "@types/underscore": "^1.7.36",
+    "jasmine": "^2.5.3",
+    "jasmine-spec-reporter": "^3.2.0",
+    "json-loader": "^0.5.4",
+    "nodemon": "^1.10.2",
+    "ts-loader": "^2.0.0",
+    "typescript": "^2.1.6",
+    "underscore": "^1.8.3",
+    "webpack": "^1.13.2"
+  }
+}
