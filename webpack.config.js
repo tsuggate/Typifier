@@ -1,6 +1,7 @@
 module.exports = {
    entry: {
-      "main": './src/main.ts'
+      "main": './src/main.ts',
+      "test-spec": './src/test/test-main.ts'
    },
    output: {
       path: './dist/',
