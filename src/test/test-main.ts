@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {readFile} from '../util/file-reader';
+import {readFile} from '../transpiler/util/file-reader';
 
 
 describe('print file', () => {
