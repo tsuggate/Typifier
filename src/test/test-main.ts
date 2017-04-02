@@ -1,5 +1,7 @@
 import * as path from 'path';
 import {readFile} from '../transpiler/util/file-reader';
+import {jsParsers} from "./js-parsers";
+
 
 
 describe('print file', () => {
@@ -15,3 +17,6 @@ describe('print file', () => {
    });
 
 });
+
+
+jsParsers();
