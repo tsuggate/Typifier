@@ -1,6 +1,8 @@
 import * as path from 'path';
 import {readFile} from '../transpiler/util/file-reader';
 import {jsParsers} from "./js-parsers";
+import {parse} from "../transpiler/parser-lib/parsers-m";
+import {define} from "../transpiler/js-parsers";
 
 
 
@@ -11,9 +13,14 @@ describe('print file', () => {
    it('read the printed the file', () => {
       console.log(jsPath);
 
-      console.log(readFile(jsPath));
+      const code = readFile(jsPath);
+      expect(code).toBeTruthy();
 
-      expect(true).toEqual(true);
+      if (code) {
+         const res = parse(define, code);
+         console.log(JSON.stringify(res, null, 3));
+      }
+
    });
 
 });
