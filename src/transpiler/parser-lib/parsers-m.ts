@@ -11,9 +11,18 @@ export const stringLiteral: IParser = regex(/"([^"\\]|\\.)*"/);
 
 export const ident: IParser = regex(/^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*/);
 
+function isComment(input: Input): boolean {
+  return input.getSlice(2) === '//';
+}
 
-function isWhiteSpace(val: string): boolean {
-  return val === ' ' || val === '\n' || val === '\r';
+// Expects a single character.
+function isWhiteSpace(c: string): boolean {
+  return c === ' ' || isEOL(c) || c === '\t';
+}
+
+// Expects a single character.
+export function isEOL(c: string) {
+  return  c === '\n' || c === '\r';
 }
 
 export function char(c: string): IParser {
@@ -50,8 +59,13 @@ export function word(str: string): IParser {
 
 export function optionalWhiteSpace(): IParser {
   return mkParser((input: Input, handleResult) => {
-    while (isWhiteSpace(input.nextChar())) {
-      input.advance();
+    while (isWhiteSpace(input.nextChar()) || isComment(input)) {
+      if (isComment(input)) {
+        input.advanceToEndOfLine();
+      }
+      else {
+        input.advance();
+      }
     }
 
     return handleResult('');

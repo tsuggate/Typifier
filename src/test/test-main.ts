@@ -10,8 +10,12 @@ describe('print file', () => {
 
    const jsPath = path.resolve('test-files', 'simple.js');
 
+
+   const jsPath2 = path.resolve('..', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
+
    it('read the printed the file', () => {
-      const code = readFile(jsPath);
+      const code = readFile(jsPath2);
+      // console.log(code);
 
       expect(code).toBeTruthy();
 

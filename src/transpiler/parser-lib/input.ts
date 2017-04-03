@@ -1,4 +1,5 @@
 
+import {isEOL} from './parsers-m';
 export interface IInputData {
   position: number;
   code: string;
@@ -29,6 +30,12 @@ export class Input {
 
   advanceBy(num: number): void {
     this.position += num;
+  }
+
+  advanceToEndOfLine(): void {
+    while (this.position < this.code.length && !isEOL(this.nextChar())) {
+      this.advance();
+    }
   }
 
   getPosition(): number {
