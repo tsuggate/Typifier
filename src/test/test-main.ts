@@ -11,9 +11,8 @@ describe('print file', () => {
    const jsPath = path.resolve('test-files', 'simple.js');
 
    it('read the printed the file', () => {
-      console.log(jsPath);
-
       const code = readFile(jsPath);
+
       expect(code).toBeTruthy();
 
       if (code) {

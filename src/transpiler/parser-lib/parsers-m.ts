@@ -13,7 +13,7 @@ export const ident: IParser = regex(/^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFF
 
 
 function isWhiteSpace(val: string): boolean {
-  return val === ' ' || val === '\n';
+  return val === ' ' || val === '\n' || val === '\r';
 }
 
 export function char(c: string): IParser {

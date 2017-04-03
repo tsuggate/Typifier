@@ -1,5 +1,5 @@
 import {parse} from "../transpiler/parser-lib/parsers-m";
-import {define, funcAnon, libsArray} from "../transpiler/js-parsers";
+import {matchParens, define, funcAnon, libsArray} from "../transpiler/js-parsers";
 import {FuncAnon} from "../transpiler/parser-types";
 
 
@@ -39,5 +39,16 @@ export function jsParsers() {
     });
   });
 
+  describe('matchParens', () => {
+    const code = `{ var a = {}; } var b = {};`;
+
+    it(code, () => {
+      const res = parse(matchParens, code);
+
+      expect(res).toBeTruthy();
+
+      // console.log(res);
+    });
+  });
 }
 

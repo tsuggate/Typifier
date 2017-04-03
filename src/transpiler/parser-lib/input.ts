@@ -97,6 +97,10 @@ export class Input {
     return this.code.slice(this.position, this.position + numChars);
   }
 
+  getSlice2(start: number, end: number) {
+    return this.code.slice(start, end);
+  }
+
   getInputData(): IInputData {
     return {
       position: this.position,
