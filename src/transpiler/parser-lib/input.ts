@@ -1,5 +1,6 @@
-
 import {isEOL} from './parsers-m';
+
+
 export interface IInputData {
   position: number;
   code: string;
