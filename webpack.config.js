@@ -1,6 +1,6 @@
 module.exports = {
    entry: {
-      "main": './src/transpiler/main.ts',
+      "main": './src/transpiler2/main.ts',
       "test-spec": './src/test/test-main.ts'
    },
    output: {

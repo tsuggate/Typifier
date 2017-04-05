@@ -6,7 +6,6 @@ import {Node, Program} from 'estree';
 import * as escodegen from 'escodegen';
 
 
-// import {Node} from '../../node_modules/@types/esprima/node_modules/@types/estree/index';
 
 /*
 
@@ -34,6 +33,8 @@ import * as escodegen from 'escodegen';
 }
 
 */
+
+
 function fromFile() {
    const jsPath = path.resolve('test-files', 'simple.js');
    const jsPath2 = path.resolve('..', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
@@ -43,20 +44,26 @@ function fromFile() {
    if (code) {
       const res = esprima.parse(code);
 
-      console.log(JSON.stringify(res, null, 3));
+      const outCode = escodegen.generate(res);
+
+      console.log(outCode);
+
+      // console.log(JSON.stringify(res, null, 3));
    }
 }
 
 function basic() {
-   const code = 'var n = 42;';
+   const code = 'define(["jquery"], function($) { });';
 
    const res: Program = esprima.parse(code);
 
-   res.body.forEach(n => {
-      if (n.type === 'VariableDeclaration') {
-         n.kind = 'const';
-      }
-   });
+   // res.body.forEach(n => {
+   //    if (n.type === 'VariableDeclaration') {
+   //       n.kind = 'const';
+   //    }
+   // });
+
+   console.log(JSON.stringify(res, null, 3));
 
    const outCode = escodegen.generate(res);
 
@@ -66,8 +73,8 @@ function basic() {
    // console.log(JSON.stringify(res, null, 3));
 }
 
-// fromFile();
-basic();
+fromFile();
+// basic();
 
 function isConsoleCall(node: Node): boolean {
    return (node.type === 'CallExpression') &&
