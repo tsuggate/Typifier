@@ -12,19 +12,11 @@ export function parseAndLog(filePath: string): void {
       const code = fs.readFileSync(filePath).toString();
 
       if (code) {
-         const res: Program = esprima.parse(code);
+         const program: Program = esprima.parse(code);
 
-         traverse(res, (node) => {
-            if (node.type === 'ExpressionStatement' && isDefine(node)) {
+         applyMods(program);
 
-            }
-
-            if (node.type === 'VariableDeclaration') {
-               node.kind = 'const';
-            }
-         });
-
-         const outCode = escodegen.generate(res);
+         const outCode = escodegen.generate(program);
 
          console.log(outCode);
       }
@@ -36,10 +28,18 @@ export function parseAndLog(filePath: string): void {
 
 // Mutate program :(
 function applyMods(program: Program): void {
+   traverse(program, (node) => {
+      if (node.type === 'ExpressionStatement' && isDefine(node)) {
 
+      }
+
+      if (node.type === 'VariableDeclaration') {
+         node.kind = 'const';
+      }
+   });
 }
 
-type NodeCallback = (node: Node, state: any) => void;
+export type NodeCallback = (node: Node, state: any) => void;
 
 export function traverse(program: Program, enter: NodeCallback, leave?: NodeCallback) {
    walk(program, {
