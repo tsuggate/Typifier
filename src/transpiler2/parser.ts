@@ -3,9 +3,8 @@ import * as fs from 'fs';
 import * as escodegen from 'escodegen';
 import {Program, Node} from 'estree';
 
-import * as astravel from 'astravel';
 import {isDefine} from './mods/imports';
-
+import {walk} from 'estree-walker';
 
 
 export function parseAndLog(filePath: string): void {
@@ -40,15 +39,11 @@ function applyMods(program: Program): void {
 
 }
 
-export function traverse(program: Program, callback: (node: Node, state: any) => void): void {
-   const traveler = astravel.makeTraveler({
-      go: function (node: Node, state: any) {
-         // required for some reason
-         this.super.go.call(this, node, state);
+type NodeCallback = (node: Node, state: any) => void;
 
-         callback(node, state);
-      }
+export function traverse(program: Program, enter: NodeCallback, leave?: NodeCallback) {
+   walk(program, {
+      enter: enter,
+      leave: leave
    });
-
-   traveler.go(program, {});
 }
