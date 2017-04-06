@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as escodegen from 'escodegen';
 import {Program, Node} from 'estree';
 
-import {isDefine} from './mods/imports';
+import {isDefine, modifyDefine} from './mods/imports';
 import {walk} from 'estree-walker';
 
 
@@ -30,7 +30,7 @@ export function parseAndLog(filePath: string): void {
 function applyMods(program: Program): void {
    traverse(program, (node) => {
       if (node.type === 'ExpressionStatement' && isDefine(node)) {
-
+         modifyDefine(node);
       }
 
       if (node.type === 'VariableDeclaration') {

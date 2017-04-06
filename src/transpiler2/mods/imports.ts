@@ -1,8 +1,18 @@
-import {Node} from 'estree';
+import {ExpressionStatement} from 'estree';
 
 
-export function isDefine(node: Node): boolean {
+export function isDefine(es: ExpressionStatement): boolean {
+   const e = es.expression;
+
+   if (e.type === 'CallExpression' && e.callee.type === 'Identifier') {
+      return e.callee.name === 'define';
+   }
+
    return false;
 }
 
-// export
+export function modifyDefine(es: ExpressionStatement) {
+   console.log('modifyDefine');
+
+   
+}
