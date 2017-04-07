@@ -33,9 +33,9 @@ function applyMods(program: Program): void {
          modifyDefine(node);
       }
 
-      if (node.type === 'VariableDeclaration') {
-         node.kind = 'const';
-      }
+      // if (node.type === 'VariableDeclaration') {
+      //    node.kind = 'const';
+      // }
    });
 }
 
