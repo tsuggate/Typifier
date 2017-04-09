@@ -1,8 +1,5 @@
-import * as esprima from 'esprima';
-import {Program} from 'estree';
-import * as escodegen from 'escodegen';
-import {generate} from '../transpiler2/output/output';
 import {matchOutput} from './shared';
+import {getTestFile} from '../transpiler/util/file-reader';
 
 /*
  let program: Program = esprima.parse(code, {
@@ -22,7 +19,17 @@ describe('variable declarations', () => {
    matchOutput('var a = 5');
    matchOutput('var a = 5, b = 2, c = 1');
 
+});
 
+describe('operators', () => {
+   matchOutput('var a = n / 2;');
 });
 
 
+describe('lots of code', () => {
+   const code = getTestFile('simple');
+
+   if (code) {
+      matchOutput(code);
+   }
+});

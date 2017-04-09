@@ -1,4 +1,7 @@
-import {Identifier, Literal, Program, VariableDeclaration, VariableDeclarator} from 'estree';
+import {
+   BinaryExpression, ExpressionStatement, Identifier, Literal, Program, VariableDeclaration,
+   VariableDeclarator
+} from 'estree';
 import {generate} from './output';
 
 
