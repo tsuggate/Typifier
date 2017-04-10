@@ -20,16 +20,14 @@ export function literalToJs(l: Literal): string {
 }
 
 export function propertyToJs(p: Property): string {
-   console.log(p);
-
    if (p.method) {
       throw 'propertyToJs.method not implemented!';
    }
    else if (p.shorthand) {
-      return 'TODO';
+      throw 'propertyToJs.shorthand not implemented!';
    }
    else if (p.computed) {
-      return 'TODO';
+      throw 'propertyToJs.computed not implemented!';
    }
    else {
       return `${generate(p.key)}: ${generate(p.value)}`;

@@ -15,3 +15,9 @@ export function matchOutput(code: string) {
       expect(myOutput).toEqual(esCodegenOutput);
    });
 }
+
+export function logOutput(code: string): void {
+   const program = esprima.parse(code);
+
+   console.log(jsBeautify(generate(program)));
+}

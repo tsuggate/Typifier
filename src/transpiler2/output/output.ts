@@ -8,7 +8,7 @@ import {
    functionExpression, memberExpression,
    newExpression, objectExpression, thisExpression
 } from './generators/expression';
-import {blockStatement, returnStatement} from './generators/statement';
+import {blockStatement, ifStatement, returnStatement} from './generators/statement';
 import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
 
 
@@ -20,20 +20,22 @@ function getGenerateFunction(node: Node): (node: Node) => string {
    switch (node.type) {
       case 'Program':
          return programToJs;
+      case 'Property':
+         return propertyToJs;
+      case 'Identifier':
+         return identifierToJs;
+      case 'Literal':
+         return literalToJs;
+
       case 'VariableDeclaration':
          return variableDeclarationToJs;
       case 'VariableDeclarator':
          return variableDeclaratorToJs;
       case 'FunctionDeclaration':
          return functionDeclaration;
-      case 'Identifier':
-         return identifierToJs;
-      case 'Literal':
-         return literalToJs;
+
       case 'BinaryExpression':
          return binaryExpression;
-      case 'ExpressionStatement':
-         return expressionStatement;
       case 'CallExpression':
          return callExpression;
       case 'NewExpression':
@@ -48,14 +50,18 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return objectExpression;
       case 'ThisExpression':
          return thisExpression;
+      case 'AssignmentExpression':
+         return assignmentExpression;
+
       case 'BlockStatement':
          return blockStatement;
       case 'ReturnStatement':
          return returnStatement;
-      case 'Property':
-         return propertyToJs;
-      case 'AssignmentExpression':
-         return assignmentExpression;
+      case 'ExpressionStatement':
+         return expressionStatement;
+      case 'IfStatement':
+         return ifStatement;
+
       default:
          return (node: Node) => node.type + ' not implemented!';
    }
