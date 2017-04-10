@@ -1,4 +1,4 @@
-import {Identifier, Literal, Program, VariableDeclaration, VariableDeclarator} from 'estree';
+import {Identifier, Literal, Program, Property} from 'estree';
 import {generate} from './output';
 
 
@@ -18,3 +18,21 @@ export function identifierToJs(i: Identifier): string {
 export function literalToJs(l: Literal): string {
    return l.raw;
 }
+
+export function propertyToJs(p: Property): string {
+   console.log(p);
+
+   if (p.method) {
+      throw 'propertyToJs.method not implemented!';
+   }
+   else if (p.shorthand) {
+      return 'TODO';
+   }
+   else if (p.computed) {
+      return 'TODO';
+   }
+   else {
+      return `${generate(p.key)}: ${generate(p.value)}`;
+   }
+}
+

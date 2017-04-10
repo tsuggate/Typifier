@@ -9,6 +9,7 @@ define(['jquery'], function($) {
    }
 
    var d = new Date();
+   var myDate = d.getDate();
 
    myFunc(3, 4);
 });

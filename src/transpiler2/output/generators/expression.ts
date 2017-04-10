@@ -1,6 +1,7 @@
 import {
-   ArrayExpression, BinaryExpression, CallExpression, ExpressionStatement, FunctionExpression,
-   NewExpression
+   ArrayExpression, AssignmentExpression, BinaryExpression, CallExpression, ExpressionStatement, FunctionExpression,
+   MemberExpression,
+   NewExpression, ObjectExpression, ThisExpression
 } from 'estree';
 import {generate} from '../output';
 
@@ -38,3 +39,23 @@ export function functionExpression(f: FunctionExpression): string {
 
    return `function(${params}) {${generate(f.body)}}`;
 }
+
+export function memberExpression(e: MemberExpression): string {
+   if (e.computed) {
+      return `${generate(e.object)}[${generate(e.property)}]`;
+   }
+   return `${generate(e.object)}.${generate(e.property)}`
+}
+
+export function objectExpression(e: ObjectExpression): string {
+   return e.properties.map(generate).join(', ');
+}
+
+export function thisExpression(e: ThisExpression): string {
+   return 'this';
+}
+
+export function assignmentExpression(e: AssignmentExpression): string {
+   return `${generate(e.left)} ${e.operator} ${generate(e.right)}`;
+}
+
