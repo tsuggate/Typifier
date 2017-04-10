@@ -20,7 +20,9 @@ export function callExpression(e: CallExpression) {
 }
 
 export function newExpression(e: NewExpression): string {
-   return "TODO";
+   const args = e.arguments.map(generate).join(', ');
+
+   return `new ${generate(e.callee)}(${args})`;
 }
 
 export function arrayExpression(a: ArrayExpression): string {

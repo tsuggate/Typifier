@@ -8,6 +8,8 @@ define(['jquery'], function($) {
       return a1 * a2 + b;
    }
 
+   var d = new Date();
+
    myFunc(3, 4);
 });
 
