@@ -1,27 +1,43 @@
 import {Node, Program} from 'estree';
 import {identifierToJs, literalToJs, programToJs, variableDeclarationToJs, variableDeclaratorToJs} from './generators';
-import {binaryExpression, callExpression, expressionStatement} from './generators/expression';
+import {
+   arrayExpression, binaryExpression, callExpression, expressionStatement, functionExpression,
+   newExpression
+} from './generators/expression';
+import {blockStatement} from './generators/statement';
 
 
 export function generate(node: Node): string {
+   return getGenerateFunction(node)(node);
+}
+
+function getGenerateFunction(node: Node): (node: Node) => string {
    switch (node.type) {
       case 'Program':
-         return programToJs(node);
+         return programToJs;
       case 'VariableDeclaration':
-         return variableDeclarationToJs(node);
+         return variableDeclarationToJs;
       case 'VariableDeclarator':
-         return variableDeclaratorToJs(node);
+         return variableDeclaratorToJs;
       case 'Identifier':
-         return identifierToJs(node);
+         return identifierToJs;
       case 'Literal':
-         return literalToJs(node);
+         return literalToJs;
       case 'BinaryExpression':
-         return binaryExpression(node);
+         return binaryExpression;
       case 'ExpressionStatement':
-         return expressionStatement(node);
+         return expressionStatement;
       case 'CallExpression':
-         return callExpression(node);
+         return callExpression;
+      case 'NewExpression':
+         return newExpression;
+      case 'ArrayExpression':
+         return arrayExpression;
+      case 'FunctionExpression':
+         return functionExpression;
+      case 'BlockStatement':
+         return blockStatement;
       default:
-         return node.type + ' not implemented!';
+         return (node: Node) => node.type + ' not implemented!';
    }
 }

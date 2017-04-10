@@ -25,6 +25,9 @@ describe('operators', () => {
    matchOutput('var a = n / 2;');
 });
 
+describe('call function', () => {
+   matchOutput(`define(['jquery'], function($) {});`);
+});
 
 describe('lots of code', () => {
    const code = getTestFile('simple');
