@@ -1,10 +1,15 @@
 import {Node, Program} from 'estree';
-import {identifierToJs, literalToJs, programToJs, variableDeclarationToJs, variableDeclaratorToJs} from './generators';
+import {identifierToJs, literalToJs, programToJs} from './generators';
 import {
-   arrayExpression, binaryExpression, callExpression, expressionStatement, functionExpression,
+   arrayExpression,
+   binaryExpression,
+   callExpression,
+   expressionStatement,
+   functionExpression,
    newExpression
 } from './generators/expression';
-import {blockStatement} from './generators/statement';
+import {blockStatement, returnStatement} from './generators/statement';
+import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
 
 
 export function generate(node: Node): string {
@@ -19,6 +24,8 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return variableDeclarationToJs;
       case 'VariableDeclarator':
          return variableDeclaratorToJs;
+      case 'FunctionDeclaration':
+         return functionDeclaration;
       case 'Identifier':
          return identifierToJs;
       case 'Literal':
@@ -37,6 +44,8 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return functionExpression;
       case 'BlockStatement':
          return blockStatement;
+      case 'ReturnStatement':
+         return returnStatement;
       default:
          return (node: Node) => node.type + ' not implemented!';
    }

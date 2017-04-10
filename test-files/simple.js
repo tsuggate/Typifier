@@ -1,4 +1,4 @@
-define(["jquery"], function($) {
+define(['jquery'], function($) {
    var n = 42;
    var a = n / 2;
 
