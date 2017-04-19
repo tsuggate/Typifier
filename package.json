@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/diff": "0.0.31",
     "@types/escodegen": "0.0.6",
     "@types/esprima": "^2.1.33",
     "@types/estree": "0.0.34",

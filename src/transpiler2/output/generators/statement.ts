@@ -11,7 +11,8 @@ export function returnStatement(s: ReturnStatement): string {
 }
 
 export function ifStatement(s: IfStatement): string {
-   let conditional = `if (${generate(s.test)}) {${generate(s.consequent)}}`;
+   const hasBlock = s.consequent.type !== 'ExpressionStatement';
+   let conditional = `if (${generate(s.test)}) ${hasBlock ? '{' : ''}${generate(s.consequent)}${hasBlock ? '}' : ''}`;
 
    if (s.alternate) {
       if (s.alternate.type === 'BlockStatement') {

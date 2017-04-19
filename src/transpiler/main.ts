@@ -7,33 +7,6 @@ import * as escodegen from 'escodegen';
 
 
 
-/*
-
-{
-   "type": "Program",
-   "body": [{
-      "type": "VariableDeclaration",
-      "declarations": [
-         {
-            "type": "VariableDeclarator",
-            "id": {
-               "type": "Identifier",
-               "name": "n"
-            },
-            "init": {
-               "type": "Literal",
-               "value": 42,
-               "raw": "42"
-            }
-         }
-      ],
-      "kind": "var"
-   }],
-   "sourceType": "script"
-}
-
-*/
-
 
 function fromFile() {
    const jsPath = path.resolve('test-files', 'simple.js');

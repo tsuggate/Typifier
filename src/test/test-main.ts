@@ -1,8 +1,8 @@
 import * as path from 'path';
 import {readFile} from '../transpiler/util/file-reader';
-import {jsParsers} from "./js-parsers";
-import {parse} from "../transpiler/parser-lib/parsers-m";
-import {define} from "../transpiler/js-parsers";
+// import {jsParsers} from "./js-parsers";
+// import {parse} from "../transpiler/parser-lib/parsers-m";
+// import {define} from "../transpiler/js-parsers";
 
 
 import './output-tests';

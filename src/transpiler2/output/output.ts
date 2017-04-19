@@ -1,15 +1,21 @@
-import {Node, Program} from 'estree';
-import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators';
+import {Node, Program} from "estree";
+import {identifierToJs, literalToJs, programToJs, propertyToJs} from "./generators";
 import {
-   arrayExpression, assignmentExpression,
+   arrayExpression,
+   assignmentExpression,
    binaryExpression,
    callExpression,
+   conditionalExpression,
    expressionStatement,
-   functionExpression, memberExpression,
-   newExpression, objectExpression, thisExpression
-} from './generators/expression';
-import {blockStatement, ifStatement, returnStatement} from './generators/statement';
-import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
+   functionExpression,
+   logicalExpression,
+   memberExpression,
+   newExpression,
+   objectExpression,
+   thisExpression, unaryExpression
+} from "./generators/expression";
+import {blockStatement, ifStatement, returnStatement} from "./generators/statement";
+import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from "./generators/declaration";
 
 
 export function generate(node: Node): string {
@@ -52,6 +58,12 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return thisExpression;
       case 'AssignmentExpression':
          return assignmentExpression;
+      case 'LogicalExpression':
+         return logicalExpression;
+      case 'ConditionalExpression':
+         return conditionalExpression;
+      case 'UnaryExpression':
+         return unaryExpression;
 
       case 'BlockStatement':
          return blockStatement;

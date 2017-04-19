@@ -1,4 +1,4 @@
-import {logOutput, matchOutput} from './shared';
+import {diffOutput, logOutput, matchOutput} from './shared';
 import {getTestFile, readFile} from '../transpiler/util/file-reader';
 import * as path from 'path';
 
@@ -28,31 +28,33 @@ import * as path from 'path';
 //    matchOutput(`define(['jquery'], function($) {});`);
 // });
 //
-// describe('simple.js', () => {
-//    const code = getTestFile('simple');
-//
-//    if (code) {
-//       matchOutput(code);
-//    }
-//
-// });
+describe('simple.js', () => {
+   const code = getTestFile('simple');
+
+   if (code) {
+      matchOutput(code);
+   }
+
+});
 
 // describe('big file', () => {
-//    const jsPath = path.resolve('..', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
+//    const jsPath = path.resolve('..', '..', 'Downloads', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
+//
+//    // /Users/tobysuggate/Downloads/client/src/instance/js/plugins/image-annotation/main.js
 //
 //    const code = readFile(jsPath);
 //
 //    if (code) {
 //       // matchOutput(code);
-//       logOutput(code);
+//       // logOutput(code);
+//       diffOutput(code);
 //    }
-//
 //
 // });
 
 
 describe('conditionals', () => {
-   matchOutput('if (a === 5) { b = 4; } else { }');
-   matchOutput('if (a === 5) { b = 4; } else { b = 2; }');
+   matchOutput('if ((a === 5 && c === 6) || (d !==3)) { b = 4; } else { }');
+   matchOutput('if (a === 5) b = 4; else { b = 2; }');
    matchOutput('if (a === 5) { b = 4; } else if (a == 2) { b = 2; }');
 });

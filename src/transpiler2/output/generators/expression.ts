@@ -1,7 +1,9 @@
 import {
-   ArrayExpression, AssignmentExpression, BinaryExpression, CallExpression, ExpressionStatement, FunctionExpression,
+   ArrayExpression, AssignmentExpression, BinaryExpression, CallExpression, ConditionalExpression, ExpressionStatement,
+   FunctionExpression,
+   LogicalExpression,
    MemberExpression,
-   NewExpression, ObjectExpression, ThisExpression
+   NewExpression, ObjectExpression, ThisExpression, UnaryExpression
 } from 'estree';
 import {generate} from '../output';
 
@@ -48,7 +50,7 @@ export function memberExpression(e: MemberExpression): string {
 }
 
 export function objectExpression(e: ObjectExpression): string {
-   return e.properties.map(generate).join(', ');
+   return '{' + e.properties.map(generate).join(', ') + '}';
 }
 
 export function thisExpression(e: ThisExpression): string {
@@ -59,3 +61,17 @@ export function assignmentExpression(e: AssignmentExpression): string {
    return `${generate(e.left)} ${e.operator} ${generate(e.right)}`;
 }
 
+export function logicalExpression(e: LogicalExpression): string {
+   return `${generate(e.left)} ${e.operator} ${generate(e.right)}`;
+}
+
+export function conditionalExpression(e: ConditionalExpression): string {
+   return `${generate(e.test)} ? ${generate(e.consequent)} : ${generate(e.alternate)}`;
+}
+
+export function unaryExpression(e: UnaryExpression): string {
+   if (e.prefix) {
+      return `${e.operator} ${generate(e.argument)}`
+   }
+   return `${generate(e.argument)}${e.operator}`;
+}
