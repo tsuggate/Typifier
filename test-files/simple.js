@@ -8,6 +8,7 @@ define(['jquery'], function($) {
       return a1 * a2 + b;
    }
 
+   var s = (this.previewMode() || this.readOnlyMode()) && !this.showingFormativeAssessment();
    var d = new Date();
    var myDate = d.getDate();
 

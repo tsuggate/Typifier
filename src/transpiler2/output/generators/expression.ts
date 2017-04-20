@@ -62,7 +62,13 @@ export function assignmentExpression(e: AssignmentExpression): string {
 }
 
 export function logicalExpression(e: LogicalExpression): string {
-   return `${generate(e.left)} ${e.operator} ${generate(e.right)}`;
+   const left = e.left.type === 'LogicalExpression' ?
+      `(${generate(e.left)})` : generate(e.left);
+
+   const right = e.right.type === 'LogicalExpression' ?
+      `(${generate(e.right)})` : generate(e.right);
+
+   return `${left} ${e.operator} ${right}`;
 }
 
 export function conditionalExpression(e: ConditionalExpression): string {

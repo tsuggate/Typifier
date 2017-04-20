@@ -33,11 +33,15 @@ describe('simple.js', () => {
    if (code) {
       matchOutput(code);
    }
+   else {
+      throw new Error('simple.js code match failed');
+   }
 
 });
 
 describe('conditionals', () => {
    matchOutput('if ((a === 5 && c === 6) || (d !==3)) { b = 4; } else { }');
    matchOutput('if (a === 5) b = 4; else { b = 2; }');
+   matchOutput('if (a === 5) b = 4; else b = 2;');
    matchOutput('if (a === 5) { b = 4; } else if (a == 2) { b = 2; }');
 });

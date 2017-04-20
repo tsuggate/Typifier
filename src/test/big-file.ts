@@ -1,6 +1,6 @@
 import * as path from "path";
 import {readFile} from "../transpiler/util/file-reader";
-import {diffOutput} from "./shared";
+import {diffOutput, saveOutput} from "./shared";
 
 
 describe('big file', () => {
@@ -14,6 +14,8 @@ describe('big file', () => {
       // matchOutput(code);
       // logOutput(code);
       diffOutput(code);
+      // saveOutput(code);
+
    }
 
 });
