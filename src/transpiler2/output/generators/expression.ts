@@ -12,11 +12,11 @@ export function binaryExpression(be: BinaryExpression): string {
    return `${generate(be.left)} ${be.operator} ${generate(be.right)}`;
 }
 
-export function expressionStatement(e: ExpressionStatement) {
+export function expressionStatement(e: ExpressionStatement): string {
    return `${generate(e.expression)};`;
 }
 
-export function callExpression(e: CallExpression) {
+export function callExpression(e: CallExpression): string {
    const args = e.arguments.map(generate).join(', ');
 
    return `${generate(e.callee)}(${args})`;
