@@ -1,12 +1,13 @@
 import * as path from "path";
 import {readFile} from "../transpiler/util/file-reader";
-import {diffOutput, saveOutput} from "./shared";
+import {diffOutput, matchOutput, saveOutput} from "./shared";
 
 
 describe('big file', () => {
-   const jsPath = path.resolve('..', '..', 'Downloads', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
+   const root1 = path.resolve('..', '..', 'Downloads');
+   const root2 = path.resolve('..');
 
-   // /Users/tobysuggate/Downloads/client/src/instance/js/plugins/image-annotation/main.js
+   const jsPath = path.join(root2, 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
 
    const code = readFile(jsPath);
 
@@ -14,8 +15,9 @@ describe('big file', () => {
       // matchOutput(code);
       // logOutput(code);
       diffOutput(code);
-      // saveOutput(code);
-
+      saveOutput(code);
    }
-
+   else {
+      console.log('Big file path not valid: ', jsPath);
+   }
 });

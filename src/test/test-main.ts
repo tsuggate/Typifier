@@ -1,12 +1,6 @@
 
 
-import {matchOutput, printTree} from "./shared";
+import './output-tests';
 
-// printTree('(a || b) && c');
-// printTree('a || b && c');
-// matchOutput('(a || b) && c');
-
-// import './output-tests';
-//
 import './big-file';
 

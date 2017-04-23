@@ -21,6 +21,8 @@ describe('variable declarations', () => {
 
 describe('operators', () => {
    matchOutput('var a = n / 2;');
+   matchOutput('a + b * c');
+   matchOutput('a / (b * c)');
 });
 
 describe('call function', () => {
@@ -40,8 +42,12 @@ describe('simple.js', () => {
 });
 
 describe('conditionals', () => {
-   matchOutput('if ((a === 5 && c === 6) || (d !==3)) { b = 4; } else { }');
+   matchOutput('if ((a === 5 && c === 6) || (d !== 3)) { b = 4; } else { }');
    matchOutput('if (a === 5) b = 4; else { b = 2; }');
    matchOutput('if (a === 5) b = 4; else b = 2;');
    matchOutput('if (a === 5) { b = 4; } else if (a == 2) { b = 2; }');
+});
+
+describe('boolean expressions', () => {
+   matchOutput('((a || b) && c)');
 });

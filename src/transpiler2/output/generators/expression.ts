@@ -1,15 +1,40 @@
 import {
-   ArrayExpression, AssignmentExpression, BinaryExpression, CallExpression, ConditionalExpression, ExpressionStatement,
+   ArrayExpression,
+   AssignmentExpression,
+   BinaryExpression,
+   CallExpression,
+   ConditionalExpression,
+   ExpressionStatement,
    FunctionExpression,
    LogicalExpression,
    MemberExpression,
-   NewExpression, ObjectExpression, ThisExpression, UnaryExpression
+   NewExpression,
+   ObjectExpression,
+   ThisExpression,
+   UnaryExpression
 } from 'estree';
 import {generate} from '../output';
+import {operatorHasPrecedence} from './operators';
 
 
-export function binaryExpression(be: BinaryExpression): string {
-   return `${generate(be.left)} ${be.operator} ${generate(be.right)}`;
+export function binaryExpression(e: BinaryExpression): string {
+   let left, right;
+
+   if (e.left.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.left.operator)) {
+      left = `(${generate(e.left)})`;
+   }
+   else {
+      left = `${generate(e.left)}`;
+   }
+
+   if (e.right.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.right.operator)) {
+      right = `(${generate(e.right)})`;
+   }
+   else {
+      right = `${generate(e.right)}`;
+   }
+
+   return `${left} ${e.operator} ${right}`;
 }
 
 export function expressionStatement(e: ExpressionStatement): string {
@@ -62,11 +87,20 @@ export function assignmentExpression(e: AssignmentExpression): string {
 }
 
 export function logicalExpression(e: LogicalExpression): string {
-   const left = e.left.type === 'LogicalExpression' ?
-      `(${generate(e.left)})` : generate(e.left);
+   let left, right;
 
-   const right = e.right.type === 'LogicalExpression' ?
-      `(${generate(e.right)})` : generate(e.right);
+   if (e.operator === '&&') {
+      left = e.left.type === 'LogicalExpression' ?
+       `(${generate(e.left)})` : generate(e.left);
+
+      right = e.right.type === 'LogicalExpression' ?
+       `(${generate(e.right)})` : generate(e.right);
+   }
+   else {
+      left = generate(e.left);
+
+      right = generate(e.right);
+   }
 
    return `${left} ${e.operator} ${right}`;
 }
@@ -77,6 +111,10 @@ export function conditionalExpression(e: ConditionalExpression): string {
 
 export function unaryExpression(e: UnaryExpression): string {
    if (e.prefix) {
+      if (e.operator === '!' && e.argument.type === 'LogicalExpression') {
+         return `${e.operator}(${generate(e.argument)})`;
+      }
+
       return `${e.operator} ${generate(e.argument)}`
    }
    return `${generate(e.argument)}${e.operator}`;
