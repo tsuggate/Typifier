@@ -12,7 +12,7 @@ describe('big file', () => {
    const code = readFile(jsPath);
 
    if (code) {
-      // matchOutput(code);
+      matchOutput(code);
       // logOutput(code);
       diffOutput(code);
       saveOutput(code);

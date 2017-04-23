@@ -5,7 +5,7 @@ import * as escodegen from 'escodegen';
 import * as jsBeautify from 'js-beautify';
 import * as diff from 'diff';
 import * as path from "path";
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 
 
 const jsBeautifyOptions = {
@@ -19,8 +19,8 @@ export function matchOutput(code: string) {
    it(code, () => {
       const program = esprima.parse(code);
 
-      const myOutput = jsBeautify(generate(program), jsBeautifyOptions);
-      const esCodegenOutput = jsBeautify(escodegen.generate(program), jsBeautifyOptions);
+      const myOutput = reformatCode(generate(program));
+      const esCodegenOutput = escodegen.generate(program);
 
       expect(myOutput).toEqual(esCodegenOutput);
    });
@@ -93,6 +93,8 @@ export function findDifference(a: string, b: string) {
 }
 
 export function saveOutput(code: string) {
+   fs.ensureDirSync(path.resolve('.', 'out'));
+
    const outPath = path.resolve('.', 'out', 'out.js');
 
    const program = esprima.parse(code);
@@ -109,6 +111,7 @@ export function saveOutput(code: string) {
    }
    catch (e) {
       console.log('failed to parse output');
-      console.log(jsBeautify(out));
+      console.log(e);
+      // console.log(jsBeautify(out));
    }
 }
