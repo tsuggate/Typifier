@@ -1,17 +1,5 @@
-import {logOutput, matchOutput} from "./shared";
+import {logOutput, matchOutput, saveOutput} from "./shared";
 import {getTestFile} from "../transpiler/util/file-reader";
-
-/*
- let program: Program = esprima.parse(code, {
-    range: true, tokens: true, comment: true
- });
-
- program = escodegen.attachComments(program, program['comments'], program['tokens']);
-
- const outCode = escodegen.generate(program, {
-    comment: true
- });
- */
 
 
 describe('variable declarations', () => {
@@ -36,7 +24,18 @@ describe('simple.js', () => {
       matchOutput(code);
    }
    else {
-      throw new Error('simple.js code match failed');
+      throw new Error('simple.js not found');
+   }
+});
+
+describe('simple.js to Typescript', () => {
+   const code = getTestFile('simple');
+
+   if (code) {
+      saveOutput(code, 'typescript');
+   }
+   else {
+      throw new Error('simple.js not found');
    }
 });
 

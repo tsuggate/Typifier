@@ -2,5 +2,5 @@
 
 import './output-tests';
 
-import './big-file';
+// import './big-file';
 

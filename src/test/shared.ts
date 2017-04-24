@@ -1,5 +1,5 @@
 import * as esprima from 'esprima';
-import {generate} from '../transpiler2/output/output';
+import {generate, OutputLanguage, setLanguage} from '../transpiler2/output/output';
 import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';
@@ -8,10 +8,8 @@ import * as fs from 'fs-extra';
 
 
 const jsBeautifyOptions = {
-   indent_size: 4,
-   indent_char: ' ',
-   jslint_happy: false,
-   preserve_newlines: false
+   indent_size: 3,
+   indent_char: ' '
 };
 
 export function matchOutput(code: string) {
@@ -29,13 +27,11 @@ export function logOutput(code: string): void {
    const program = esprima.parse(code);
 
    console.log(jsBeautify(generate(program), jsBeautifyOptions));
-   // console.log(escodegen.generate(program));
 }
 
 export function printTree(code: string): void {
    const program = esprima.parse(code);
 
-   // console.log(program);
    console.log(JSON.stringify(program, null, 3));
 }
 
@@ -47,17 +43,11 @@ export function reformatCode(code: string): string {
 
 export function diffOutput(code: string) {
    const program = esprima.parse(code);
-
-   // const myOutput = jsBeautify(generate(program), jsBeautifyOptions);
    const out = generate(program);
 
    try {
-
       const myOutput = reformatCode(out);
-
       const esCodegenOutput = reformatCode(code);
-
-      // console.log(diff.diffLines(esCodegenOutput, myOutput));
 
       console.log(findDifference(esCodegenOutput, myOutput));
    }
@@ -65,17 +55,11 @@ export function diffOutput(code: string) {
       console.log('failed to parse output');
       console.log(jsBeautify(out));
    }
-   // const esCodegenOutput = jsBeautify(escodegen.generate(program), jsBeautifyOptions);
-
 }
 
 export function findDifference(a: string, b: string) {
    for (let i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) {
-
-         // console.log('a.length: ', a.length, ', b.length: ', b.length);
-         // console.log(a[i], b[i]);
-
          return {
             foundDiff: true,
             diff: {
@@ -92,22 +76,18 @@ export function findDifference(a: string, b: string) {
    };
 }
 
-export function saveOutput(code: string) {
+export function saveOutput(code: string, language: OutputLanguage = 'javascript') {
    fs.ensureDirSync(path.resolve('.', 'out'));
+   setLanguage(language);
 
    const outPath = path.resolve('.', 'out', 'out.js');
-
    const program = esprima.parse(code);
 
-   // const myOutput = jsBeautify(generate(program), jsBeautifyOptions);
    const out = generate(program);
 
    try {
-
       const myOutput = reformatCode(out);
-
       fs.writeFileSync(outPath, myOutput);
-
    }
    catch (e) {
       console.log('failed to parse output');

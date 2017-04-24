@@ -13,17 +13,49 @@ import {
    newExpression,
    objectExpression,
    thisExpression,
-   unaryExpression, updateExpression
+   unaryExpression,
+   updateExpression
 } from './generators/expression';
 import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
 import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
 
 
-export function generate(node: Node): string {
-   return getGenerateFunction(node)(node);
+
+export type OutputLanguage = 'javascript' | 'typescript';
+
+let _language: OutputLanguage = 'javascript';
+
+// This is a lazy way of switching languages for now.
+export function setLanguage(language: OutputLanguage): void {
+   _language = language;
 }
 
-function getGenerateFunction(node: Node): (node: Node) => string {
+export function generate(node: Node): string {
+   if (_language === 'javascript') {
+      return getGenerateFunctionJs(node)(node);
+   }
+   else {
+      const func = getGenerateFunctionTs(node);
+
+      if (func) {
+         return func(node);
+      }
+      else {
+         return getGenerateFunctionJs(node)(node);
+      }
+   }
+}
+
+function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
+   switch (node.type) {
+      case 'ExpressionStatement':
+         return expressionStatement;
+      default:
+         return null;
+   }
+}
+
+function getGenerateFunctionJs(node: Node): (node: Node) => string {
    switch (node.type) {
       case 'Program':
          return programToJs;
@@ -81,6 +113,5 @@ function getGenerateFunction(node: Node): (node: Node) => string {
 
       default:
          throw new Error(node.type + ' not implemented!');
-         // return (node: Node) => node.type + ' not implemented!';
    }
 }
