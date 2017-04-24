@@ -13,7 +13,7 @@ import {
    newExpression,
    objectExpression,
    thisExpression,
-   unaryExpression
+   unaryExpression, updateExpression
 } from './generators/expression';
 import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
 import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
@@ -65,6 +65,8 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return conditionalExpression;
       case 'UnaryExpression':
          return unaryExpression;
+      case 'UpdateExpression':
+         return updateExpression;
 
       case 'BlockStatement':
          return blockStatement;

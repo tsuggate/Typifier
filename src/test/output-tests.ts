@@ -1,4 +1,4 @@
-import {matchOutput} from "./shared";
+import {logOutput, matchOutput} from "./shared";
 import {getTestFile} from "../transpiler/util/file-reader";
 
 /*
@@ -38,7 +38,6 @@ describe('simple.js', () => {
    else {
       throw new Error('simple.js code match failed');
    }
-
 });
 
 describe('conditionals', () => {
@@ -51,3 +50,9 @@ describe('conditionals', () => {
 describe('boolean expressions', () => {
    matchOutput('((a || b) && c)');
 });
+
+describe('for loops', () => {
+   logOutput('for (var i = 0; i < 5; i++) { var a = i; }');
+   matchOutput('for (var i = 0; i < 5; i++) { var a = i; }');
+});
+

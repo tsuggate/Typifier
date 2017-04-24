@@ -11,7 +11,8 @@ import {
    NewExpression,
    ObjectExpression,
    ThisExpression,
-   UnaryExpression
+   UnaryExpression,
+   UpdateExpression
 } from 'estree';
 import {generate} from '../output';
 import {operatorHasPrecedence} from './operators';
@@ -119,3 +120,13 @@ export function unaryExpression(e: UnaryExpression): string {
    }
    return `${generate(e.argument)}${e.operator}`;
 }
+
+export function updateExpression(e: UpdateExpression): string {
+   if (e.prefix) {
+      return `${e.operator}${generate(e.argument)}`;
+   }
+   else {
+      return `${generate(e.argument)}${e.operator}`;
+   }
+}
+

@@ -29,6 +29,7 @@ export function logOutput(code: string): void {
    const program = esprima.parse(code);
 
    console.log(jsBeautify(generate(program), jsBeautifyOptions));
+   // console.log(escodegen.generate(program));
 }
 
 export function printTree(code: string): void {

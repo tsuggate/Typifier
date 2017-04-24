@@ -21,12 +21,10 @@ export function ifStatement(s: IfStatement): string {
 }
 
 export function forStatement(s: ForStatement): string {
-   console.log(s);
-
    const init = s.init ? generate(s.init) : '';
    const test = s.test ? generate(s.test) : '';
    const update = s.update ? generate(s.update) : '';
-   // const body = s.body.type === 'BlockStatement' ?
+   const body = generate(s.body);
 
-   return 'TODO';
+   return `for (${s.init && s.init.type === 'VariableDeclaration' ? init : init + ';'} ${test}; ${update}) ${body}`;
 }
