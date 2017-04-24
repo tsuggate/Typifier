@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {readFile} from '../transpiler/util/file-reader';
+import {readFile} from '../transpiler2/util/file-reader';
 import {diffOutput, matchOutput, saveOutput} from './shared';
 
 

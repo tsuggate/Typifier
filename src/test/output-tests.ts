@@ -1,5 +1,5 @@
 import {logOutput, matchOutput, saveOutput} from "./shared";
-import {getTestFile} from "../transpiler/util/file-reader";
+import {getTestFile} from "../transpiler2/util/file-reader";
 
 
 describe('variable declarations', () => {
