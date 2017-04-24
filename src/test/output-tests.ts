@@ -51,7 +51,7 @@ describe('boolean expressions', () => {
 });
 
 describe('for loops', () => {
-   logOutput('for (var i = 0; i < 5; i++) { var a = i; }');
+   // logOutput('for (var i = 0; i < 5; i++) { var a = i; }');
    matchOutput('for (var i = 0; i < 5; i++) { var a = i; }');
 });
 

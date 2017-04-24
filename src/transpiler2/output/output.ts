@@ -18,6 +18,7 @@ import {
 } from './generators/expression';
 import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
 import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
+import {generateImports, isDefine} from '../mods/imports';
 
 
 
@@ -28,6 +29,10 @@ let _language: OutputLanguage = 'javascript';
 // This is a lazy way of switching languages for now.
 export function setLanguage(language: OutputLanguage): void {
    _language = language;
+}
+
+export function getLanguage(): OutputLanguage {
+   return _language;
 }
 
 export function generate(node: Node): string {
@@ -49,6 +54,9 @@ export function generate(node: Node): string {
 function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
    switch (node.type) {
       case 'ExpressionStatement':
+         if (isDefine(node)) {
+            return generateImports;
+         }
          return expressionStatement;
       default:
          return null;

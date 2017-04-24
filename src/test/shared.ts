@@ -86,7 +86,7 @@ export function saveOutput(code: string, language: OutputLanguage = 'javascript'
    const out = generate(program);
 
    try {
-      const myOutput = reformatCode(out);
+      const myOutput = jsBeautify(out, jsBeautifyOptions);
       fs.writeFileSync(outPath, myOutput);
    }
    catch (e) {
@@ -94,4 +94,5 @@ export function saveOutput(code: string, language: OutputLanguage = 'javascript'
       console.log(e);
       // console.log(jsBeautify(out));
    }
+   setLanguage('javascript');
 }
