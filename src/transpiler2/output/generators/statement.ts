@@ -1,9 +1,9 @@
-import {BlockStatement, IfStatement, ReturnStatement} from 'estree';
+import {BlockStatement, ForStatement, IfStatement, ReturnStatement} from 'estree';
 import {generate} from '../output';
 
 
 export function blockStatement(s: BlockStatement): string {
-   return s.body.map(generate).join('\n');
+   return '{' + s.body.map(generate).join('\n') + '}';
 }
 
 export function returnStatement(s: ReturnStatement): string {
@@ -11,18 +11,22 @@ export function returnStatement(s: ReturnStatement): string {
 }
 
 export function ifStatement(s: IfStatement): string {
-   const hasBlock = s.consequent.type === 'BlockStatement';
-
-   let conditional = `if (${generate(s.test)}) ${hasBlock ? '{' : ''}${generate(s.consequent)}${hasBlock ? '}' : ''}`;
+   let conditional = `if (${generate(s.test)}) ${generate(s.consequent)}`;
 
    if (s.alternate) {
-      if (s.alternate.type === 'BlockStatement') {
-         conditional += `else { ${generate(s.alternate)} }`;
-      }
-      else {
-         conditional += `else ${generate(s.alternate)}`;
-      }
+      conditional += `else ${generate(s.alternate)}`;
    }
 
    return conditional;
+}
+
+export function forStatement(s: ForStatement): string {
+   console.log(s);
+
+   const init = s.init ? generate(s.init) : '';
+   const test = s.test ? generate(s.test) : '';
+   const update = s.update ? generate(s.update) : '';
+   // const body = s.body.type === 'BlockStatement' ?
+
+   return 'TODO';
 }

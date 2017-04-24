@@ -25,5 +25,5 @@ export function functionDeclaration(f: FunctionDeclaration) {
 
    const params = f.params.map(generate).join(', ');
 
-   return `function ${generate(f.id)}(${params}) {${generate(f.body)}}`;
+   return `function ${generate(f.id)}(${params}) ${generate(f.body)}`;
 }

@@ -64,7 +64,7 @@ export function functionExpression(f: FunctionExpression): string {
 
    const params = f.params.map(generate).join(', ');
 
-   return `function(${params}) {${generate(f.body)}}`;
+   return `function(${params}) ${generate(f.body)}`;
 }
 
 export function memberExpression(e: MemberExpression): string {

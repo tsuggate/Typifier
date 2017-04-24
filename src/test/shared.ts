@@ -3,8 +3,7 @@ import {generate} from '../transpiler2/output/output';
 import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';
-import * as diff from 'diff';
-import * as path from "path";
+import * as path from 'path';
 import * as fs from 'fs-extra';
 
 

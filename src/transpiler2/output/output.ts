@@ -1,5 +1,5 @@
-import {Node, Program} from "estree";
-import {identifierToJs, literalToJs, programToJs, propertyToJs} from "./generators";
+import {Node, Program} from 'estree';
+import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators';
 import {
    arrayExpression,
    assignmentExpression,
@@ -12,10 +12,11 @@ import {
    memberExpression,
    newExpression,
    objectExpression,
-   thisExpression, unaryExpression
-} from "./generators/expression";
-import {blockStatement, ifStatement, returnStatement} from "./generators/statement";
-import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from "./generators/declaration";
+   thisExpression,
+   unaryExpression
+} from './generators/expression';
+import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
+import {functionDeclaration, variableDeclarationToJs, variableDeclaratorToJs} from './generators/declaration';
 
 
 export function generate(node: Node): string {
@@ -73,8 +74,11 @@ function getGenerateFunction(node: Node): (node: Node) => string {
          return expressionStatement;
       case 'IfStatement':
          return ifStatement;
+      case 'ForStatement':
+         return forStatement;
 
       default:
-         return (node: Node) => node.type + ' not implemented!';
+         throw new Error(node.type + ' not implemented!');
+         // return (node: Node) => node.type + ' not implemented!';
    }
 }
