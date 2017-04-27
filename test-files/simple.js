@@ -13,5 +13,10 @@ define(['jquery', 'knockout'], function($, ko) {
    var myDate = d.getDate();
 
    myFunc(3, 4);
+
+   return {
+      myFunc: myFunc,
+      s: s
+   };
 });
 

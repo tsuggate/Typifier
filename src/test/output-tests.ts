@@ -1,4 +1,4 @@
-import {logOutput, matchOutput, saveOutput} from "./shared";
+import {logOutput, matchOutput, printTree, saveOutput} from "./shared";
 import {getTestFile} from "../transpiler2/util/file-reader";
 
 
@@ -55,3 +55,7 @@ describe('for loops', () => {
    matchOutput('for (var i = 0; i < 5; i++) { var a = i; }');
 });
 
+
+describe('test export', () => {
+   printTree('export const a = 5;');
+});

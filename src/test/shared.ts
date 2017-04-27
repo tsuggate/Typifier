@@ -30,7 +30,7 @@ export function logOutput(code: string): void {
 }
 
 export function printTree(code: string): void {
-   const program = esprima.parse(code);
+   const program = esprima.parse(code, {sourceType: 'module'});
 
    console.log(JSON.stringify(program, null, 3));
 }
