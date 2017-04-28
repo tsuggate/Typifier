@@ -1,10 +1,35 @@
-import * as path from 'path';
-import {parseAndLog} from './parser';
+import {transpile} from '../test/shared';
+import {readFile} from './util/file-reader';
+import {inputFile, outputFile} from './util/args';
+import * as fs from 'fs';
 
+checkProgramArgs();
+main();
 
-const jsPath = path.resolve('test-files', 'simple.js');
-const jsPath2 = path.resolve('..', 'client', 'src', 'instance', 'js', 'plugins', 'image-annotation', 'main.js');
+function main() {
+   const code = readFile(inputFile);
 
+   if (code) {
+      try {
+         const tsCode = transpile(code, 'typescript');
 
-parseAndLog(jsPath);
+         fs.writeFileSync(outputFile, tsCode);
 
+         // console.log(tsCode);
+      }
+      catch (e) {
+         console.log(e);
+      }
+   }
+}
+
+function checkProgramArgs() {
+   if (!inputFile) {
+      console.log('You need to provide an input file (use --file [file path]).');
+      process.exit(0);
+   }
+   if (!outputFile) {
+      console.log('You need to provide an output file (use --out [file path]).');
+      process.exit(0);
+   }
+}

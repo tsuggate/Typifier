@@ -26,7 +26,6 @@ export function generateImports(es: ExpressionStatement): string {
    const imports = makeImports(libraryNames, importNames);
 
    const exportNames = getExportNames(func);
-   console.log(exportNames);
 
    checkDeclarationsExist(func, exportNames);
 
@@ -85,7 +84,7 @@ function generateDeclaration(d: Declaration, exportNames: string[]): string {
    const names = getNamesFromDeclaration(d);
 
    if (_.every(names, n => _.contains(exportNames, n))) {
-      return `export ${generate(d)}`;
+      return `\nexport ${generate(d)}`;
    }
    return generate(d);
 }

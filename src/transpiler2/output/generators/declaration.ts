@@ -26,8 +26,16 @@ export function functionDeclaration(f: FunctionDeclaration): string {
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
-
    const params = f.params.map(generate).join(', ');
+
+   return `function ${generate(f.id)}(${params}) ${generate(f.body)}`;
+}
+
+export function functionDeclarationTs(f: FunctionDeclaration): string {
+   if (f.generator) {
+      throw 'functionDeclaration.generator not implemented!';
+   }
+   const params = f.params.map(generate).join(': any, ') + ': any';
 
    return `function ${generate(f.id)}(${params}) ${generate(f.body)}`;
 }
