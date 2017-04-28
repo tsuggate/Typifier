@@ -1,5 +1,10 @@
-import {ArrayExpression, CallExpression, ExpressionStatement, FunctionExpression, ReturnStatement} from 'estree';
+import {
+   ArrayExpression, CallExpression, Declaration, ExpressionStatement, FunctionExpression,
+   ReturnStatement
+} from 'estree';
 import {generate} from '../output/output';
+import {getNamesFromDeclaration, isDeclaration} from '../output/generators/declaration';
+import * as _ from 'underscore';
 
 
 export function isDefine(es: ExpressionStatement): boolean {
@@ -23,12 +28,19 @@ export function generateImports(es: ExpressionStatement): string {
    const exportNames = getExportNames(func);
    console.log(exportNames);
 
+   checkDeclarationsExist(func, exportNames);
+
    const body = func.body.body.map(e => {
-      console.log(e);
-      return generate(e);
+      if (isDeclaration(e)) {
+         return generateDeclaration(e as Declaration, exportNames);
+      }
+      else if (e.type === 'ReturnStatement') {
+         return '';
+      }
+      else {
+         return generate(e);
+      }
    }).join('\n');
-
-
 
    return `${imports.join('\n')} ${body}`;
 }
@@ -47,7 +59,7 @@ function getImportNames(e: FunctionExpression): string[] {
    })
 }
 
-function makeImports(libraryNames: string[], importNames: string[]) {
+function makeImports(libraryNames: string[], importNames: string[]): string[] {
    return importNames.map((n, i) => {
       return `const ${n} = require('${libraryNames[i]}');`;
    });
@@ -67,4 +79,27 @@ function getExportNames(func: FunctionExpression): string[] {
       }
    }
    throw new Error('getExportNames failed');
+}
+
+function generateDeclaration(d: Declaration, exportNames: string[]): string {
+   const names = getNamesFromDeclaration(d);
+
+   if (_.every(names, n => _.contains(exportNames, n))) {
+      return `export ${generate(d)}`;
+   }
+   return generate(d);
+}
+
+function checkDeclarationsExist(func: FunctionExpression, exportNames: string[]): void {
+   const decs: string[] = _.flatten(
+      func.body.body
+         .filter(e => e.type.includes('Declaration'))
+         .map(getNamesFromDeclaration)
+   );
+
+   exportNames.forEach(n => {
+      if (!_.contains(decs, n)) {
+         throw new Error(`checkDeclarationsExist: Couldn't find ${n} in module declarations.`);
+      }
+   });
 }

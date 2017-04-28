@@ -1,4 +1,4 @@
-import {FunctionDeclaration, VariableDeclaration, VariableDeclarator} from 'estree';
+import {Node, Declaration, FunctionDeclaration, VariableDeclaration, VariableDeclarator} from 'estree';
 import {generate} from '../output';
 
 
@@ -18,7 +18,11 @@ export function variableDeclaratorToJs(dec: VariableDeclarator): string {
    return `${name}`;
 }
 
-export function functionDeclaration(f: FunctionDeclaration) {
+export function getVariableDeclarationNames(dec: VariableDeclaration): string[] {
+   return dec.declarations.map(d => generate(d.id));
+}
+
+export function functionDeclaration(f: FunctionDeclaration): string {
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
@@ -26,4 +30,23 @@ export function functionDeclaration(f: FunctionDeclaration) {
    const params = f.params.map(generate).join(', ');
 
    return `function ${generate(f.id)}(${params}) ${generate(f.body)}`;
+}
+
+export function getFunctionDeclarationName(f: FunctionDeclaration): string {
+   return generate(f.id);
+}
+
+export function getNamesFromDeclaration(d: Declaration): string[] {
+   switch (d.type) {
+      case 'FunctionDeclaration':
+         return [getFunctionDeclarationName(d)];
+      case 'VariableDeclaration':
+         return getVariableDeclarationNames(d);
+      case 'ClassDeclaration':
+         throw new Error('getNamesFromDeclaration for ClassDeclaration not implemented.');
+   }
+}
+
+export function isDeclaration(node: Node): boolean {
+   return node.type.includes('Declaration');
 }
