@@ -1,19 +1,16 @@
 import {app, BrowserWindow} from 'electron';
-import * as url from 'url';
 import * as path from 'path';
-
 
 
 let mainWindow: Electron.BrowserWindow | null = null;
 
 
 function createWindow(): void {
-   mainWindow = new BrowserWindow({width: 800, height: 600});
+   mainWindow = new BrowserWindow({width: 1200, height: 800});
 
    console.log('__dirname: ', __dirname);
 
    mainWindow.loadURL(`file://${path.join(process.cwd(), 'resources', 'index.html')}`);
-   // mainWindow.loadURL(`http://google.co.nz`);
 
    mainWindow.webContents.openDevTools();
 

@@ -6,6 +6,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
+    "jsx": "react",
     "lib": [
       "dom",
       "es6",

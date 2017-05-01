@@ -1,0 +1,51 @@
+@Button-verticalPadding: 8px;
+@Button-horizontalPadding: 13px;
+
+.Button {
+   color: #fff;
+   border-style: none;
+   border-radius: 2px;
+   padding: @Button-verticalPadding @Button-horizontalPadding;
+   min-height: 44px;
+   font: inherit;
+   font-weight: 600;
+   cursor: pointer;
+   vertical-align: middle;
+   outline: none;
+   box-shadow: 0 1px 4px rgba(0,0,0,.15);
+   -moz-transition: background-color 0.5s, color 0.5s;
+   -webkit-transition: background-color 0.5s, color 0.5s;
+   -o-transition: background-color 0.5s, color 0.5s;
+   transition: background-color 0.5s, color 0.5s;
+}
+
+.Button:hover {
+   transition: none;
+}
+
+.Button.Button-blue {
+   background-color: #0084DB;
+}
+
+.Button.Button-blue:hover {
+   background-color: #007acc;
+}
+
+.Button.Button-transparent {
+   color: #0081db;
+   background: transparent;
+   box-shadow: none;
+   padding: @Button-verticalPadding 30px @Button-verticalPadding 0;
+}
+
+.Button.Button-transparent:hover {
+   color: #28ade9;
+}
+
+.Button[disabled].Button-blue:hover,
+.Button[disabled] {
+   color: #adb5bd;
+   background: #edf2f3;
+   text-shadow: 0 1px 0 hsla(0, 0%, 100%, .7);
+   box-shadow: inset 0 0 25px -5px rgba(0, 0, 0, .05);
+}
