@@ -1,35 +1,59 @@
-import {transpile} from '../test/shared';
-import {readFile} from './util/file-reader';
-import {inputFile, outputFile} from './util/args';
-import * as fs from 'fs';
+import {app, BrowserWindow} from 'electron';
+import * as url from 'url';
+import * as path from 'path';
 
-checkProgramArgs();
-main();
 
-function main() {
-   const code = readFile(inputFile);
 
-   if (code) {
-      try {
-         const tsCode = transpile(code, 'typescript');
+let mainWindow: Electron.BrowserWindow | null = null;
 
-         fs.writeFileSync(outputFile, tsCode);
 
-         // console.log(tsCode);
-      }
-      catch (e) {
-         console.log(e);
-      }
-   }
+function createWindow(): void {
+   mainWindow = new BrowserWindow({width: 800, height: 600});
+
+   console.log('__dirname: ', __dirname);
+
+   mainWindow.loadURL(`file://${path.join(process.cwd(), 'resources', 'index.html')}`);
+   // mainWindow.loadURL(`http://google.co.nz`);
+
+   mainWindow.webContents.openDevTools();
+
+   mainWindow.on('closed', () => {
+      mainWindow = null
+   });
 }
 
-function checkProgramArgs() {
-   if (!inputFile) {
-      console.log('You need to provide an input file (use --file [file path]).');
-      process.exit(0);
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+   if (process.platform !== 'darwin') {
+      app.quit();
    }
-   if (!outputFile) {
-      console.log('You need to provide an output file (use --out [file path]).');
-      process.exit(0);
+});
+
+app.on('activate', () => {
+   if (mainWindow === null) {
+      createWindow();
    }
-}
+});
+
+
+
+// const {app, BrowserWindow} = require('electron')
+// const url = require('url')
+// const path = require('path')
+//
+// let win;
+//
+// console.log(path.join(process.cwd(), 'resources', 'index.html'));
+//
+// function createWindow() {
+//    win = new BrowserWindow({width: 800, height: 600});
+//
+//    win.loadURL(url.format({
+//       pathname: path.join(process.cwd(), 'resources', 'index.html'),
+//       protocol: 'file:',
+//       slashes: true
+//    }));
+// }
+//
+// app.on('ready', createWindow);

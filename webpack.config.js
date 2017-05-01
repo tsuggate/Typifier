@@ -1,13 +1,14 @@
 module.exports = {
    entry: {
       "main": './src/transpiler2/main.ts',
+      "cmd": './src/transpiler2/cmd.ts',
       "test-spec": './src/test/test-main.ts'
    },
    output: {
       path: './dist/',
       filename: '[name].js'
    },
-   target: "node",
+   target: "electron",
    resolve: {
       extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
    },

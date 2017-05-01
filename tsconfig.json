@@ -16,7 +16,8 @@
   "exclude": [
     "node_modules",
     "kuraCloud",
-     "target~~"
+    "target~~",
+    "dist"
   ],
   "compileOnSave": false
 }
