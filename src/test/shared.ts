@@ -77,6 +77,7 @@ export function findDifference(a: string, b: string) {
 }
 
 export function transpile(code: string, language: OutputLanguage = 'javascript'): string {
+   console.log('transpile to', language);
    setLanguage(language);
 
    const program = esprima.parse(code);

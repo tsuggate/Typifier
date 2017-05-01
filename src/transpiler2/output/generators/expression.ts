@@ -68,6 +68,16 @@ export function functionExpression(f: FunctionExpression): string {
    return `function(${params}) ${generate(f.body)}`;
 }
 
+export function functionExpressionTs(f: FunctionExpression): string {
+   if (f.id !== null) {
+      throw 'functionExpression.id !== null';
+   }
+
+   const params = f.params.map(p => generate(p) + ': any').join(', ');
+
+   return `function(${params}) ${generate(f.body)}`;
+}
+
 export function memberExpression(e: MemberExpression): string {
    if (e.computed) {
       return `${generate(e.object)}[${generate(e.property)}]`;

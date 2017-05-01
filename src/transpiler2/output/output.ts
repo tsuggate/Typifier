@@ -7,7 +7,7 @@ import {
    callExpression,
    conditionalExpression,
    expressionStatement,
-   functionExpression,
+   functionExpression, functionExpressionTs,
    logicalExpression,
    memberExpression,
    newExpression,
@@ -63,7 +63,8 @@ function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
          return expressionStatement;
       case 'FunctionDeclaration':
          return functionDeclarationTs;
-
+      case 'FunctionExpression':
+         return functionExpressionTs;
       default:
          return null;
    }

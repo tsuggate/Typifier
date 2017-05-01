@@ -23,6 +23,7 @@ export function getVariableDeclarationNames(dec: VariableDeclaration): string[] 
 }
 
 export function functionDeclaration(f: FunctionDeclaration): string {
+   console.log('functionDeclaration');
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
@@ -32,10 +33,11 @@ export function functionDeclaration(f: FunctionDeclaration): string {
 }
 
 export function functionDeclarationTs(f: FunctionDeclaration): string {
+   console.log('functionDeclarationTs');
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
-   const params = f.params.map(generate).join(': any, ') + ': any';
+   const params = f.params.map(p => generate(p) + ': any').join(', ');
 
    return `function ${generate(f.id)}(${params}) ${generate(f.body)}`;
 }

@@ -2,13 +2,24 @@ import * as path from 'path';
 import * as fs from 'fs';
 import {transpile} from '../test/shared';
 
+
+let jsFilePath = path.join(process.cwd(), 'test-files', 'simple.js');
+
+
+export function setJsFilePath(filePath: string): void {
+   jsFilePath = filePath;
+}
+
+export function getJsFilePath(): string {
+   return jsFilePath;
+}
+
 let jsCode = '';
 
 export function loadJsFile(): string {
-
+   console.log('loadJsFile: ', jsFilePath);
    try {
-      const filePath = path.join(process.cwd(), 'test-files', 'simple.js');
-      const file = fs.readFileSync(filePath);
+      const file = fs.readFileSync(jsFilePath);
       jsCode = file.toString();
    }
    catch (e) {
@@ -19,5 +30,6 @@ export function loadJsFile(): string {
 }
 
 export function getTsOutput(): string {
+   console.log(jsCode);
    return transpile(jsCode, 'typescript');
 }

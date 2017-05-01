@@ -20,7 +20,8 @@ export class Editors extends React.Component<{}, {}> {
                name="editor1"
                width="50%"
                height="100%"
-               defaultValue={loadJsFile()}
+               value={loadJsFile()}
+               readOnly={true}
                onChange={() => {}}
             />
             <AceEditor
@@ -29,7 +30,8 @@ export class Editors extends React.Component<{}, {}> {
                width="50%"
                height="100%"
                name="editor2"
-               defaultValue={getTsOutput()}
+               value={getTsOutput()}
+               readOnly={true}
                onChange={() => {}}
             />
          </div>
