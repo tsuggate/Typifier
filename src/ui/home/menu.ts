@@ -1,5 +1,6 @@
 import {remote} from 'electron';
 import {clickOpenJsFile, getWindow} from '../globals';
+import {platform} from "os";
 
 
 type MenuItemOptions = Electron.MenuItemOptions;
@@ -65,5 +66,10 @@ export function renderMainWindowMenu(): void {
       // buildDevMenu(getWindow())
    ];
 
-   getWindow().setMenu(remote.Menu.buildFromTemplate(menu));
+   if (platform() === 'darwin') {
+      remote.Menu.setApplicationMenu(remote.Menu.buildFromTemplate(menu));
+   }
+   else {
+      getWindow().setMenu(remote.Menu.buildFromTemplate(menu));
+   }
 }
