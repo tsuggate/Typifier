@@ -1,51 +1,58 @@
 import {remote} from 'electron';
 import {clickOpenJsFile, getWindow} from '../globals';
+const defaultMenu = require('electron-default-menu');
 
 
-type MenuItem = Electron.MenuItemOptions;
+type MenuItemOptions = Electron.MenuItemOptions;
 
 
 export function renderMainWindowMenu(): void {
-   const separator: MenuItem = {
+   const separator: MenuItemOptions = {
       type: 'separator'
    };
 
-   const fileMenuItems: MenuItem[] =
-      [
-         {
-            label: 'Open Javascript File',
-            click: clickOpenJsFile,
-            accelerator: 'CmdOrCtrl+O',
-            enabled: true
-         },
-         separator,
-         {
-            label: 'Exit',
-            click: () => {
-               getWindow().close();
-            }
+   const fileMenuItems: MenuItemOptions[] = [
+      {
+         label: 'Open Javascript File',
+         click: clickOpenJsFile,
+         accelerator: 'CmdOrCtrl+O',
+         enabled: true
+      },
+      separator,
+      {
+         label: 'Exit',
+         click: () => {
+            getWindow().close();
          }
-      ];
+      }
+   ];
 
    const fileMenu = {
       label: 'File',
       submenu: fileMenuItems
    };
 
-   let menu: MenuItem[] = [
-      fileMenu
+   const editMenuItems: MenuItemOptions[] = [
+      {role: 'copy'},
+      {role: 'selectall'}
    ];
 
-   // if (!config.productionMode) {
-      menu.push(buildDevMenu(getWindow()));
-   // }
+   const editMenu = {
+      label: 'Edit',
+      submenu: editMenuItems
+   };
+
+   let menu: MenuItemOptions[] = [
+      fileMenu,
+      editMenu
+   ];
 
    getWindow().setMenu(remote.Menu.buildFromTemplate(menu));
 }
 
-export function buildDevMenu(window: Electron.BrowserWindow): MenuItem {
+export function buildDevMenu(window: Electron.BrowserWindow): MenuItemOptions {
 
-   let devMenuItems: MenuItem[] = [
+   let devMenuItems: MenuItemOptions[] = [
       {
          label: 'Refresh Page',
          click: () => window.reload(),

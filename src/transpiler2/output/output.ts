@@ -61,7 +61,7 @@ function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
             return generateImports;
          }
          return expressionStatement;
-         
+
       case 'FunctionDeclaration':
          return functionDeclarationTs;
       case 'VariableDeclaration':
