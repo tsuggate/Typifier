@@ -5,6 +5,23 @@ import {clickOpenJsFile, getWindow} from '../globals';
 type MenuItemOptions = Electron.MenuItemOptions;
 
 
+function buildViewMenu() {
+   return {
+      label: 'View',
+      submenu: [
+         {role: 'reload'},
+         {role: 'forcereload'},
+         {role: 'toggledevtools'},
+         {type: 'separator'},
+         {role: 'resetzoom'},
+         {role: 'zoomin'},
+         {role: 'zoomout'},
+         {type: 'separator'},
+         {role: 'togglefullscreen'}
+      ] as MenuItemOptions[]
+   };
+}
+
 export function renderMainWindowMenu(): void {
    const separator: MenuItemOptions = {
       type: 'separator'
@@ -12,7 +29,7 @@ export function renderMainWindowMenu(): void {
 
    const fileMenuItems: MenuItemOptions[] = [
       {
-         label: 'Open Javascript File',
+         label: 'Open Javascript File...',
          click: clickOpenJsFile,
          accelerator: 'CmdOrCtrl+O',
          enabled: true
@@ -44,7 +61,8 @@ export function renderMainWindowMenu(): void {
    let menu: MenuItemOptions[] = [
       fileMenu,
       editMenu,
-      buildDevMenu(getWindow())
+      buildViewMenu()
+      // buildDevMenu(getWindow())
    ];
 
    getWindow().setMenu(remote.Menu.buildFromTemplate(menu));
