@@ -1,24 +1,13 @@
 import * as React from 'React';
 import AceEditor from 'react-ace';
-import * as fs from 'fs';
-import * as path from 'path';
 
-import './editors.less'
+import './editors.less';
 
 import 'brace';
-import 'brace/mode/java';
+import 'brace/mode/javascript';
 import 'brace/theme/github';
+import {getTsOutput, loadJsFile} from '../../data/data';
 
-let jsCode = '';
-
-try {
-   const filePath = path.join(process.cwd(), 'test-files', 'simple.js');
-   const file = fs.readFileSync(filePath);
-   jsCode = file.toString();
-}
-catch (e) {
-   console.log(e);
-}
 
 
 export class Editors extends React.Component<{}, {}> {
@@ -26,21 +15,21 @@ export class Editors extends React.Component<{}, {}> {
       return (
          <div className="Editors">
             <AceEditor
-               mode="java"
+               mode="javascript"
                theme="github"
                name="editor1"
                width="50%"
                height="100%"
-               defaultValue={jsCode}
+               defaultValue={loadJsFile()}
                onChange={() => {}}
             />
             <AceEditor
-               mode="java"
+               mode="javascript"
                theme="github"
                width="50%"
                height="100%"
                name="editor2"
-               defaultValue="var a = 5;"
+               defaultValue={getTsOutput()}
                onChange={() => {}}
             />
          </div>
