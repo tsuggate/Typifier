@@ -1,6 +1,5 @@
 import {remote} from 'electron';
 import {clickOpenJsFile, getWindow} from '../globals';
-const defaultMenu = require('electron-default-menu');
 
 
 type MenuItemOptions = Electron.MenuItemOptions;
@@ -44,7 +43,8 @@ export function renderMainWindowMenu(): void {
 
    let menu: MenuItemOptions[] = [
       fileMenu,
-      editMenu
+      editMenu,
+      buildDevMenu(getWindow())
    ];
 
    getWindow().setMenu(remote.Menu.buildFromTemplate(menu));

@@ -15,6 +15,8 @@ function createWindow(): void {
    mainWindow.on('closed', () => {
       mainWindow = null
    });
+
+   mainWindow.setMenu(null);
 }
 
 app.on('ready', createWindow);
