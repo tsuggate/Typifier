@@ -18,7 +18,7 @@ import {
 } from './generators/expression';
 import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
 import {
-   functionDeclaration, functionDeclarationTs, variableDeclarationToJs,
+   functionDeclaration, functionDeclarationTs, variableDeclarationToJs, variableDeclarationToTs,
    variableDeclaratorToJs
 } from './generators/declaration';
 import {generateImports, isDefine} from '../mods/imports';
@@ -61,8 +61,12 @@ function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
             return generateImports;
          }
          return expressionStatement;
+         
       case 'FunctionDeclaration':
          return functionDeclarationTs;
+      case 'VariableDeclaration':
+         return variableDeclarationToTs;
+
       case 'FunctionExpression':
          return functionExpressionTs;
       default:

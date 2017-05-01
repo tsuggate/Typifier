@@ -8,6 +8,12 @@ export function variableDeclarationToJs(dec: VariableDeclaration): string {
    return `${dec.kind} ${declarations};`;
 }
 
+export function variableDeclarationToTs(dec: VariableDeclaration): string {
+   const declarations = dec.declarations.map(variableDeclaratorToJs).join(', ');
+
+   return `let ${declarations};`;
+}
+
 export function variableDeclaratorToJs(dec: VariableDeclarator): string {
    const name = generate(dec.id);
 
