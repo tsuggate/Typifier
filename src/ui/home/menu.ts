@@ -67,29 +67,3 @@ export function renderMainWindowMenu(): void {
 
    getWindow().setMenu(remote.Menu.buildFromTemplate(menu));
 }
-
-export function buildDevMenu(window: Electron.BrowserWindow): MenuItemOptions {
-
-   let devMenuItems: MenuItemOptions[] = [
-      {
-         label: 'Refresh Page',
-         click: () => window.reload(),
-         accelerator: 'F5'
-      },
-      {
-         label: 'Show Dev Tools',
-         click: () => {
-            if (window.webContents.isDevToolsOpened())
-               window.webContents.closeDevTools();
-            else
-               window.webContents.openDevTools();
-         },
-         accelerator: 'CmdOrCtrl+Shift+I'
-      }
-   ];
-
-   return {
-      label: 'Dev',
-      submenu: devMenuItems
-   };
-}
