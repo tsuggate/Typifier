@@ -1,6 +1,7 @@
 define(['jquery', 'knockout'], function($, ko) {
 
    // Set n to 42
+   // Another pointless comment.
    var n = 42; // a
    var a = n / 2; // b
 

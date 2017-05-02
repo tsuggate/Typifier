@@ -8,8 +8,12 @@ interface ESComment {
    value: string;
 }
 
+// TODO: Look at node position and figure out whether new lines should be inserted.
 export function insertComments(code: string, node: Node): string {
-   return generateLeadingComments(node) + code + generateTrailingComments(node);
+   const leading = generateLeadingComments(node);
+   const trailing = generateTrailingComments(node);
+
+   return leading + code + trailing;
 }
 
 function generateLeadingComments(node: Node) {
