@@ -1,8 +1,11 @@
 define(['jquery', 'knockout'], function($, ko) {
-   var n = 42;
-   var a = n / 2;
 
-   function myFunc(a1, a2) {
+   // Set n to 42
+   var n = 42; // a
+   var a = n / 2; // b
+
+   /* hello comment */
+   function myFunc(a1, a2) { /* hello comment */
       var b = 2;
 
       return a1 * a2 + b;

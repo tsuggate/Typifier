@@ -7,7 +7,8 @@ import {
    callExpression,
    conditionalExpression,
    expressionStatement,
-   functionExpression, functionExpressionTs,
+   functionExpression,
+   functionExpressionTs,
    logicalExpression,
    memberExpression,
    newExpression,
@@ -18,16 +19,20 @@ import {
 } from './generators/expression';
 import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
 import {
-   functionDeclaration, functionDeclarationTs, variableDeclarationToJs, variableDeclarationToTs,
+   functionDeclaration,
+   functionDeclarationTs,
+   variableDeclarationToJs,
+   variableDeclarationToTs,
    variableDeclaratorToJs
 } from './generators/declaration';
 import {generateImports, isDefine} from '../mods/imports';
-
+import {insertComments} from './generators/comments';
 
 
 export type OutputLanguage = 'javascript' | 'typescript';
 
 let _language: OutputLanguage = 'javascript';
+
 
 // This is a lazy way of switching languages for now.
 export function setLanguage(language: OutputLanguage): void {
@@ -39,19 +44,23 @@ export function getLanguage(): OutputLanguage {
 }
 
 export function generate(node: Node): string {
+   let result;
+
    if (_language === 'javascript') {
-      return getGenerateFunctionJs(node)(node);
+      result = getGenerateFunctionJs(node)(node);
    }
    else {
       const func = getGenerateFunctionTs(node);
 
       if (func) {
-         return func(node);
+         result = func(node);
       }
       else {
-         return getGenerateFunctionJs(node)(node);
+         result = getGenerateFunctionJs(node)(node);
       }
    }
+
+   return insertComments(result, node);
 }
 
 function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {

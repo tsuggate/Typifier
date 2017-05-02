@@ -1,7 +1,8 @@
-import {transpile} from '../test/shared';
 import {readFile} from './util/file-reader';
 import {inputFile, outputFile} from './util/args';
 import * as fs from 'fs';
+import {transpile} from './transpiler-main';
+
 
 checkProgramArgs();
 main();

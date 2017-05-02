@@ -23,6 +23,7 @@ export class Editors extends React.Component<{}, {}> {
                value={loadJsFile()}
                readOnly={true}
                onChange={() => {}}
+               editorProps={{$blockScrolling: 1}}
             />
             <AceEditor
                mode="javascript"
@@ -33,6 +34,7 @@ export class Editors extends React.Component<{}, {}> {
                value={getTsOutput()}
                readOnly={true}
                onChange={() => {}}
+               editorProps={{$blockScrolling: 1}}
             />
          </div>
       );

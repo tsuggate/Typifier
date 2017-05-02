@@ -41,7 +41,7 @@ export function generateImports(es: ExpressionStatement): string {
       }
    }).join('\n');
 
-   return `${imports.join('\n')} ${body}`;
+   return `${imports.join('')} ${body}`;
 }
 
 function getLibraryNames(e: CallExpression): string[] {
@@ -60,7 +60,7 @@ function getImportNames(e: FunctionExpression): string[] {
 
 function makeImports(libraryNames: string[], importNames: string[]): string[] {
    return importNames.map((n, i) => {
-      return `const ${n} = require('${libraryNames[i]}');`;
+      return `const ${n} = require('${libraryNames[i]}');\n`;
    });
 }
 
@@ -84,7 +84,7 @@ function generateDeclaration(d: Declaration, exportNames: string[]): string {
    const names = getNamesFromDeclaration(d);
 
    if (_.every(names, n => _.contains(exportNames, n))) {
-      return `\nexport ${generate(d)}`;
+      return `export ${generate(d)}`;
    }
    return generate(d);
 }

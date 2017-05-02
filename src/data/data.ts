@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import {transpile} from '../test/shared';
+import {transpile} from '../transpiler2/transpiler-main';
 
 
 let jsFilePath = path.join(process.cwd(), 'test-files', 'simple.js');
