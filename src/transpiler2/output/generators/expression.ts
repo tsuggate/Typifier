@@ -14,7 +14,7 @@ import {
    UnaryExpression,
    UpdateExpression
 } from 'estree';
-import {generate} from '../output';
+import {generate} from '../generate';
 import {operatorHasPrecedence} from './operators';
 
 

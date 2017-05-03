@@ -1,4 +1,4 @@
-import {generate, OutputLanguage, setLanguage} from './output/output';
+import {generate, OutputLanguage, setLanguage} from './output/generate';
 import * as jsBeautify from 'js-beautify';
 import {jsBeautifyOptions} from '../test/shared';
 import * as esprima from 'esprima';
@@ -8,7 +8,7 @@ export function transpile(code: string, language: OutputLanguage = 'javascript')
    console.log('transpile to', language);
    setLanguage(language);
 
-   const program = esprima.parse(code, { attachComment: true });
+   const program = esprima.parse(code, { attachComment: true, loc: true });
 
    console.log(program);
 

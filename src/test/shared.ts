@@ -1,5 +1,5 @@
 import * as esprima from 'esprima';
-import {generate, OutputLanguage, setLanguage} from '../transpiler2/output/output';
+import {generate, OutputLanguage, setLanguage} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';

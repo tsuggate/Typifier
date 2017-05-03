@@ -1,4 +1,8 @@
-define(['jquery', 'knockout'], function($, ko) {
+define([
+   'jquery',
+   'knockout'
+   //'knockback'
+], function($, ko) {
 
    // Set n to 42
    // Another pointless comment.

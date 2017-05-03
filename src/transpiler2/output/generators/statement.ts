@@ -1,5 +1,5 @@
 import {BlockStatement, ForStatement, IfStatement, ReturnStatement} from 'estree';
-import {generate} from '../output';
+import {generate} from '../generate';
 
 
 export function blockStatement(s: BlockStatement): string {

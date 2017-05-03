@@ -2,7 +2,7 @@ import {
    ArrayExpression, CallExpression, Declaration, ExpressionStatement, FunctionExpression,
    ReturnStatement
 } from 'estree';
-import {generate} from '../output/output';
+import {generate} from '../output/generate';
 import {getNamesFromDeclaration, isDeclaration} from '../output/generators/declaration';
 import * as _ from 'underscore';
 
@@ -48,7 +48,7 @@ function getLibraryNames(e: CallExpression): string[] {
    const namesArrayExpression = e.arguments[0] as ArrayExpression;
 
    return namesArrayExpression.elements.map(n => {
-      return generate(n).replace(/['"]+/g, '');
+      return generate(n);//.replace(/['"]+/g, '');
    });
 }
 
@@ -60,7 +60,7 @@ function getImportNames(e: FunctionExpression): string[] {
 
 function makeImports(libraryNames: string[], importNames: string[]): string[] {
    return importNames.map((n, i) => {
-      return `const ${n} = require('${libraryNames[i]}');\n`;
+      return `const ${n} = require(${libraryNames[i]});\n`;
    });
 }
 

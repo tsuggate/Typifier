@@ -1,5 +1,5 @@
 import {Identifier, Literal, Program, Property} from 'estree';
-import {generate} from './output';
+import {generate} from './generate';
 
 
 export function programToJs(program: Program): string {
