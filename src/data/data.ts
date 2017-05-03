@@ -17,7 +17,6 @@ export function getJsFilePath(): string {
 let jsCode = '';
 
 export function loadJsFile(): string {
-   console.log('loadJsFile: ', jsFilePath);
    try {
       const file = fs.readFileSync(jsFilePath);
       jsCode = file.toString();
@@ -30,6 +29,5 @@ export function loadJsFile(): string {
 }
 
 export function getTsOutput(): string {
-   console.log(jsCode);
    return transpile(jsCode, 'typescript');
 }
