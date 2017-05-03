@@ -113,16 +113,24 @@ function generateLineComment(comment: ESComment, type: 'trailing' | 'leading', n
 }
 
 function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', node: Node) {
-   // const res = commentAlreadyGenerated(comment) ? '' : `/*${comment.value}*/`;
+   let res = '';
 
    if (commentAlreadyGenerated(comment)) {
-      return '';
+      return res;
+   }
+
+   if (type === 'trailing') {
+      if (node.loc && comment.loc.start.line === node.loc.start.line) {
+         generatedComments.push(comment);
+         res =  `/*${comment.value}*/`;
+      }
    }
    else {
       generatedComments.push(comment);
-      return `/*${comment.value}*/`;
+      res = `/*${comment.value}*/`;
    }
-   // return res;
+
+   return res;
 }
 
 // function generateComments(comments: ESComment[]): string {
