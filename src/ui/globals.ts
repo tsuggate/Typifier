@@ -14,7 +14,7 @@ export function clickOpenJsFile(): void {
 
    if (filePath) {
       setJsFilePath(filePath);
-      rerenderHome();
+      reRenderHome();
    }
 }
 
@@ -30,6 +30,6 @@ function openJsFile(): string | null {
    return null;
 }
 
-export function rerenderHome(): void {
+export function reRenderHome(): void {
    renderHome();
 }
