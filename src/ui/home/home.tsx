@@ -19,14 +19,23 @@ interface HomeProps {
 }
 
 class Home extends React.Component<HomeProps, {}> {
-
    render() {
-      const view = this.props.viewMode === 'code' ? <Editors /> : <Log/>;
+      const s = getState();
+
+      const view = this.props.viewMode === 'code' ? this.buildEditors() : <Log logs={s.logs} />;
 
       return <div className="main-content">
          <Toolbar />
          {view}
       </div>;
+   }
+
+   buildEditors = () => {
+      const s = getState();
+
+      return <Editors javascriptFile={s.javascriptFile}
+                      javascriptCode={s.javascriptCode}
+                      typescriptCode={s.typescriptCode} />;
    }
 }
 

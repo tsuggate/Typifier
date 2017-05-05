@@ -6,11 +6,15 @@ import './editors.less';
 import 'brace';
 import 'brace/mode/javascript';
 import 'brace/theme/github';
-import {getTsOutput, loadJsFile} from '../../data/data';
 
 
+interface EditorsProps {
+   javascriptFile: string;
+   javascriptCode: string;
+   typescriptCode: string;
+}
 
-export class Editors extends React.Component<{}, {}> {
+export class Editors extends React.Component<EditorsProps, {}> {
    render() {
       return (
          <div className="Editors">
@@ -20,7 +24,7 @@ export class Editors extends React.Component<{}, {}> {
                name="editor1"
                width="50%"
                height="100%"
-               value={loadJsFile()}
+               value={this.props.javascriptCode}
                readOnly={true}
                onChange={() => {}}
                editorProps={{$blockScrolling: 1}}
@@ -31,7 +35,7 @@ export class Editors extends React.Component<{}, {}> {
                width="50%"
                height="100%"
                name="editor2"
-               value={getTsOutput()}
+               value={this.props.typescriptCode}
                readOnly={true}
                onChange={() => {}}
                editorProps={{$blockScrolling: 1}}

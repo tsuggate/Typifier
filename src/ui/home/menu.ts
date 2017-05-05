@@ -1,5 +1,5 @@
 import {remote} from 'electron';
-import {clickOpenJsFile, getWindow} from '../globals';
+import {clickOpenJsFile, getWindow} from '../global-actions';
 import {platform} from "os";
 
 
