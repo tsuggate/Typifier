@@ -9,13 +9,13 @@ export default class Toolbar extends React.Component<{}, {}> {
    render() {
       return <div className="Toolbar">
          <div className="left">
-            <Button colour="transparent" onClick={clickOpenJsFile}>Open File</Button>
-            <Button colour="transparent" onClick={() => {console.log('yay');}}>Save Conversion</Button>
+            <Button onClick={clickOpenJsFile}>Open File</Button>
+            <Button onClick={() => {console.log('yay');}}>Save Conversion</Button>
          </div>
          <div className="divider"/>
          <div className="right">
-            <Button colour="transparent" onClick={this.onClickCompareCode}>Compare Code</Button>
-            <Button colour="transparent" onClick={this.onClickShowLog}>Show Log</Button>
+            <Button onClick={this.onClickCompareCode}>Compare Code</Button>
+            <Button onClick={this.onClickShowLog}>Show Log</Button>
          </div>
       </div>;
    }

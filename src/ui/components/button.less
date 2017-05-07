@@ -1,51 +1,59 @@
-@Button-verticalPadding: 8px;
-@Button-horizontalPadding: 13px;
+//@Button-verticalPadding: 8px;
+//@Button-horizontalPadding: 13px;
 
 .Button {
-   color: #fff;
-   border-style: solid;
-   border-radius: 2px;
-   padding: @Button-verticalPadding @Button-horizontalPadding;
-   min-height: 44px;
+   //color: #fff;
+   //border-style: solid;
+   //border-radius: 2px;
+   //padding: @Button-verticalPadding @Button-horizontalPadding;
+   //min-height: 44px;
    font: inherit;
    //font-weight: 600;
    cursor: pointer;
-   vertical-align: middle;
-   outline: none;
-   box-shadow: 0 1px 4px rgba(0,0,0,.15);
-   -moz-transition: background-color 0.5s, color 0.5s;
-   -webkit-transition: background-color 0.5s, color 0.5s;
-   -o-transition: background-color 0.5s, color 0.5s;
-   transition: background-color 0.5s, color 0.5s;
+   //vertical-align: middle;
+   //outline: none;
+   //box-shadow: 0 1px 4px rgba(0,0,0,.15);
+   //-moz-transition: background-color 0.5s, color 0.5s;
+   //-webkit-transition: background-color 0.5s, color 0.5s;
+   //-o-transition: background-color 0.5s, color 0.5s;
+   //transition: background-color 0.5s, color 0.5s;
+
+   //background-color: #eeeeee;
+   background-color: transparent;
+   color: white;
+   border-style: none;
+   padding: 11px 13px;
+   //margin: 5px;
 }
 
 .Button:hover {
    transition: none;
+   background-color: rgba(2, 2, 2, 0.15);
 }
-
-.Button.Button-blue {
-   background-color: #0084DB;
-}
-
-.Button.Button-blue:hover {
-   background-color: #007acc;
-}
-
-.Button.Button-transparent {
-   color: #505050;
-   background: transparent;
-   box-shadow: none;
-   padding: @Button-verticalPadding 30px @Button-verticalPadding 0;
-}
-
-.Button.Button-transparent:hover {
-   color: #28ade9;
-}
-
-.Button[disabled].Button-blue:hover,
-.Button[disabled] {
-   color: #adb5bd;
-   background: #edf2f3;
-   text-shadow: 0 1px 0 hsla(0, 0%, 100%, .7);
-   box-shadow: inset 0 0 25px -5px rgba(0, 0, 0, .05);
-}
+//
+//.Button.Button-blue {
+//   background-color: #0084DB;
+//}
+//
+//.Button.Button-blue:hover {
+//   background-color: #007acc;
+//}
+//
+//.Button.Button-transparent {
+//   color: #505050;
+//   background: transparent;
+//   box-shadow: none;
+//   padding: @Button-verticalPadding 30px @Button-verticalPadding 0;
+//}
+//
+//.Button.Button-transparent:hover {
+//   color: #28ade9;
+//}
+//
+//.Button[disabled].Button-blue:hover,
+//.Button[disabled] {
+//   color: #adb5bd;
+//   background: #edf2f3;
+//   text-shadow: 0 1px 0 hsla(0, 0%, 100%, .7);
+//   box-shadow: inset 0 0 25px -5px rgba(0, 0, 0, .05);
+//}
