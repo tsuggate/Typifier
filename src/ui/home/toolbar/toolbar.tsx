@@ -21,7 +21,6 @@ export default class Toolbar extends React.Component<{}, {}> {
    }
 
    onClickShowLog = () => {
-      console.log('onClickShowLog');
       setViewMode('log');
    };
 

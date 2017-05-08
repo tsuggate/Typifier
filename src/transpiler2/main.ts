@@ -1,12 +1,23 @@
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
+import * as windowState from 'electron-window-state';
 
 
 let mainWindow: Electron.BrowserWindow | null = null;
 
 
 function createWindow(): void {
-   mainWindow = new BrowserWindow({width: 1200, height: 800});
+   const mainWindowState = windowState({
+      defaultWidth: 1200,
+      defaultHeight: 800
+   });
+
+   mainWindow = new BrowserWindow({
+      x: mainWindowState.x,
+      y: mainWindowState.y,
+      width: mainWindowState.width,
+      height: mainWindowState.height
+   });
 
    mainWindow.loadURL(`file://${path.join(process.cwd(), 'resources', 'index.html')}`);
 
@@ -17,6 +28,7 @@ function createWindow(): void {
    });
 
    mainWindow.setMenu(null);
+   mainWindowState.manage(mainWindow);
 }
 
 app.on('ready', createWindow);

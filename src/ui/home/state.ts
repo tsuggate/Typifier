@@ -1,5 +1,5 @@
 import {renderHome} from './home';
-import {generateTypescript, loadJavascriptFile} from '../global-actions';
+import {generateTypescript, getWindow, loadJavascriptFile} from '../global-actions';
 
 
 export type ViewMode = 'code' | 'log';
@@ -50,6 +50,7 @@ export function setJavascriptFile(file: string): void {
    }
 
    renderHome();
+   getWindow().setTitle('kuraTranspiler - ' + file);
 }
 
 export function setJavascriptCode(code: string): void {
