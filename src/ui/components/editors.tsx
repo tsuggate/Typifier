@@ -20,7 +20,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
       return (
          <div className="Editors">
             <div className="leftEditor">
-               <div className="leftTitle">{this.getJavascriptFileName()}</div>
+               <div className="leftTitle">{this.displayJavascriptFileName()}</div>
                <AceEditor
                   mode="javascript"
                   theme="github"
@@ -34,7 +34,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
                />
             </div>
             <div className="rightEditor">
-               <div className="rightTitle">{this.getTypeScriptFileName()}</div>
+               <div className="rightTitle">{this.displayTypeScriptFileName()}</div>
                <AceEditor
                   mode="javascript"
                   theme="github"
@@ -54,12 +54,26 @@ export class Editors extends React.Component<EditorsProps, {}> {
    getJavascriptFileName = () => {
       const nameParts = this.props.javascriptFile.split('\\');
 
-      return _.last(nameParts, 3).join('\\');
+      return _.last(nameParts, 2).join('\\');
    };
 
-   getTypeScriptFileName = () => {
+   displayJavascriptFileName = () => {
+      const name = this.getJavascriptFileName();
+
+      if (!name) {
+         return '';
+      }
+
+      return '...\\' + this.getJavascriptFileName();
+   };
+
+   displayTypeScriptFileName = () => {
       const name = this.getJavascriptFileName().split('.')[0];
 
-      return name + '.ts';
+      if (!name) {
+         return '';
+      }
+
+      return '...\\' + name + '.ts';
    }
 }

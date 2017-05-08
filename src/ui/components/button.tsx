@@ -4,13 +4,20 @@ import './button.less';
 
 interface ButtonProps {
    onClick: React.MouseEventHandler<HTMLButtonElement>;
+   on?: boolean;
    children?: any;
    disabled?: boolean;
 }
 
 export default function Button(props: ButtonProps) {
+   let classes = ['Button'];
+
+   if (props.on) {
+      classes.push('on');
+   }
+
    return (
-      <button className="Button" onClick={props.onClick} disabled={props.disabled} >
+      <button className={classes.join(' ')} onClick={props.onClick} disabled={props.disabled} >
          {props.children}
       </button>
    );

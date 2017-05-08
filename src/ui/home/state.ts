@@ -1,7 +1,5 @@
 import {renderHome} from './home';
-import * as path from 'path';
 import {generateTypescript, loadJavascriptFile} from '../global-actions';
-
 
 
 export type ViewMode = 'code' | 'log';
@@ -17,7 +15,7 @@ export interface State {
 
 let state: State = {
    viewMode: 'code',
-   javascriptFile: path.join(process.cwd(), 'test-files', 'simple.js'),
+   javascriptFile: '',
    javascriptCode: '',
    typescriptCode: '',
    logs: []

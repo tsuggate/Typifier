@@ -2,7 +2,7 @@ import * as React from 'React';
 import Button from '../../components/button';
 import './toolbar.less';
 import {clickOpenJsFile} from '../../global-actions';
-import {setViewMode} from '../state';
+import {getState, setViewMode} from '../state';
 
 
 export default class Toolbar extends React.Component<{}, {}> {
@@ -14,8 +14,8 @@ export default class Toolbar extends React.Component<{}, {}> {
          </div>
          <div className="divider"/>
          <div className="right">
-            <Button onClick={this.onClickCompareCode}>Compare Code</Button>
-            <Button onClick={this.onClickShowLog}>Show Log</Button>
+            <Button onClick={this.onClickCompareCode} on={getState().viewMode === 'code'} >Show Code</Button>
+            <Button onClick={this.onClickShowLog} on={getState().viewMode === 'log'} >Show Log</Button>
          </div>
       </div>;
    }

@@ -17,7 +17,6 @@ export function transpile(code: string, language: OutputLanguage = 'javascript')
       const out = generate(program);
       appendLog(`Completed code generation`);
 
-      // appendLog(``)
       const myOutput = jsBeautify(out, jsBeautifyOptions);
 
       setLanguage('javascript');
