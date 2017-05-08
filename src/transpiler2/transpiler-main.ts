@@ -26,6 +26,7 @@ export function transpile(code: string, language: OutputLanguage = 'javascript')
    catch (e) {
       console.log(e);
       appendLog(e.toString());
+      appendLog(e.stack);
       setLanguage('javascript');
       return null;
    }
