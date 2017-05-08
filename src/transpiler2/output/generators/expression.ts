@@ -14,7 +14,7 @@ import {
    UnaryExpression,
    UpdateExpression
 } from 'estree';
-import {generate} from '../generate';
+import {generate, getLanguage} from '../generate';
 import {operatorHasPrecedence} from './operators';
 
 
@@ -39,6 +39,10 @@ export function binaryExpression(e: BinaryExpression): string {
 }
 
 export function expressionStatement(e: ExpressionStatement): string {
+   if (getLanguage() === 'typescript' && e['directive'] && e['directive'].includes('use strict')) {
+      return '';
+   }
+
    return `${generate(e.expression)};`;
 }
 

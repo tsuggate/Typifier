@@ -76,8 +76,11 @@ function getExportNames(func: FunctionExpression): string[] {
       else if (arg.type === 'Identifier') {
          return [ generate(arg) ];
       }
+      else {
+         throw new Error('getExportNames failed');
+      }
    }
-   throw new Error('getExportNames failed');
+   return [];
 }
 
 function generateDeclaration(d: Declaration, exportNames: string[]): string {

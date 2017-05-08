@@ -76,19 +76,6 @@ export function findDifference(a: string, b: string) {
    };
 }
 
-// export function transpile(code: string, language: OutputLanguage = 'javascript'): string {
-//    console.log('transpile to', language);
-//    setLanguage(language);
-//
-//    const program = esprima.parse(code);
-//    const out = generate(program);
-//    const myOutput = jsBeautify(out, jsBeautifyOptions);
-//
-//    setLanguage('javascript');
-//
-//    return myOutput;
-// }
-
 export function saveOutput(code: string, language: OutputLanguage = 'javascript') {
    fs.ensureDirSync(path.resolve('.', 'out'));
    setLanguage(language);
