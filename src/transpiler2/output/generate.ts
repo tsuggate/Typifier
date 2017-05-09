@@ -27,26 +27,23 @@ import {
 } from './generators/declaration';
 import {generateImports, isDefine} from '../mods/imports';
 import {insertComments} from './generators/comments';
+import {GeneratorOptions, GenOptions} from './generator-options';
 
 
-export type OutputLanguage = 'javascript' | 'typescript';
+let _options: GenOptions = new GenOptions();
 
-let _language: OutputLanguage = 'javascript';
-
-
-// This is a lazy way of switching languages for now.
-export function setLanguage(language: OutputLanguage): void {
-   _language = language;
+export function setTranspilerOptions(options: GeneratorOptions): void {
+   _options.setOptions(options);
 }
 
-export function getLanguage(): OutputLanguage {
-   return _language;
+export function getTranspilerOptions(): GenOptions {
+   return _options;
 }
 
 export function generate(node: Node): string {
    let result;
 
-   if (_language === 'javascript') {
+   if (_options.getLanguage() === 'javascript') {
       result = getGenerateFunctionJs(node)(node);
    }
    else {

@@ -1,10 +1,8 @@
 import * as esprima from 'esprima';
-import {generate, OutputLanguage, setLanguage} from '../transpiler2/output/generate';
+import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';
-import * as path from 'path';
-import * as fs from 'fs-extra';
 
 
 export const jsBeautifyOptions = {
@@ -76,23 +74,21 @@ export function findDifference(a: string, b: string) {
    };
 }
 
-export function saveOutput(code: string, language: OutputLanguage = 'javascript') {
-   fs.ensureDirSync(path.resolve('.', 'out'));
-   setLanguage(language);
-
-   const outPath = path.resolve('.', 'out', 'out.js');
-   const program = esprima.parse(code);
-
-   const out = generate(program);
-
-   try {
-      const myOutput = jsBeautify(out, jsBeautifyOptions);
-      fs.writeFileSync(outPath, myOutput);
-   }
-   catch (e) {
-      console.log('failed to parse output');
-      console.log(e);
-      // console.log(jsBeautify(out));
-   }
-   setLanguage('javascript');
-}
+// export function saveOutput(code: string) {
+//    fs.ensureDirSync(path.resolve('.', 'out'));
+//
+//    const outPath = path.resolve('.', 'out', 'out.js');
+//    const program = esprima.parse(code);
+//
+//    const out = generate(program);
+//
+//    try {
+//       const myOutput = jsBeautify(out, jsBeautifyOptions);
+//       fs.writeFileSync(outPath, myOutput);
+//    }
+//    catch (e) {
+//       console.log('failed to parse output');
+//       console.log(e);
+//       // console.log(jsBeautify(out));
+//    }
+// }

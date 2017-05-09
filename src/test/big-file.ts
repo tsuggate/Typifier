@@ -1,6 +1,6 @@
 import * as path from 'path';
 import {readFile} from '../transpiler2/util/file-reader';
-import {diffOutput, matchOutput, saveOutput} from './shared';
+import {diffOutput} from './shared';
 
 
 describe('big file', () => {

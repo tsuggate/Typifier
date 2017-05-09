@@ -1,5 +1,14 @@
-import {logOutput, matchOutput, printTree, saveOutput} from "./shared";
-import {getTestFile} from "../transpiler2/util/file-reader";
+import {matchOutput, printTree} from './shared';
+import {getTestFile} from '../transpiler2/util/file-reader';
+import {setTranspilerOptions} from '../transpiler2/output/generate';
+
+
+describe('set generator options', () => {
+   setTranspilerOptions({
+      language: 'javascript',
+      includeComments: false
+   });
+});
 
 
 describe('variable declarations', () => {
@@ -28,16 +37,16 @@ describe('simple.js', () => {
    }
 });
 
-describe('simple.js to Typescript', () => {
-   const code = getTestFile('simple');
-
-   if (code) {
-      saveOutput(code, 'typescript');
-   }
-   else {
-      throw new Error('simple.js not found');
-   }
-});
+// describe('simple.js to Typescript', () => {
+//    const code = getTestFile('simple');
+//
+//    if (code) {
+//       saveOutput(code, 'typescript');
+//    }
+//    else {
+//       throw new Error('simple.js not found');
+//    }
+// });
 
 describe('conditionals', () => {
    matchOutput('if ((a === 5 && c === 6) || (d !== 3)) { b = 4; } else { }');

@@ -12,7 +12,7 @@ function main() {
 
    if (code) {
       try {
-         const tsCode = transpile(code, 'typescript');
+         const tsCode = transpile(code, {language: 'typescript'});
 
          fs.writeFileSync(outputFile, tsCode);
 

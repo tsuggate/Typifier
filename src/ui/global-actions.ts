@@ -51,7 +51,7 @@ export function loadJavascriptFile(): void {
 export function generateTypescript(): boolean {
    const jsCode = getState().javascriptCode;
 
-   const tsCode = transpile(jsCode, 'typescript');
+   const tsCode = transpile(jsCode, {language: 'typescript'});
 
    if (tsCode) {
       setTypescriptCode(tsCode);
