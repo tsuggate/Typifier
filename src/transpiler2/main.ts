@@ -19,7 +19,9 @@ function createWindow(): void {
       height: mainWindowState.height
    });
 
-   mainWindow.loadURL(`file://${path.join(process.cwd(), 'resources', 'index.html')}`);
+   const htmlPath = `file://${path.join(__dirname, '..', 'resources', 'index.html')}`;
+   console.log(htmlPath);
+   mainWindow.loadURL(htmlPath);
 
    mainWindow.webContents.openDevTools();
 

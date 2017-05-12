@@ -11,7 +11,7 @@ module.exports = {
       "test-spec": './src/test/test-main.ts'
    },
    output: {
-      path: path.join(__dirname, 'dist/'),
+      path: path.join(__dirname, 'distr/'),
       filename: '[name].js'
    },
    target: "electron",

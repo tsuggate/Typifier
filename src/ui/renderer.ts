@@ -9,5 +9,5 @@ renderHome();
 
 
 
-const simpleCode = path.join(process.cwd(), 'test-files', 'simple.js');
+const simpleCode = path.join(__dirname, '..', 'test-files', 'simple.js');
 setJavascriptFile(simpleCode);

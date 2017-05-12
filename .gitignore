@@ -85,3 +85,4 @@ jspm_packages
 /typings/
 /dist/
 /.idea/
+/distr/
