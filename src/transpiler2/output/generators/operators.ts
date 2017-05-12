@@ -33,6 +33,13 @@ function operatorPrecedence(op: BinaryOperator): number {
       case '+':
       case '-':
          return 13;
+      case '<':
+      case '<=':
+      case '>':
+      case '>=':
+      case 'in':
+      case 'instanceof':
+         return 11;
       default:
          throw new Error('precedence for operator' + op + ' not implemented!');
    }
