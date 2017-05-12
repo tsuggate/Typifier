@@ -16,6 +16,10 @@ export default function Button(props: ButtonProps) {
       classes.push('on');
    }
 
+   if (props.disabled) {
+      classes.push('disabled');
+   }
+
    return (
       <button className={classes.join(' ')} onClick={props.onClick} disabled={props.disabled} >
          {props.children}

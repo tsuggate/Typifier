@@ -7,11 +7,15 @@
    padding: 11px 13px;
 }
 
-.Button:hover {
+.Button:hover:not(.disabled) {
    transition: none;
    background-color: rgba(2, 2, 2, 0.15);
 }
 
 .Button.on {
    background-color: rgba(2, 2, 2, 0.15);
+}
+
+.Button.disabled {
+   color: #7a7a7a;
 }

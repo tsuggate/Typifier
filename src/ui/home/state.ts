@@ -10,6 +10,7 @@ export interface State {
    javascriptFile: string;
    javascriptCode: string;
    typescriptCode: string;
+   codeGenSucceeded: boolean;
    logs: string[];
 }
 
@@ -18,6 +19,7 @@ let state: State = {
    javascriptFile: '',
    javascriptCode: '',
    typescriptCode: '',
+   codeGenSucceeded: false,
    logs: []
 };
 
@@ -27,6 +29,16 @@ export function getState(): State {
 
 export function setViewMode(viewMode: ViewMode): void {
    state.viewMode = viewMode;
+   renderHome();
+}
+
+export function setCodeGenSuccess(succeeded: boolean): void {
+   state.codeGenSucceeded = succeeded;
+
+   if (succeeded) {
+      setViewMode('code');
+   }
+
    renderHome();
 }
 
@@ -43,11 +55,13 @@ export function setJavascriptFile(file: string): void {
    setViewMode('log');
 
    loadJavascriptFile();
+
    const success = generateTypescript();
 
-   if (success) {
-      setViewMode('code');
-   }
+   setCodeGenSuccess(success);
+   // if (success) {
+   //    setViewMode('code');
+   // }
 
    renderHome();
    getWindow().setTitle('kuraTranspiler - ' + file);

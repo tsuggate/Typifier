@@ -26,7 +26,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    const importNames = getImportNames(func, options);
    const exportNames = getExportNames(func, options);
    const imports = makeImports(libraryNames, importNames, exportNames);
-   
+
    const body = func.body.body.map(e => {
       if (isDeclaration(e)) {
          return generateDeclaration(e as Declaration, exportNames, options);
@@ -118,9 +118,9 @@ function makeDefinitionsForMissingExports(func: FunctionExpression, options: Gen
 
          return properties.map(p => `export const ${generate(p.key, options)} = ${generate(p.value, options)};`).join('\n');
       }
-      else {
-         throw new Error('makeDefinitionsForMissingExports failed');
-      }
+      // else {
+      //    throw new Error('makeDefinitionsForMissingExports failed');
+      // }
    }
    return '';
 }

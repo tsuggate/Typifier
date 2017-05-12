@@ -46,7 +46,28 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
 export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
    const options = new GenOptions({});
 
-   const myOutput = reformatCode(generate(program, options));
+   let generatedCode, myOutput;
+
+
+   try {
+      generatedCode = generate(program, options);
+   }
+   catch (e) {
+      appendLog('Generating JavaScript code failed:');
+      appendLog(e.stack);
+      console.log(e);
+   }
+
+   try {
+      myOutput = reformatCode(generatedCode);
+   }
+   catch (e) {
+      appendLog('Reformatting generated code failed:');
+      appendLog(e.stack);
+      console.log(generatedCode);
+      console.log(e);
+   }
+
    const esCodegenOutput = escodegen.generate(program);
 
    const res = myOutput === esCodegenOutput;

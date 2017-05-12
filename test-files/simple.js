@@ -13,7 +13,7 @@ define([
    function myFunc(a1, a2) { /* hello comment */
       var b = 2;
 
-      return a1 * a2 + b;
+      return a1 * a2 + b; // return some things.
    }
 
    var s = (this.previewMode() || this.readOnlyMode()) && !this.showingFormativeAssessment();

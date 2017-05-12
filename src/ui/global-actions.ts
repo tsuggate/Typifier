@@ -30,6 +30,10 @@ function openJsFile(): string | null {
    return null;
 }
 
+export function saveTypeScriptCode(): void {
+
+}
+
 export function loadJavascriptFile(): void {
    const jsFile = getState().javascriptFile;
 

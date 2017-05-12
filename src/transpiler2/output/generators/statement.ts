@@ -4,7 +4,7 @@ import {GenOptions} from '../generator-options';
 
 
 export function blockStatement(s: BlockStatement, options: GenOptions): string {
-   return '{' + s.body.map(s => generate(s, options)).join('\n') + '}';
+   return '{' + s.body.map(s => generate(s, options)).join('\n') + '\n}';
 }
 
 export function returnStatement(s: ReturnStatement, options: GenOptions): string {

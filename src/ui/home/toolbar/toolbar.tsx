@@ -10,7 +10,7 @@ export default class Toolbar extends React.Component<{}, {}> {
       return <div className="Toolbar">
          <div className="left">
             <Button onClick={clickOpenJsFile}>Open File</Button>
-            <Button onClick={() => {console.log('yay');}}>Save Conversion</Button>
+            <Button onClick={this.onClickSave} disabled={!getState().codeGenSucceeded}>Save Conversion</Button>
          </div>
          <div className="divider"/>
          <div className="right">
@@ -26,6 +26,11 @@ export default class Toolbar extends React.Component<{}, {}> {
 
    onClickCompareCode = () => {
       setViewMode('code');
-   }
+   };
 
+   onClickSave = () => {
+      console.log('save');
+
+
+   };
 }
