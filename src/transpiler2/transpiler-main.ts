@@ -18,7 +18,7 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
 
 
       appendLog(`Checking code gen matches escodegen...`);
-      if (!jsGeneratorProducesCorrectOutput(program, options)) {
+      if (!jsGeneratorProducesCorrectOutput(program)) {
          appendLog(`JS code generation didn't match`);
 
          return null;
@@ -43,7 +43,9 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    }
 }
 
-export function jsGeneratorProducesCorrectOutput(program: Program, options: GenOptions): boolean {
+export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
+   const options = new GenOptions({});
+
    const myOutput = reformatCode(generate(program, options));
    const esCodegenOutput = escodegen.generate(program);
 
