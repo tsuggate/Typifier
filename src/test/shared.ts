@@ -3,6 +3,7 @@ import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';
+import {GenOptions} from '../transpiler2/output/generator-options';
 
 
 export const jsBeautifyOptions = {
@@ -10,11 +11,14 @@ export const jsBeautifyOptions = {
    indent_char: ' '
 };
 
+let _options: GenOptions = new GenOptions();
+
+
 export function matchOutput(code: string) {
    it(code, () => {
       const program = esprima.parse(code);
 
-      const myOutput = reformatCode(generate(program));
+      const myOutput = reformatCode(generate(program, _options));
       const esCodegenOutput = escodegen.generate(program);
 
       expect(myOutput).toEqual(esCodegenOutput);
@@ -24,7 +28,7 @@ export function matchOutput(code: string) {
 export function logOutput(code: string): void {
    const program = esprima.parse(code);
 
-   console.log(jsBeautify(generate(program), jsBeautifyOptions));
+   console.log(jsBeautify(generate(program, _options), jsBeautifyOptions));
 }
 
 export function printTree(code: string): void {
@@ -41,7 +45,7 @@ export function reformatCode(code: string): string {
 
 export function diffOutput(code: string) {
    const program = esprima.parse(code);
-   const out = generate(program);
+   const out = generate(program, _options);
 
    try {
       const myOutput = reformatCode(out);

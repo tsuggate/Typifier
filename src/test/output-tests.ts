@@ -1,14 +1,5 @@
 import {matchOutput, printTree} from './shared';
 import {getTestFile} from '../transpiler2/util/file-reader';
-import {setTranspilerOptions} from '../transpiler2/output/generate';
-
-
-describe('set generator options', () => {
-   setTranspilerOptions({
-      language: 'javascript',
-      includeComments: false
-   });
-});
 
 
 describe('variable declarations', () => {

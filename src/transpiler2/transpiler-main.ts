@@ -1,15 +1,15 @@
-import {generate, getTranspilerOptions, setTranspilerOptions} from './output/generate';
+import {generate} from './output/generate';
 import * as jsBeautify from 'js-beautify';
 import {jsBeautifyOptions, reformatCode} from '../test/shared';
 import * as esprima from 'esprima';
 import {appendLog, getState} from '../ui/home/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
-import {GeneratorOptions} from './output/generator-options';
+import {GeneratorOptions, GenOptions} from './output/generator-options';
 
 
-export function transpile(code: string, options?: GeneratorOptions): string | null {
-   setTranspilerOptions(options? options : {});
+export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
+   const options = new GenOptions(generatorOptions);
 
    try {
       appendLog(`Parsing ${getState().javascriptFile}`);
@@ -18,15 +18,15 @@ export function transpile(code: string, options?: GeneratorOptions): string | nu
 
 
       appendLog(`Checking code gen matches escodegen...`);
-      if (!jsGeneratorProducesCorrectOutput(program)) {
+      if (!jsGeneratorProducesCorrectOutput(program, options)) {
          appendLog(`JS code generation didn't match`);
 
          return null;
       }
       appendLog('done');
 
-      appendLog(`Generating ${getTranspilerOptions().getLanguage()}...`);
-      const out = generate(program);
+      appendLog(`Generating ${options.getLanguage()}...`);
+      const out = generate(program, options);
       appendLog(`Completed code generation`);
 
       const myOutput = jsBeautify(out, jsBeautifyOptions);
@@ -43,8 +43,8 @@ export function transpile(code: string, options?: GeneratorOptions): string | nu
    }
 }
 
-export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
-   const myOutput = reformatCode(generate(program));
+export function jsGeneratorProducesCorrectOutput(program: Program, options: GenOptions): boolean {
+   const myOutput = reformatCode(generate(program, options));
    const esCodegenOutput = escodegen.generate(program);
 
    const res = myOutput === esCodegenOutput;

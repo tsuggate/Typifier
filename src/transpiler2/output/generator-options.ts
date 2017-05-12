@@ -11,6 +11,10 @@ export interface GeneratorOptions {
 
 export class GenOptions {
 
+   constructor(options?: GeneratorOptions) {
+      this.setOptions(options || {});
+   }
+
    private language: OutputLanguage;
 
    private includeComments: boolean;

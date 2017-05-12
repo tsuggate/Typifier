@@ -1,10 +1,11 @@
 import {Identifier, Literal, Program, Property} from 'estree';
-import {generate} from './generate';
+import {generate} from '../generate';
+import {GenOptions} from '../generator-options';
 
 
-export function programToJs(program: Program): string {
+export function programToJs(program: Program, options: GenOptions): string {
    if (program.sourceType === 'script') {
-      return program.body.map(node => generate(node)).join('');
+      return program.body.map(node => generate(node, options)).join('');
    }
    else {
       return 'Not Implemented! (programToJs)';
@@ -19,7 +20,7 @@ export function literalToJs(l: Literal): string {
    return l.raw;
 }
 
-export function propertyToJs(p: Property): string {
+export function propertyToJs(p: Property, options: GenOptions): string {
    if (p.method) {
       throw 'propertyToJs.method not implemented!';
    }
@@ -30,7 +31,7 @@ export function propertyToJs(p: Property): string {
       throw 'propertyToJs.computed not implemented!';
    }
    else {
-      return `${generate(p.key)}: ${generate(p.value)}`;
+      return `${generate(p.key, options)}: ${generate(p.value, options)}`;
    }
 }
 

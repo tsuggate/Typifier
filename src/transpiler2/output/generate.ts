@@ -1,5 +1,5 @@
 import {Node, Program} from 'estree';
-import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators';
+import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators/misc';
 import {
    arrayExpression,
    assignmentExpression,
@@ -27,40 +27,40 @@ import {
 } from './generators/declaration';
 import {generateImports, isDefine} from '../mods/imports';
 import {insertComments} from './generators/comments';
-import {GeneratorOptions, GenOptions} from './generator-options';
+import {GenOptions} from './generator-options';
 
 
-let _options: GenOptions = new GenOptions();
+// let _options: GenOptions = new GenOptions();
+//
+// export function setTranspilerOptions(options: GeneratorOptions): void {
+//    _options.setOptions(options);
+// }
+//
+// export function getTranspilerOptions(): GenOptions {
+//    return _options;
+// }
 
-export function setTranspilerOptions(options: GeneratorOptions): void {
-   _options.setOptions(options);
-}
-
-export function getTranspilerOptions(): GenOptions {
-   return _options;
-}
-
-export function generate(node: Node): string {
+export function generate(node: Node, options: GenOptions): string {
    let result;
 
-   if (_options.getLanguage() === 'javascript') {
-      result = getGenerateFunctionJs(node)(node);
+   if (options.getLanguage() === 'javascript') {
+      result = getGenerateFunctionJs(node)(node, options);
    }
    else {
       const func = getGenerateFunctionTs(node);
 
       if (func) {
-         result = func(node);
+         result = func(node, options);
       }
       else {
-         result = getGenerateFunctionJs(node)(node);
+         result = getGenerateFunctionJs(node)(node, options);
       }
    }
 
    return insertComments(result, node);
 }
 
-function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
+function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOptions) => string) {
    switch (node.type) {
       case 'ExpressionStatement':
          if (isDefine(node)) {
@@ -80,7 +80,7 @@ function getGenerateFunctionTs(node: Node): null | ((node: Node) => string) {
    }
 }
 
-function getGenerateFunctionJs(node: Node): (node: Node) => string {
+function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) => string {
    switch (node.type) {
       case 'Program':
          return programToJs;

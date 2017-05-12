@@ -14,133 +14,134 @@ import {
    UnaryExpression,
    UpdateExpression
 } from 'estree';
-import {generate, getTranspilerOptions} from '../generate';
+import {generate} from '../generate';
 import {operatorHasPrecedence} from './operators';
+import {GenOptions} from '../generator-options';
 
 
-export function binaryExpression(e: BinaryExpression): string {
+export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
    let left, right;
 
    if (e.left.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.left.operator)) {
-      left = `(${generate(e.left)})`;
+      left = `(${generate(e.left, options)})`;
    }
    else {
-      left = `${generate(e.left)}`;
+      left = `${generate(e.left, options)}`;
    }
 
    if (e.right.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.right.operator)) {
-      right = `(${generate(e.right)})`;
+      right = `(${generate(e.right, options)})`;
    }
    else {
-      right = `${generate(e.right)}`;
+      right = `${generate(e.right, options)}`;
    }
 
    return `${left} ${e.operator} ${right}`;
 }
 
-export function expressionStatement(e: ExpressionStatement): string {
-   if (getTranspilerOptions().getLanguage() === 'typescript' && e['directive'] && e['directive'].includes('use strict')) {
+export function expressionStatement(e: ExpressionStatement, options: GenOptions): string {
+   if (options.getLanguage() === 'typescript' && e['directive'] && e['directive'].includes('use strict')) {
       return '';
    }
 
-   return `${generate(e.expression)};`;
+   return `${generate(e.expression, options)};`;
 }
 
-export function callExpression(e: CallExpression): string {
-   const args = e.arguments.map(generate).join(', ');
+export function callExpression(e: CallExpression, options: GenOptions): string {
+   const args = e.arguments.map(a => generate(a, options)).join(', ');
 
-   return `${generate(e.callee)}(${args})`;
+   return `${generate(e.callee, options)}(${args})`;
 }
 
-export function newExpression(e: NewExpression): string {
-   const args = e.arguments.map(generate).join(', ');
+export function newExpression(e: NewExpression, options: GenOptions): string {
+   const args = e.arguments.map(a => generate(a, options)).join(', ');
 
-   return `new ${generate(e.callee)}(${args})`;
+   return `new ${generate(e.callee, options)}(${args})`;
 }
 
-export function arrayExpression(a: ArrayExpression): string {
-   return '[' + a.elements.map(generate).join(', ') + ']';
+export function arrayExpression(a: ArrayExpression, options: GenOptions): string {
+   return '[' + a.elements.map(e => generate(e, options)).join(', ') + ']';
 }
 
-export function functionExpression(f: FunctionExpression): string {
+export function functionExpression(f: FunctionExpression, options: GenOptions): string {
    if (f.id !== null) {
       throw 'functionExpression.id !== null';
    }
 
-   const params = f.params.map(generate).join(', ');
+   const params = f.params.map(p => generate(p, options)).join(', ');
 
-   return `function(${params}) ${generate(f.body)}`;
+   return `function(${params}) ${generate(f.body, options)}`;
 }
 
-export function functionExpressionTs(f: FunctionExpression): string {
+export function functionExpressionTs(f: FunctionExpression, options: GenOptions): string {
    if (f.id !== null) {
       throw 'functionExpression.id !== null';
    }
 
-   const params = f.params.map(p => generate(p) + ': any').join(', ');
+   const params = f.params.map(p => generate(p, options) + ': any').join(', ');
 
-   return `function(${params}) ${generate(f.body)}`;
+   return `function(${params}) ${generate(f.body, options)}`;
 }
 
-export function memberExpression(e: MemberExpression): string {
+export function memberExpression(e: MemberExpression, options: GenOptions): string {
    if (e.computed) {
-      return `${generate(e.object)}[${generate(e.property)}]`;
+      return `${generate(e.object, options)}[${generate(e.property, options)}]`;
    }
-   return `${generate(e.object)}.${generate(e.property)}`
+   return `${generate(e.object, options)}.${generate(e.property, options)}`
 }
 
-export function objectExpression(e: ObjectExpression): string {
-   return '{' + e.properties.map(generate).join(', ') + '}';
+export function objectExpression(e: ObjectExpression, options: GenOptions): string {
+   return '{' + e.properties.map(p => generate(p, options)).join(', ') + '}';
 }
 
 export function thisExpression(e: ThisExpression): string {
    return 'this';
 }
 
-export function assignmentExpression(e: AssignmentExpression): string {
-   return `${generate(e.left)} ${e.operator} ${generate(e.right)}`;
+export function assignmentExpression(e: AssignmentExpression, options: GenOptions): string {
+   return `${generate(e.left, options)} ${e.operator} ${generate(e.right, options)}`;
 }
 
-export function logicalExpression(e: LogicalExpression): string {
+export function logicalExpression(e: LogicalExpression, options: GenOptions): string {
    let left, right;
 
    if (e.operator === '&&') {
       left = e.left.type === 'LogicalExpression' ?
-       `(${generate(e.left)})` : generate(e.left);
+       `(${generate(e.left, options)})` : generate(e.left, options);
 
       right = e.right.type === 'LogicalExpression' ?
-       `(${generate(e.right)})` : generate(e.right);
+       `(${generate(e.right, options)})` : generate(e.right, options);
    }
    else {
-      left = generate(e.left);
+      left = generate(e.left, options);
 
-      right = generate(e.right);
+      right = generate(e.right, options);
    }
 
    return `${left} ${e.operator} ${right}`;
 }
 
-export function conditionalExpression(e: ConditionalExpression): string {
-   return `${generate(e.test)} ? ${generate(e.consequent)} : ${generate(e.alternate)}`;
+export function conditionalExpression(e: ConditionalExpression, options: GenOptions): string {
+   return `${generate(e.test, options)} ? ${generate(e.consequent, options)} : ${generate(e.alternate, options)}`;
 }
 
-export function unaryExpression(e: UnaryExpression): string {
+export function unaryExpression(e: UnaryExpression, options: GenOptions): string {
    if (e.prefix) {
       if (e.operator === '!' && e.argument.type === 'LogicalExpression') {
-         return `${e.operator}(${generate(e.argument)})`;
+         return `${e.operator}(${generate(e.argument, options)})`;
       }
 
-      return `${e.operator} ${generate(e.argument)}`
+      return `${e.operator} ${generate(e.argument, options)}`
    }
-   return `${generate(e.argument)}${e.operator}`;
+   return `${generate(e.argument, options)}${e.operator}`;
 }
 
-export function updateExpression(e: UpdateExpression): string {
+export function updateExpression(e: UpdateExpression, options: GenOptions): string {
    if (e.prefix) {
-      return `${e.operator}${generate(e.argument)}`;
+      return `${e.operator}${generate(e.argument, options)}`;
    }
    else {
-      return `${generate(e.argument)}${e.operator}`;
+      return `${generate(e.argument, options)}${e.operator}`;
    }
 }
 
