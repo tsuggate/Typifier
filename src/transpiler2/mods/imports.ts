@@ -27,9 +27,9 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    const exportNames = getExportNames(func, options);
    const imports = makeImports(libraryNames, importNames, exportNames);
 
-   const literalExports = getLiteralExports(func, options);
+   // const literalExports = getLiteralExports(func, options);
 
-   checkDeclarationsExist(func, exportNames, options, importNames);
+   // checkDeclarationsExist(func, exportNames, options, importNames);
 
    const body = func.body.body.map(e => {
       if (isDeclaration(e)) {
@@ -43,7 +43,9 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
       }
    }).join('\n');
 
-   return `${imports.join('')} ${body} ${literalExports}`;
+   const definitions = makeDefinitionsForMissingExports(func, options, importNames);
+
+   return `${imports.join('')} ${body} ${definitions}`;
 }
 
 function getLibraryNames(e: CallExpression, options: GenOptions): string[] {
@@ -77,7 +79,7 @@ function getExportNames(func: FunctionExpression, options: GenOptions): string[]
       const arg = returnStatement.argument;
 
       if (arg.type === 'ObjectExpression') {
-         return arg.properties.filter(p => p.value.type !== 'Literal').map(p => generate(p.key, options));
+         return arg.properties.map(p => generate(p.key, options));
       }
       else if (arg.type === 'Identifier') {
          return [ generate(arg, options) ];
@@ -121,6 +123,35 @@ function generateDeclaration(d: Declaration, exportNames: string[], options: Gen
       return `export ${generate(d, options)}`;
    }
    return generate(d, options);
+}
+
+function makeDefinitionsForMissingExports(func: FunctionExpression, options: GenOptions, importNames: string[]) {
+   const decs: string[] = _.flatten(
+      func.body.body
+         .filter(e => e.type.includes('Declaration'))
+         .map(e => getNamesFromDeclaration(e as Declaration, options))
+   ).concat(importNames);
+
+   const returnStatement = func.body.body.find(e => e.type === 'ReturnStatement') as ReturnStatement | undefined;
+
+   if (returnStatement && returnStatement.argument) {
+      const arg = returnStatement.argument;
+
+      if (arg.type === 'ObjectExpression') {
+
+         const properties = arg.properties.filter(p => {
+            const name = generate(p.key, options);
+
+            return !_.contains(decs, name);
+         });
+
+         return properties.map(p => `export const ${generate(p.key, options)} = ${generate(p.value, options)};`).join('\n');
+      }
+      else {
+         throw new Error('makeDefinitionsForMissingExports failed');
+      }
+   }
+   return '';
 }
 
 function checkDeclarationsExist(func: FunctionExpression, exportNames: string[], options: GenOptions, importNames: string[]): void {
