@@ -59,9 +59,6 @@ export function setJavascriptFile(file: string): void {
    const success = generateTypescript();
 
    setCodeGenSuccess(success);
-   // if (success) {
-   //    setViewMode('code');
-   // }
 
    renderHome();
    getWindow().setTitle('kuraTranspiler - ' + file);

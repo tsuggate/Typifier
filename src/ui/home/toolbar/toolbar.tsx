@@ -1,7 +1,7 @@
 import * as React from 'React';
 import Button from '../../components/button';
 import './toolbar.less';
-import {clickOpenJsFile} from '../../global-actions';
+import {clickOpenJsFile, saveTypeScriptCode} from '../../global-actions';
 import {getState, setViewMode} from '../state';
 
 
@@ -31,6 +31,6 @@ export default class Toolbar extends React.Component<{}, {}> {
    onClickSave = () => {
       console.log('save');
 
-
+      saveTypeScriptCode();
    };
 }

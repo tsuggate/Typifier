@@ -31,7 +31,13 @@ function openJsFile(): string | null {
 }
 
 export function saveTypeScriptCode(): void {
+   const jsFile = getState().javascriptFile;
+   const tsFile = jsFile.split('.')[0] + '.ts';
+   const code = getState().typescriptCode;
 
+   //TODO: Try get git to treat the new file as a rename.
+   fs.writeFileSync(tsFile, code);
+   fs.unlinkSync(jsFile);
 }
 
 export function loadJavascriptFile(): void {
