@@ -28,21 +28,27 @@ export function renderMainWindowMenu(): void {
       type: 'separator'
    };
 
-   const fileMenuItems: MenuItemOptions[] = [
+   let fileMenuItems: MenuItemOptions[] = [
       {
          label: 'Open Javascript File...',
          click: clickOpenJsFile,
          accelerator: 'CmdOrCtrl+O',
          enabled: true
       },
-      separator,
-      {
+      separator
+   ];
+
+   if (process.platform === 'darwin') {
+      fileMenuItems.push({role: 'quit'});
+   }
+   else {
+      fileMenuItems.push({
          label: 'Exit',
          click: () => {
             getWindow().close();
          }
-      }
-   ];
+      });
+   }
 
    const fileMenu = {
       label: 'File',

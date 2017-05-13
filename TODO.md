@@ -1,17 +1,17 @@
 
 #### TODO
-- Finish implementing saving
 - Open folder support?
-
+- better imports for recognised libraries
+- improve comment generation
 - Improve icon and background page.
 - better theme
 
 - put up on teamcity? Or just my drop folder for now?
-
-- Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.
 - Improve logs
 
 ##### Wip
+- Finish implementing saving
+- Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.
 
 
 ##### Done

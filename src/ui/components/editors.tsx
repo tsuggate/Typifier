@@ -6,6 +6,7 @@ import './editors.less';
 
 import 'brace';
 import 'brace/mode/javascript';
+import 'brace/mode/typescript';
 import 'brace/theme/github';
 
 
@@ -22,7 +23,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
             <div className="leftEditor">
                <div className="leftTitle">{getJavaScriptFileName()}</div>
                <AceEditor
-                  mode="javascript"
+                  mode="typescript"
                   theme="github"
                   name="editor1"
                   width="100%"
@@ -36,7 +37,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
             <div className="rightEditor">
                <div className="rightTitle">{getTypeScriptFileName()}</div>
                <AceEditor
-                  mode="javascript"
+                  mode="typescript"
                   theme="github"
                   width="100%"
                   height="100%"

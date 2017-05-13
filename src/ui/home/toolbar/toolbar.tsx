@@ -9,6 +9,8 @@ import {getTypeScriptFilePath} from '../util/util';
 
 export default class Toolbar extends React.Component<{}, {}> {
    render() {
+      // TODO: Works on mac, test windows: ⓘ
+
       return <div className="Toolbar">
 
          <div className="left">
