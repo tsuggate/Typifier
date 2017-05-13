@@ -9,7 +9,7 @@
     "watch": "webpack --watch --colors --progress",
     "make": "webpack --colors --progress",
     "start": "node distr/cmd.js --file ./test-files/simple.js --out ./out/out.ts",
-    "gui": "electron distr/main.js",
+    "gui": "electron distr/main.js --dev",
     "debug": "nodemon --watch distr distr/main.js",
     "pack": "build --dir",
     "dist": "build"

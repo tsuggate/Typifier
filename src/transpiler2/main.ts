@@ -1,6 +1,8 @@
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
 import * as windowState from 'electron-window-state';
+import {devMode} from './util/args';
+
 
 
 let mainWindow: Electron.BrowserWindow | null = null;
@@ -23,7 +25,9 @@ function createWindow(): void {
    console.log(htmlPath);
    mainWindow.loadURL(htmlPath);
 
-   mainWindow.webContents.openDevTools();
+   if (devMode) {
+      mainWindow.webContents.openDevTools();
+   }
 
    mainWindow.on('closed', () => {
       mainWindow = null
