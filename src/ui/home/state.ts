@@ -42,8 +42,13 @@ export function setCodeGenSuccess(succeeded: boolean): void {
    renderHome();
 }
 
-export function appendLog(log: string): void {
+export function addLog(log: string): void {
    state.logs.push(log);
+   renderHome();
+}
+
+export function appendLog(log: string): void {
+   state.logs[state.logs.length - 1] += log;
    renderHome();
 }
 

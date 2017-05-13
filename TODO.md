@@ -7,11 +7,10 @@
 - better theme
 
 - put up on teamcity? Or just my drop folder for now?
-- Improve logs
+
 
 ##### Wip
-- Finish implementing saving
-- Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.
+- Improve logs
 
 
 ##### Done
@@ -21,3 +20,7 @@
 - info button beside save
 - show home page after applying changes
 - info button shows modal describing what apply does
+
+##### Abandoned
+- Finish implementing saving
+- Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.

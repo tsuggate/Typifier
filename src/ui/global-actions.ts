@@ -1,6 +1,6 @@
 import {remote} from 'electron';
 import {
-   appendLog, closeJavaScriptFile, getState, setJavascriptCode, setJavascriptFile,
+   addLog, closeJavaScriptFile, getState, setJavascriptCode, setJavascriptFile,
    setTypescriptCode
 } from './home/state';
 import * as fs from 'fs';
@@ -43,7 +43,7 @@ export function saveTypeScriptCode(): void {
    fs.writeFileSync(tsFile, code);
 
    fs.unlinkSync(jsFile);
-   appendLog(`Wrote ${tsFile}`);
+   addLog(`Wrote ${tsFile}`);
 
    closeJavaScriptFile();
 }
@@ -56,13 +56,13 @@ export function loadJavascriptFile(): void {
       const jsCode = file.toString();
 
       if (jsCode) {
-         appendLog('Successfully read ' + jsFile);
+         // addLog('Successfully read ' + jsFile);
          setJavascriptCode(jsCode);
       }
    }
    catch (e) {
       console.log(e);
-      appendLog(e);
+      addLog(e);
    }
 }
 

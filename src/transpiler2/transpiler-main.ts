@@ -2,7 +2,7 @@ import {generate} from './output/generate';
 import * as jsBeautify from 'js-beautify';
 import {jsBeautifyOptions, reformatCode} from '../test/shared';
 import * as esprima from 'esprima';
-import {appendLog, getState} from '../ui/home/state';
+import {addLog, appendLog, getState} from '../ui/home/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {GeneratorOptions, GenOptions} from './output/generator-options';
@@ -12,22 +12,22 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    const options = new GenOptions(generatorOptions);
 
    try {
-      appendLog(`Parsing ${getState().javascriptFile}`);
+      addLog(`Parsing ${getState().javascriptFile}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true });
-      appendLog(`Completed parsing ${getState().javascriptFile}`);
+      appendLog(`Done`);
 
 
-      appendLog(`Checking code gen matches escodegen...`);
+      addLog(`Checking code gen matches escodegen... `);
       if (!jsGeneratorProducesCorrectOutput(program)) {
-         appendLog(`JS code generation didn't match`);
+         addLog(`JS code generation didn't match`);
 
          return null;
       }
-      appendLog('done');
+      appendLog('OK');
 
-      appendLog(`Generating ${options.getLanguage()}...`);
+      addLog(`Generating ${options.getLanguage()}... `);
       const out = generate(program, options);
-      appendLog(`Completed code generation`);
+      appendLog(`Success`);
 
       const myOutput = jsBeautify(out, jsBeautifyOptions);
 
@@ -36,8 +36,8 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    }
    catch (e) {
       console.log(e);
-      appendLog(e.toString());
-      appendLog(e.stack);
+      // addLog(e.toString());
+      addLog(e.stack);
 
       return null;
    }
@@ -53,8 +53,8 @@ export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
       generatedCode = generate(program, options);
    }
    catch (e) {
-      appendLog('Generating JavaScript code failed:');
-      appendLog(e.stack);
+      addLog('Generating JavaScript code failed:');
+      addLog(e.stack);
       console.log(e);
    }
 
@@ -62,8 +62,8 @@ export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
       myOutput = reformatCode(generatedCode);
    }
    catch (e) {
-      appendLog('Reformatting generated code failed:');
-      appendLog(e.stack);
+      addLog('Reformatting generated code failed:');
+      addLog(e.stack);
       console.log(generatedCode);
       console.log(e);
    }
