@@ -9,7 +9,7 @@
 - put up on teamcity? Or just my drop folder for now?
 
 - Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.
-
+- Improve logs
 
 ##### Wip
 
