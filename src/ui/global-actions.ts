@@ -40,6 +40,7 @@ export function saveTypeScriptCode(): void {
 
    //TODO: Try get git to treat the new file as a rename.
    fs.writeFileSync(tsFile, code);
+   appendLog(`Wrote ${tsFile}`);
    fs.unlinkSync(jsFile);
 
    closeJavaScriptFile();

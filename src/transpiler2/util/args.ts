@@ -15,8 +15,6 @@ export const inputFile = program['file'];
 export const outputFile = program['out'];
 export const devMode = !!program['dev'];
 
-console.log('devMode: ', devMode);
-
 
 // Commander expects `args.length` to be at least 2 (node.exe followed
 // by the JavaScript file), but electron can launch apps without any

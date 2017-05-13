@@ -22,7 +22,6 @@ function createWindow(): void {
    });
 
    const htmlPath = `file://${path.join(__dirname, '..', 'resources', 'index.html')}`;
-   console.log(htmlPath);
    mainWindow.loadURL(htmlPath);
 
    if (devMode) {

@@ -14,11 +14,16 @@ export default class Toolbar extends React.Component<{}, {}> {
          </div>
 
          <div className="middle">
+            <p className="label">View: </p>
+
+            <Button onClick={this.onClickShowLog}
+                    on={getState().viewMode === 'log'}
+                    moreClasses="logButton" >Log</Button>
+
             <Button onClick={this.onClickCompareCode}
                     on={getState().viewMode === 'code'}
-                    disabled={this.shouldDisableViewCode()} >View Code</Button>
-
-            <Button onClick={this.onClickShowLog} on={getState().viewMode === 'log'} >View Log</Button>
+                    disabled={this.shouldDisableViewCode()}
+                    moreClasses="" >Code</Button>
          </div>
 
          <div className="right">
