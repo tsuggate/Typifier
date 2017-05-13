@@ -15,7 +15,7 @@ export interface State {
 }
 
 let state: State = {
-   viewMode: 'code',
+   viewMode: 'log',
    javascriptFile: '',
    javascriptCode: '',
    typescriptCode: '',
@@ -62,6 +62,13 @@ export function setJavascriptFile(file: string): void {
 
    renderHome();
    getWindow().setTitle('kuraTranspiler - ' + file);
+}
+
+export function closeJavaScriptFile(): void {
+   state.javascriptFile = '';
+   state.javascriptCode = '';
+   state.typescriptCode = '';
+   setViewMode('log');
 }
 
 export function setJavascriptCode(code: string): void {

@@ -14,17 +14,31 @@ export default class Toolbar extends React.Component<{}, {}> {
          </div>
 
          <div className="middle">
-            <Button onClick={this.onClickCompareCode} on={getState().viewMode === 'code'} >View Code</Button>
+            <Button onClick={this.onClickCompareCode}
+                    on={getState().viewMode === 'code'}
+                    disabled={this.shouldDisableViewCode()} >View Code</Button>
+
             <Button onClick={this.onClickShowLog} on={getState().viewMode === 'log'} >View Log</Button>
          </div>
 
          <div className="right">
-            <Button onClick={this.onClickSave} disabled={!getState().codeGenSucceeded} moreClasses="applyButton">Apply Changes</Button>
+            <Button onClick={this.onClickSave}
+                    disabled={this.shouldDisableApplyChanges()}
+                    moreClasses="applyButton">Apply Changes</Button>
+
             <Button onClick={() => {}} moreClasses="infoButton">🛈</Button>
          </div>
 
       </div>;
    }
+
+   shouldDisableViewCode = () => {
+      return !getState().javascriptFile;
+   };
+
+   shouldDisableApplyChanges = () => {
+      return !getState().codeGenSucceeded || !getState().javascriptFile;
+   };
 
    onClickShowLog = () => {
       setViewMode('log');

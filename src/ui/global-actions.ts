@@ -1,5 +1,8 @@
 import {remote} from 'electron';
-import {appendLog, getState, setJavascriptCode, setJavascriptFile, setTypescriptCode} from './home/state';
+import {
+   appendLog, closeJavaScriptFile, getState, setJavascriptCode, setJavascriptFile,
+   setTypescriptCode
+} from './home/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
 
@@ -38,6 +41,8 @@ export function saveTypeScriptCode(): void {
    //TODO: Try get git to treat the new file as a rename.
    fs.writeFileSync(tsFile, code);
    fs.unlinkSync(jsFile);
+
+   closeJavaScriptFile();
 }
 
 export function loadJavascriptFile(): void {
