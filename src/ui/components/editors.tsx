@@ -1,6 +1,6 @@
 import * as React from 'React';
 import AceEditor from 'react-ace';
-import * as _ from 'underscore';
+import {getJavaScriptFileName, getTypeScriptFileName} from '../home/util/util';
 
 import './editors.less';
 
@@ -20,7 +20,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
       return (
          <div className="Editors">
             <div className="leftEditor">
-               <div className="leftTitle">{this.displayJavascriptFileName()}</div>
+               <div className="leftTitle">{getJavaScriptFileName()}</div>
                <AceEditor
                   mode="javascript"
                   theme="github"
@@ -34,7 +34,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
                />
             </div>
             <div className="rightEditor">
-               <div className="rightTitle">{this.displayTypeScriptFileName()}</div>
+               <div className="rightTitle">{getTypeScriptFileName()}</div>
                <AceEditor
                   mode="javascript"
                   theme="github"
@@ -49,31 +49,5 @@ export class Editors extends React.Component<EditorsProps, {}> {
             </div>
          </div>
       );
-   }
-
-   getJavascriptFileName = () => {
-      const nameParts = this.props.javascriptFile.split('\\');
-
-      return _.last(nameParts, 2).join('\\');
-   };
-
-   displayJavascriptFileName = () => {
-      const name = this.getJavascriptFileName();
-
-      if (!name) {
-         return '';
-      }
-
-      return '...\\' + this.getJavascriptFileName();
-   };
-
-   displayTypeScriptFileName = () => {
-      const name = this.getJavascriptFileName().split('.')[0];
-
-      if (!name) {
-         return '';
-      }
-
-      return '...\\' + name + '.ts';
    }
 }

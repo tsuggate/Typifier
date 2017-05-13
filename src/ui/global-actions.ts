@@ -5,6 +5,7 @@ import {
 } from './home/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
+import {getTypeScriptFilePath} from './home/util/util';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -35,13 +36,14 @@ function openJsFile(): string | null {
 
 export function saveTypeScriptCode(): void {
    const jsFile = getState().javascriptFile;
-   const tsFile = jsFile.split('.')[0] + '.ts';
+   const tsFile = getTypeScriptFilePath();
    const code = getState().typescriptCode;
 
    //TODO: Try get git to treat the new file as a rename.
    fs.writeFileSync(tsFile, code);
-   appendLog(`Wrote ${tsFile}`);
+
    fs.unlinkSync(jsFile);
+   appendLog(`Wrote ${tsFile}`);
 
    closeJavaScriptFile();
 }

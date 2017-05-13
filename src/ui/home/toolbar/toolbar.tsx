@@ -1,8 +1,10 @@
 import * as React from 'React';
 import Button from '../../components/button';
 import './toolbar.less';
-import {clickOpenJsFile, saveTypeScriptCode} from '../../global-actions';
+import {clickOpenJsFile, getWindow, saveTypeScriptCode} from '../../global-actions';
 import {getState, setViewMode} from '../state';
+import {remote} from 'electron';
+import {getTypeScriptFilePath} from '../util/util';
 
 
 export default class Toolbar extends React.Component<{}, {}> {
@@ -31,7 +33,9 @@ export default class Toolbar extends React.Component<{}, {}> {
                     disabled={this.shouldDisableApplyChanges()}
                     moreClasses="applyButton">Apply Changes</Button>
 
-            <Button onClick={() => {}} moreClasses="infoButton">🛈</Button>
+            <Button onClick={this.onClickInfoButton}
+                    disabled={this.shouldDisableApplyChanges()}
+                    moreClasses="infoButton">🛈</Button>
          </div>
 
       </div>;
@@ -57,5 +61,17 @@ export default class Toolbar extends React.Component<{}, {}> {
       console.log('save');
 
       saveTypeScriptCode();
+   };
+
+   onClickInfoButton = () => {
+      const message = `Applying changes will create "${getTypeScriptFilePath()}", and delete`
+         + ` "${getState().javascriptFile}". \nBe sure to test the changes and fix up any type `
+         + `errors before committing!`;
+
+      remote.dialog.showMessageBox(getWindow(), {
+         type: 'info',
+         title: 'Apply Changes Info',
+         message: message
+      });
    };
 }
