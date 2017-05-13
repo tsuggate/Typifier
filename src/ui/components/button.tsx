@@ -7,6 +7,7 @@ interface ButtonProps {
    on?: boolean;
    children?: any;
    disabled?: boolean;
+   moreClasses?: string;
 }
 
 export default function Button(props: ButtonProps) {
@@ -18,6 +19,10 @@ export default function Button(props: ButtonProps) {
 
    if (props.disabled) {
       classes.push('disabled');
+   }
+
+   if (props.moreClasses) {
+      classes = classes.concat(props.moreClasses.split(' '));
    }
 
    return (
