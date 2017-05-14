@@ -54,9 +54,14 @@ export function setFolder(folderPath: string): void {
    };
 
    console.log(state.folderInfo.javascriptFiles.length);
+   loadJavascriptFile();
 
+   const success = generateTypescript();
+
+   setCodeGenSuccess(success);
 
    renderHome();
+   getWindow().setTitle('kuraTranspiler - ' + folderPath);
 }
 
 export function setJavascriptFile(file: string): void {
@@ -74,6 +79,18 @@ export function setJavascriptFile(file: string): void {
 
    renderHome();
    getWindow().setTitle('kuraTranspiler - ' + file);
+}
+
+export function getJavaScriptFile(): string {
+   if (state.openMode === 'file') {
+      return state.javascriptFile;
+   }
+   else if (state.folderInfo) {
+      return state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]
+   }
+   else {
+      throw new Error(`state.folderInfo shouldn't be null`);
+   }
 }
 
 export function closeJavaScriptFile(): void {

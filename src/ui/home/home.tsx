@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {Editors} from '../components/editors';
-import './root.less';
-import Toolbar from './toolbar/toolbar';
-import Log from './log/log';
-import {getState} from './state/state';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import {Editors} from "../components/editors";
+import "./root.less";
+import Toolbar from "./toolbar/toolbar";
+import Log from "./log/log";
+import {getJavaScriptFile, getState} from "./state/state";
 import {ViewMode} from "./state/schema";
 
 
@@ -30,7 +30,7 @@ class Home extends React.Component<HomeProps, {}> {
    buildEditors = () => {
       const s = getState();
 
-      return <Editors javascriptFile={s.javascriptFile}
+      return <Editors javascriptFile={getJavaScriptFile()}
                       javascriptCode={s.javascriptCode}
                       typescriptCode={s.typescriptCode} />;
    };

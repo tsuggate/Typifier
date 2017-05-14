@@ -1,18 +1,18 @@
-import {generate} from './output/generate';
-import * as jsBeautify from 'js-beautify';
-import {jsBeautifyOptions, reformatCode} from '../test/shared';
-import * as esprima from 'esprima';
-import {addLog, appendLog, getState} from '../ui/home/state/state';
-import {Program} from 'estree';
-import * as escodegen from 'escodegen';
-import {GeneratorOptions, GenOptions} from './output/generator-options';
+import {generate} from "./output/generate";
+import * as jsBeautify from "js-beautify";
+import {jsBeautifyOptions, reformatCode} from "../test/shared";
+import * as esprima from "esprima";
+import {addLog, appendLog, getJavaScriptFile} from "../ui/home/state/state";
+import {Program} from "estree";
+import * as escodegen from "escodegen";
+import {GeneratorOptions, GenOptions} from "./output/generator-options";
 
 
 export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
    const options = new GenOptions(generatorOptions);
 
    try {
-      addLog(`Parsing ${getState().javascriptFile}... `);
+      addLog(`Parsing ${getJavaScriptFile()}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true });
       appendLog(`Done`);
 

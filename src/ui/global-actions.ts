@@ -1,6 +1,6 @@
 import {remote} from 'electron';
 import {
-   addLog, closeJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
+   addLog, closeJavaScriptFile, getJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
    setTypescriptCode
 } from './home/state/state';
 import * as fs from 'fs';
@@ -52,7 +52,7 @@ export function openFolder(): string | null {
 }
 
 export function saveTypeScriptCode(): void {
-   const jsFile = getState().javascriptFile;
+   const jsFile = getJavaScriptFile();
    const tsFile = getTypeScriptFilePath();
    const code = getState().typescriptCode;
 
@@ -65,7 +65,7 @@ export function saveTypeScriptCode(): void {
 }
 
 export function loadJavascriptFile(): void {
-   const jsFile = getState().javascriptFile;
+   const jsFile = getJavaScriptFile();
 
    try {
       const file = fs.readFileSync(jsFile);
