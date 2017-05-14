@@ -1,7 +1,7 @@
 
 #### TODO
 - Open folder support?
-- better imports for recognised libraries
+
 - improve comment generation
 - Improve icon and background page.
 - better theme
@@ -10,7 +10,7 @@
 
 
 ##### Wip
-- Improve logs
+
 
 
 ##### Done
@@ -20,6 +20,8 @@
 - info button beside save
 - show home page after applying changes
 - info button shows modal describing what apply does
+- Improve logs
+- better imports for recognised libraries
 
 ##### Abandoned
 - Finish implementing saving

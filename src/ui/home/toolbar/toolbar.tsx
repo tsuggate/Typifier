@@ -1,10 +1,10 @@
-import * as React from 'React';
-import Button from '../../components/button';
-import './toolbar.less';
-import {clickOpenJsFile, getWindow, saveTypeScriptCode} from '../../global-actions';
-import {getState, setViewMode} from '../state';
-import {remote} from 'electron';
-import {getTypeScriptFilePath} from '../util/util';
+import * as React from "React";
+import Button from "../../components/button";
+import "./toolbar.less";
+import {clickOpenJsFile, getWindow, saveTypeScriptCode} from "../../global-actions";
+import {getState, setViewMode} from "../state";
+import {remote} from "electron";
+import {getJavaScriptFileName, getTypeScriptFileName} from "../util/util";
 
 
 export default class Toolbar extends React.Component<{}, {}> {
@@ -66,8 +66,8 @@ export default class Toolbar extends React.Component<{}, {}> {
    };
 
    onClickInfoButton = () => {
-      const message = `Applying changes will create "${getTypeScriptFilePath()}", and delete`
-         + ` "${getState().javascriptFile}". \nBe sure to test the changes and fix up any type `
+      const message = `Applying changes will create "${getTypeScriptFileName()}", and delete`
+         + ` "${getJavaScriptFileName()}". \nBe sure to test the changes and fix up any type `
          + `errors before committing!`;
 
       remote.dialog.showMessageBox(getWindow(), {

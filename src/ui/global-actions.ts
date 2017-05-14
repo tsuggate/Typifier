@@ -39,7 +39,6 @@ export function saveTypeScriptCode(): void {
    const tsFile = getTypeScriptFilePath();
    const code = getState().typescriptCode;
 
-   //TODO: Try get git to treat the new file as a rename.
    fs.writeFileSync(tsFile, code);
 
    fs.unlinkSync(jsFile);
@@ -56,7 +55,6 @@ export function loadJavascriptFile(): void {
       const jsCode = file.toString();
 
       if (jsCode) {
-         // addLog('Successfully read ' + jsFile);
          setJavascriptCode(jsCode);
       }
    }

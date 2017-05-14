@@ -1,12 +1,22 @@
 import {
-   ArrayExpression, CallExpression, Declaration, ExpressionStatement, FunctionExpression, Literal, Property,
+   ArrayExpression,
+   CallExpression,
+   Declaration,
+   ExpressionStatement,
+   FunctionExpression,
    ReturnStatement
-} from 'estree';
-import {generate} from '../output/generate';
-import {getNamesFromDeclaration, isDeclaration} from '../output/generators/declaration';
-import * as _ from 'underscore';
-import {GenOptions} from '../output/generator-options';
+} from "estree";
+import {generate} from "../output/generate";
+import {getNamesFromDeclaration, isDeclaration} from "../output/generators/declaration";
+import * as _ from "underscore";
+import {GenOptions} from "../output/generator-options";
 
+
+const recognisedLibraries = [
+   'underscore',
+   'jquery',
+   'knockout'
+];
 
 export function isDefine(es: ExpressionStatement): boolean {
    const e = es.expression;
@@ -62,6 +72,9 @@ function makeImports(libraryNames: string[], importNames: string[], exportNames:
    return importNames.map((n, i) => {
       if (_.contains(exportNames, n)) {
          return `export const ${n} = require(${libraryNames[i]});\n`;
+      }
+      if (_.contains(recognisedLibraries, libraryNames[i].replace(/['"]+/g, ''))) {
+         return `import * as ${n} from ${libraryNames[i]};`;
       }
 
       return `const ${n} = require(${libraryNames[i]});\n`;
