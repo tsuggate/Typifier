@@ -15,7 +15,7 @@ export default class Toolbar extends React.Component<{}, {}> {
 
          <div className="left">
             <Button onClick={clickOpenJsFile}>Open JavaScript File...</Button>
-            <Button onClick={clickOpenFolder}>Open Folder...</Button>
+            {/*<Button onClick={clickOpenFolder}>Open Folder...</Button>*/}
          </div>
 
          <div className="middle">
