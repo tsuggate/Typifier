@@ -53,6 +53,9 @@ export function setFolder(folderPath: string): void {
       currentFileIndex: 0
    };
 
+   console.log(state.folderInfo.javascriptFiles.length);
+
+
    renderHome();
 }
 
