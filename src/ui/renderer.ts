@@ -1,6 +1,6 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {setJavascriptFile} from "./home/state/state";
+import {setJavascriptFile} from "./state/state";
 import * as path from "path";
 
 

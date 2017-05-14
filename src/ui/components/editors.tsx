@@ -1,6 +1,6 @@
-import * as React from 'React';
+import * as React from 'react';
 import AceEditor from 'react-ace';
-import {getJavaScriptFileName, getTypeScriptFileName} from '../home/util/util';
+import {getJavaScriptFileName, getTypeScriptFileName} from '../util/util';
 
 import './editors.less';
 

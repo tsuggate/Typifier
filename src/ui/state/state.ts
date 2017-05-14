@@ -1,5 +1,5 @@
-import {renderHome} from '../home';
-import {generateTypescript, getWindow, loadJavascriptFile} from '../../global-actions';
+import {renderHome} from '../home/home';
+import {generateTypescript, getWindow, loadJavascriptFile} from '../global-actions';
 import {State, ViewMode} from "./schema";
 import {getJavaScriptFilesInFolder} from "../util/util";
 

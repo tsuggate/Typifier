@@ -1,10 +1,10 @@
-import * as React from "React";
+import * as React from "react";
 import Button from "../../components/button";
 import "./toolbar.less";
 import {clickOpenFolder, clickOpenJsFile, getWindow, saveTypeScriptCode} from "../../global-actions";
-import {getJavaScriptFile, getState, setViewMode} from "../state/state";
+import {getJavaScriptFile, getState, setViewMode} from "../../state/state";
 import {remote} from "electron";
-import {getJavaScriptFileName, getTypeScriptFileName} from "../util/util";
+import {getJavaScriptFileName, getTypeScriptFileName} from "../../util/util";
 
 
 export default class Toolbar extends React.Component<{}, {}> {

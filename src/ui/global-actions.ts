@@ -2,10 +2,10 @@ import {remote} from 'electron';
 import {
    addLog, closeJavaScriptFile, getJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
    setTypescriptCode
-} from './home/state/state';
+} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
-import {getTypeScriptFilePath} from './home/util/util';
+import {getTypeScriptFilePath} from './util/util';
 
 
 export function getWindow(): Electron.BrowserWindow {

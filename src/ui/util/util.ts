@@ -1,5 +1,5 @@
-import {getJavaScriptFile, getState} from '../state/state';
-import * as path from 'path';
+import {getJavaScriptFile} from "../state/state";
+import * as path from "path";
 import * as fs from "fs";
 
 
