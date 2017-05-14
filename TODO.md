@@ -1,13 +1,13 @@
 
 #### TODO
-- Open folder support?
+- fix data flow in components: state access is often happening globally instead of through props. 
 
 - improve comment generation
 - Improve icon and background page.
 - better theme
 
 - put up on teamcity? Or just my drop folder for now?
-
+- jsx support
 
 ##### Wip
 - Open folder support?

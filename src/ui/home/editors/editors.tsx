@@ -1,13 +1,14 @@
-import * as React from 'react';
-import AceEditor from 'react-ace';
-import {getJavaScriptFileName, getTypeScriptFileName} from '../util/util';
+import * as React from "react";
+import AceEditor from "react-ace";
+import {getTypeScriptFileName} from "../../util/util";
+import {EditorToolbar} from "./editor-toolbar";
 
-import './editors.less';
+import "./editors.less";
 
-import 'brace';
-import 'brace/mode/javascript';
-import 'brace/mode/typescript';
-import 'brace/theme/github';
+import "brace";
+import "brace/mode/javascript";
+import "brace/mode/typescript";
+import "brace/theme/github";
 
 
 interface EditorsProps {
@@ -21,7 +22,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
       return (
          <div className="Editors">
             <div className="leftEditor">
-               <div className="leftTitle">{getJavaScriptFileName()}</div>
+               <EditorToolbar />
                <AceEditor
                   mode="typescript"
                   theme="github"

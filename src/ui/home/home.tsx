@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {Editors} from "../components/editors";
+import {Editors} from "./editors/editors";
 import "./root.less";
 import Toolbar from "./toolbar/toolbar";
 import Log from "./log/log";
