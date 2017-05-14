@@ -10,7 +10,7 @@
 
 
 ##### Wip
-
+- Open folder support?
 
 
 ##### Done

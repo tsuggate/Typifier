@@ -1,21 +1,13 @@
-import {renderHome} from './home';
-import {generateTypescript, getWindow, loadJavascriptFile} from '../global-actions';
+import {renderHome} from '../home';
+import {generateTypescript, getWindow, loadJavascriptFile} from '../../global-actions';
+import {State, ViewMode} from "./schema";
+import {getJavaScriptFilesInFolder} from "../util/util";
 
-
-export type ViewMode = 'code' | 'log';
-
-
-export interface State {
-   viewMode: ViewMode;
-   javascriptFile: string;
-   javascriptCode: string;
-   typescriptCode: string;
-   codeGenSucceeded: boolean;
-   logs: string[];
-}
 
 let state: State = {
    viewMode: 'log',
+   openMode: 'file',
+   folderInfo: null,
    javascriptFile: '',
    javascriptCode: '',
    typescriptCode: '',
@@ -49,6 +41,18 @@ export function addLog(log: string): void {
 
 export function appendLog(log: string): void {
    state.logs[state.logs.length - 1] += log;
+   renderHome();
+}
+
+export function setFolder(folderPath: string): void {
+   state.openMode = 'folder';
+
+   state.folderInfo = {
+      folderPath,
+      javascriptFiles: getJavaScriptFilesInFolder(folderPath),
+      currentFileIndex: 0
+   };
+
    renderHome();
 }
 

@@ -52,7 +52,7 @@ function printComment(comment: ESComment, type: 'trailing' | 'leading', options:
 function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions): string {
    let res;
 
-   printComment(comment, type, options);
+   // printComment(comment, type, options);
 
    if (comment.type === 'Line') {
       res = generateLineComment(comment, type, node, options);

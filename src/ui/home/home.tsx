@@ -4,7 +4,8 @@ import {Editors} from '../components/editors';
 import './root.less';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
-import {getState, ViewMode} from './state';
+import {getState} from './state/state';
+import {ViewMode} from "./state/schema";
 
 
 export function renderHome(): void {

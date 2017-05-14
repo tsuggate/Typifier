@@ -1,8 +1,8 @@
 import {remote} from 'electron';
 import {
-   addLog, closeJavaScriptFile, getState, setJavascriptCode, setJavascriptFile,
+   addLog, closeJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
    setTypescriptCode
-} from './home/state';
+} from './home/state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
 import {getTypeScriptFilePath} from './home/util/util';
@@ -14,8 +14,6 @@ export function getWindow(): Electron.BrowserWindow {
 
 export function clickOpenJsFile(): void {
    const filePath = openJsFile();
-
-   console.log(filePath);
 
    if (filePath) {
       setJavascriptFile(filePath);
@@ -30,6 +28,25 @@ function openJsFile(): string | null {
 
    if (files && files.length > 0) {
       return files[0];
+   }
+   return null;
+}
+
+export function clickOpenFolder(): void {
+   const folderPath = openFolder();
+
+   if (folderPath) {
+      setFolder(folderPath);
+   }
+}
+
+export function openFolder(): string | null {
+   const paths: string[] | undefined = remote.dialog.showOpenDialog(getWindow(), {
+      properties: ['openDirectory']
+   });
+
+   if (paths && paths.length > 0) {
+      return paths[0];
    }
    return null;
 }

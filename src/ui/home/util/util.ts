@@ -1,4 +1,4 @@
-import {getState} from '../state';
+import {getState} from '../state/state';
 import * as path from 'path';
 
 
@@ -18,4 +18,9 @@ export function getTypeScriptFilePath(): string {
    const jsFile = getState().javascriptFile;
 
    return jsFile.split('.')[0] + '.ts';
+}
+
+export function getJavaScriptFilesInFolder(folderPath: string): string[] {
+
+   return [];
 }

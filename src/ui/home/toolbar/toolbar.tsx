@@ -1,8 +1,8 @@
 import * as React from "React";
 import Button from "../../components/button";
 import "./toolbar.less";
-import {clickOpenJsFile, getWindow, saveTypeScriptCode} from "../../global-actions";
-import {getState, setViewMode} from "../state";
+import {clickOpenFolder, clickOpenJsFile, getWindow, saveTypeScriptCode} from "../../global-actions";
+import {getState, setViewMode} from "../state/state";
 import {remote} from "electron";
 import {getJavaScriptFileName, getTypeScriptFileName} from "../util/util";
 
@@ -15,6 +15,7 @@ export default class Toolbar extends React.Component<{}, {}> {
 
          <div className="left">
             <Button onClick={clickOpenJsFile}>Open JavaScript File...</Button>
+            <Button onClick={clickOpenFolder}>Open Folder...</Button>
          </div>
 
          <div className="middle">

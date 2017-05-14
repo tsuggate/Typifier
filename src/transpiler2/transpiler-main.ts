@@ -2,7 +2,7 @@ import {generate} from './output/generate';
 import * as jsBeautify from 'js-beautify';
 import {jsBeautifyOptions, reformatCode} from '../test/shared';
 import * as esprima from 'esprima';
-import {addLog, appendLog, getState} from '../ui/home/state';
+import {addLog, appendLog, getState} from '../ui/home/state/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {GeneratorOptions, GenOptions} from './output/generator-options';
