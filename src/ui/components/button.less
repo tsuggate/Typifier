@@ -1,25 +1,31 @@
+
+
 .Button {
-   font: inherit;
-   cursor: pointer;
-   background-color: transparent;
-   color: white;
-   border-style: none;
-   padding: 11px 13px;
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  border-style: none;
+  padding: 6px 10px;
+  margin: 5px 3px;
+  border-bottom: solid transparent;
 }
 
 .Button:hover:not(.disabled) {
-   transition: none;
-   background-color: rgba(2, 2, 2, 0.15);
+  transition: none;
+   //background-color: rgba(2, 2, 2, 0.15);
+  border-bottom: solid #eeeeee;
 }
 
 .Button.on {
-   background-color: rgba(2, 2, 2, 0.15);
+   //background-color: rgba(2, 2, 2, 0.15);
+  border-bottom: solid #eeeeee;
 }
 
 .Button.disabled {
-   color: #7a7a7a;
+  color: #7a7a7a;
 }
 
 button:focus {
-   outline:0;
+  outline:0;
 }

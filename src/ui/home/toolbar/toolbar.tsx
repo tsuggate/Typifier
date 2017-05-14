@@ -14,21 +14,27 @@ export default class Toolbar extends React.Component<{}, {}> {
       return <div className="Toolbar">
 
          <div className="left">
-            <Button onClick={clickOpenJsFile}>Open JavaScript File...</Button>
-            {/*<Button onClick={clickOpenFolder}>Open Folder...</Button>*/}
+            <p className="label">Open</p>
+
+            <div className="group">
+               <Button onClick={clickOpenJsFile}>JavaScript File...</Button>
+               <Button onClick={clickOpenFolder}>Folder...</Button>
+            </div>
          </div>
 
          <div className="middle">
-            <p className="label">View: </p>
+            <p className="label">Show:</p>
 
-            <Button onClick={this.onClickShowLog}
-                    on={getState().viewMode === 'log'}
-                    moreClasses="logButton" >Log</Button>
+            <div className="group">
+               <Button onClick={this.onClickShowLog}
+                       on={getState().viewMode === 'log'}
+                       moreClasses="logButton minSize">Log</Button>
 
-            <Button onClick={this.onClickCompareCode}
-                    on={getState().viewMode === 'code'}
-                    disabled={this.shouldDisableViewCode()}
-                    moreClasses="" >Code</Button>
+               <Button onClick={this.onClickCompareCode}
+                       on={getState().viewMode === 'code'}
+                       disabled={this.shouldDisableViewCode()}
+                       moreClasses="minSize" >Code</Button>
+            </div>
          </div>
 
          <div className="right">
@@ -38,7 +44,7 @@ export default class Toolbar extends React.Component<{}, {}> {
 
             <Button onClick={this.onClickInfoButton}
                     disabled={this.shouldDisableApplyChanges()}
-                    moreClasses="infoButton">🛈</Button>
+                    moreClasses="infoButton">ⓘ</Button>
          </div>
 
       </div>;
