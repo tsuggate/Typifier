@@ -1,5 +1,5 @@
-import {Node, Program} from 'estree';
-import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators/misc';
+import {Node, Program} from "estree";
+import {identifierToJs, literalToJs, programToJs, propertyToJs} from "./generators/misc";
 import {
    arrayExpression,
    assignmentExpression,
@@ -16,29 +16,19 @@ import {
    thisExpression,
    unaryExpression,
    updateExpression
-} from './generators/expression';
-import {blockStatement, forStatement, ifStatement, returnStatement} from './generators/statement';
+} from "./generators/expression";
+import {blockStatement, forStatement, ifStatement, returnStatement} from "./generators/statement";
 import {
    functionDeclaration,
    functionDeclarationTs,
    variableDeclarationToJs,
    variableDeclarationToTs,
    variableDeclaratorToJs
-} from './generators/declaration';
-import {generateImports, isDefine} from '../mods/imports';
-import {insertComments} from './generators/comments';
-import {GenOptions} from './generator-options';
+} from "./generators/declaration";
+import {generateImports, isDefine} from "../mods/imports";
+import {insertComments} from "./generators/comments";
+import {GenOptions} from "./generator-options";
 
-
-// let _options: GenOptions = new GenOptions();
-//
-// export function setTranspilerOptions(options: GeneratorOptions): void {
-//    _options.setOptions(options);
-// }
-//
-// export function getTranspilerOptions(): GenOptions {
-//    return _options;
-// }
 
 export function generate(node: Node, options: GenOptions): string {
    let result;
@@ -57,7 +47,7 @@ export function generate(node: Node, options: GenOptions): string {
       }
    }
 
-   return insertComments(result, node);
+   return insertComments(result, node, options);
 }
 
 function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOptions) => string) {
