@@ -102,6 +102,7 @@ export function previousFile(): void {
 function setFileIndex(index: number): void {
    if (state.folderInfo) {
       state.folderInfo.currentFileIndex = index;
+      clearLogs();
    }
 
    updateEditors();

@@ -20,8 +20,14 @@ export default class FileNavigation extends React.Component<{}, {}> {
             <div className="fileNumber">{this.fileNumberText()}</div>
             <div className="fileTitle">{getJavaScriptFileName()}</div>
 
-            <Button onClick={previousFile}>{'<'}</Button>
-            <Button onClick={nextFile}>{'>'}</Button>
+            <div className="previousFile" onClick={previousFile} >
+               <div className="arrowLeft"/>
+            </div>
+
+            <div className="nextFile" onClick={nextFile} >
+               <div className="arrowRight"/>
+            </div>
+
          </div>;
       }
    }
