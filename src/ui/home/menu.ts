@@ -44,17 +44,7 @@ export function renderMainWindowMenu(): void {
       separator
    ];
 
-   // if (process.platform === 'darwin') {
    fileMenuItems.push({role: 'quit'});
-   // }
-   // else {
-   //    fileMenuItems.push({
-   //       label: 'Exit',
-   //       click: () => {
-   //          getWindow().close();
-   //       }
-   //    });
-   // }
 
    const fileMenu = {
       label: 'File',
@@ -75,7 +65,6 @@ export function renderMainWindowMenu(): void {
       fileMenu,
       editMenu,
       buildViewMenu()
-      // buildDevMenu(getWindow())
    ];
 
    if (platform() === 'darwin') {

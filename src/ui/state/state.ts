@@ -112,6 +112,8 @@ export function setJavascriptFile(file: string): void {
    clearLogs();
 
    state.javascriptFile = file;
+   state.openMode = 'file';
+   state.folderInfo = null;
 
    setViewMode('log');
 

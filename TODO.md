@@ -10,7 +10,7 @@
 - jsx support
 
 ##### Wip
-- Open folder support?
+- Open folder support
 
 
 ##### Done
