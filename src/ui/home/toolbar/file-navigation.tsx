@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {getState} from '../../state/state';
+import {getState, nextFile, previousFile} from '../../state/state';
 import {getJavaScriptFileName} from '../../util/util';
 import './file-navigation.less';
 import Button from '../../components/button';
@@ -19,8 +19,8 @@ export default class FileNavigation extends React.Component<{}, {}> {
             <div className="fileNumber">{this.fileNumberText()}</div>
             <div className="fileTitle">{getJavaScriptFileName()}</div>
 
-            <Button onClick={() => {}}>{'<'}</Button>
-            <Button onClick={() => {}}>{'>'}</Button>
+            <Button onClick={previousFile}>{'<'}</Button>
+            <Button onClick={nextFile}>{'>'}</Button>
          </div>;
       }
    }

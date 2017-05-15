@@ -53,7 +53,12 @@ export function setFolder(folderPath: string): void {
       currentFileIndex: 0
    };
 
-   console.log(state.folderInfo.javascriptFiles.length);
+   updateEditors();
+
+   getWindow().setTitle('kuraTranspiler - ' + folderPath);
+}
+
+function updateEditors(): void {
    loadJavascriptFile();
 
    const success = generateTypescript();
@@ -61,7 +66,38 @@ export function setFolder(folderPath: string): void {
    setCodeGenSuccess(success);
 
    renderHome();
-   getWindow().setTitle('kuraTranspiler - ' + folderPath);
+}
+
+export function nextFile(): void {
+   const info = state.folderInfo;
+
+   if (!info) {
+      return;
+   }
+
+   if (info.currentFileIndex < info.javascriptFiles.length) {
+      setFileIndex(info.currentFileIndex + 1);
+   }
+}
+
+export function previousFile(): void {
+   const info = state.folderInfo;
+
+   if (!info) {
+      return;
+   }
+
+   if (info.currentFileIndex > 0) {
+      setFileIndex(info.currentFileIndex - 1);
+   }
+}
+
+function setFileIndex(index: number): void {
+   if (state.folderInfo) {
+      state.folderInfo.currentFileIndex = index;
+   }
+
+   updateEditors();
 }
 
 export function setJavascriptFile(file: string): void {
@@ -71,13 +107,8 @@ export function setJavascriptFile(file: string): void {
 
    setViewMode('log');
 
-   loadJavascriptFile();
+   updateEditors();
 
-   const success = generateTypescript();
-
-   setCodeGenSuccess(success);
-
-   renderHome();
    getWindow().setTitle('kuraTranspiler - ' + file);
 }
 
