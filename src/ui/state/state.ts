@@ -30,6 +30,9 @@ export function setCodeGenSuccess(succeeded: boolean): void {
    if (succeeded) {
       setViewMode('code');
    }
+   else {
+      setViewMode('log');
+   }
 
    renderHome();
 }
