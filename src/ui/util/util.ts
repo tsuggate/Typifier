@@ -12,13 +12,19 @@ export function getTypeScriptFileName(): string {
 export function getJavaScriptFileName(): string {
    const jsFile = getJavaScriptFile();
 
-   return path.parse(jsFile).name + '.js';
+   if (jsFile) {
+      return path.parse(jsFile).name + '.js';
+   }
+   return '';
 }
 
 export function getTypeScriptFilePath(): string {
    const jsFile = getJavaScriptFile();
 
-   return jsFile.split('.')[0] + '.ts';
+   if (jsFile) {
+      return jsFile.split('.')[0] + '.ts';
+   }
+   return '';
 }
 
 export function getJavaScriptFilesInFolder(folderPath: string): string[] {

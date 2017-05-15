@@ -3,34 +3,28 @@
   display: flex;
   justify-content: space-between;
   background-color: #3a4550;
+  flex-shrink: 0;
 }
 
 .Toolbar .left {
   display: flex;
-  flex-direction: column;
 }
 
 .Toolbar .middle {
   display: flex;
-  flex-direction: column;
 }
 
 .Toolbar .right {
   display: flex;
 }
 
-.Toolbar .divider {
-  width: 90px;
-}
-
 .Toolbar .applyButton {
   padding-right: 5px;
 }
 
-.Toolbar .infoButton {
+.Toolbar .Button.infoButton {
   font-size: 24px;
   line-height: 81%;
-  //padding-left: 5px;
   margin-left: -5px;
 }
 
@@ -38,27 +32,13 @@
   color: #ff7a75;
 }
 
-.Toolbar .label {
-  color: #c3c3c3;
+.Toolbar .fileTitle {
+  font-size: 16px;
+  color: #ffffff;
   margin: auto;
-  font-size: 11px;
-  padding-top: 8px;
-  padding-bottom: 0;
-  font-weight: 600;
 }
-
-//.Toolbar .logButton {
-//  border-right: 1px solid #777777;
-//}
 
 .Toolbar .Button {
   font-size: 16px;
 }
 
-.Toolbar .group {
-  margin-top: -6px;
-}
-
-.Toolbar .minSize {
-  min-width: 70px;
-}

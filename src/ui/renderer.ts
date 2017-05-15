@@ -8,5 +8,5 @@ renderMainWindowMenu();
 renderHome();
 
 
-setJavascriptFile(path.join(__dirname, '..', 'test-files', 'simple.js'));
+// setJavascriptFile(path.join(__dirname, '..', 'test-files', 'simple.js'));
 

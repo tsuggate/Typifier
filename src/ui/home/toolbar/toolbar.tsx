@@ -14,27 +14,20 @@ export default class Toolbar extends React.Component<{}, {}> {
       return <div className="Toolbar">
 
          <div className="left">
-            <p className="label">Open</p>
+            <Button onClick={this.onClickShowLog}
+                    on={getState().viewMode === 'log'}
+                    moreClasses="minSize">Log</Button>
 
-            <div className="group">
-               <Button onClick={clickOpenJsFile}>JavaScript File...</Button>
-               <Button onClick={clickOpenFolder}>Folder...</Button>
-            </div>
+            <Button onClick={this.onClickCompareCode}
+                    on={getState().viewMode === 'code'}
+                    disabled={this.shouldDisableViewCode()}
+                    moreClasses="minSize" >Code</Button>
          </div>
 
          <div className="middle">
-            <p className="label">Show:</p>
 
-            <div className="group">
-               <Button onClick={this.onClickShowLog}
-                       on={getState().viewMode === 'log'}
-                       moreClasses="logButton minSize">Log</Button>
+            <div className="fileTitle">{getJavaScriptFileName()}</div>
 
-               <Button onClick={this.onClickCompareCode}
-                       on={getState().viewMode === 'code'}
-                       disabled={this.shouldDisableViewCode()}
-                       moreClasses="minSize" >Code</Button>
-            </div>
          </div>
 
          <div className="right">
