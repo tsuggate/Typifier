@@ -1,10 +1,11 @@
-import * as React from "react";
-import Button from "../../components/button";
-import "./toolbar.less";
-import {clickOpenFolder, clickOpenJsFile, getWindow, saveTypeScriptCode} from "../../global-actions";
-import {getJavaScriptFile, getState, setViewMode} from "../../state/state";
-import {remote} from "electron";
-import {getJavaScriptFileName, getTypeScriptFileName} from "../../util/util";
+import * as React from 'react';
+import Button from '../../components/button';
+import './toolbar.less';
+import {getWindow, saveTypeScriptCode} from '../../global-actions';
+import {getJavaScriptFile, getState, setViewMode} from '../../state/state';
+import {remote} from 'electron';
+import {getJavaScriptFileName, getTypeScriptFileName} from '../../util/util';
+import FileNavigation from './file-navigation';
 
 
 export default class Toolbar extends React.Component<{}, {}> {
@@ -25,9 +26,7 @@ export default class Toolbar extends React.Component<{}, {}> {
          </div>
 
          <div className="middle">
-
-            <div className="fileTitle">{getJavaScriptFileName()}</div>
-
+            <FileNavigation/>
          </div>
 
          <div className="right">

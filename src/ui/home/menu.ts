@@ -1,5 +1,5 @@
 import {remote} from 'electron';
-import {clickOpenJsFile, getWindow} from '../global-actions';
+import {clickOpenFolder, clickOpenJsFile, getWindow} from '../global-actions';
 import {platform} from "os";
 
 
@@ -35,20 +35,26 @@ export function renderMainWindowMenu(): void {
          accelerator: 'CmdOrCtrl+O',
          enabled: true
       },
+      {
+         label: 'Open Folder...',
+         click: clickOpenFolder,
+         accelerator: 'CmdOrCtrl+Shift+O',
+         enabled: true
+      },
       separator
    ];
 
-   if (process.platform === 'darwin') {
-      fileMenuItems.push({role: 'quit'});
-   }
-   else {
-      fileMenuItems.push({
-         label: 'Exit',
-         click: () => {
-            getWindow().close();
-         }
-      });
-   }
+   // if (process.platform === 'darwin') {
+   fileMenuItems.push({role: 'quit'});
+   // }
+   // else {
+   //    fileMenuItems.push({
+   //       label: 'Exit',
+   //       click: () => {
+   //          getWindow().close();
+   //       }
+   //    });
+   // }
 
    const fileMenu = {
       label: 'File',

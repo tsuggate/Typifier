@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {getJavaScriptFileName, getTypeScriptFileName} from "../../util/util";
 
 
 export class EditorToolbarLeft extends React.Component<{}, {}> {
