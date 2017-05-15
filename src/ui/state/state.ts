@@ -59,13 +59,17 @@ export function setFolder(folderPath: string): void {
 }
 
 function updateEditors(): void {
-   loadJavascriptFile();
+   const result1 = loadJavascriptFile();
 
-   const success = generateTypescript();
+   if (!result1) {
+      setViewMode('log');
+   }
+   else {
+      const result2 = generateTypescript();
 
-   setCodeGenSuccess(success);
-
-   renderHome();
+      setCodeGenSuccess(result2);
+      renderHome();
+   }
 }
 
 export function nextFile(): void {
@@ -75,7 +79,7 @@ export function nextFile(): void {
       return;
    }
 
-   if (info.currentFileIndex < info.javascriptFiles.length) {
+   if (info.currentFileIndex < info.javascriptFiles.length - 1) {
       setFileIndex(info.currentFileIndex + 1);
    }
 }
@@ -117,6 +121,10 @@ export function getJavaScriptFile(): string {
       return state.javascriptFile;
    }
    else if (state.folderInfo) {
+      if (!state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]) {
+         return '';
+      }
+
       return state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]
    }
    else {
@@ -125,10 +133,23 @@ export function getJavaScriptFile(): string {
 }
 
 export function closeJavaScriptFile(): void {
-   state.javascriptFile = '';
-   state.javascriptCode = '';
-   state.typescriptCode = '';
-   setViewMode('log');
+   console.log('closeJavaScriptFile');
+   console.log(state.folderInfo);
+
+   if (state.openMode === 'file') {
+      state.javascriptFile = '';
+      state.javascriptCode = '';
+      state.typescriptCode = '';
+      setViewMode('log');
+   }
+   else {
+      if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
+         setFolder(state.folderInfo.folderPath);
+      }
+      else {
+         setViewMode('log');
+      }
+   }
 }
 
 export function setJavascriptCode(code: string): void {

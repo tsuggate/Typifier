@@ -30,7 +30,7 @@ export default class Toolbar extends React.Component<{}, {}> {
          </div>
 
          <div className="right">
-            <Button onClick={this.onClickSave}
+            <Button onClick={this.onClickApplyChanges}
                     disabled={this.shouldDisableApplyChanges()}
                     moreClasses="applyButton">Apply Changes</Button>
 
@@ -58,9 +58,7 @@ export default class Toolbar extends React.Component<{}, {}> {
       setViewMode('code');
    };
 
-   onClickSave = () => {
-      console.log('save');
-
+   onClickApplyChanges = () => {
       saveTypeScriptCode();
    };
 

@@ -64,8 +64,12 @@ export function saveTypeScriptCode(): void {
    closeJavaScriptFile();
 }
 
-export function loadJavascriptFile(): void {
+export function loadJavascriptFile(): boolean {
    const jsFile = getJavaScriptFile();
+
+   if (!jsFile) {
+      return false;
+   }
 
    try {
       const file = fs.readFileSync(jsFile);
@@ -73,12 +77,14 @@ export function loadJavascriptFile(): void {
 
       if (jsCode) {
          setJavascriptCode(jsCode);
+         return true;
       }
    }
    catch (e) {
       console.log(e);
       addLog(e);
    }
+   return false;
 }
 
 export function generateTypescript(): boolean {

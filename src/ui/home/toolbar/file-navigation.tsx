@@ -8,8 +8,9 @@ import Button from '../../components/button';
 export default class FileNavigation extends React.Component<{}, {}> {
    render() {
       const s = getState();
+      const fileName = getJavaScriptFileName();
 
-      if (s.openMode === 'file') {
+      if (s.openMode === 'file' || !fileName) {
          return <div className="FileNavigation">
             <div className="fileTitle">{getJavaScriptFileName()}</div>
          </div>;
