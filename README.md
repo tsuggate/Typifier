@@ -6,10 +6,14 @@ Get dependencies:
 Build and watch:
 `npm run watch`
 
+Run:
+`npm run gui`
+
 Run unit tests:
 `npm test`
 
 Continuously run tests:
 `npm run testMon`
 
-
+Build installer:
+`npm run dist`
