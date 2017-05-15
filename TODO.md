@@ -1,16 +1,19 @@
 
 #### TODO
-- fix data flow in components: state access is often happening globally instead of through props. 
-
 - improve comment generation
-- improve background page.
+- imports that aren't bound to a variable are missing
+
+- improve background page
 - better theme
 
-- put up on teamcity? Or just my drop folder for now?
 - jsx support
 
 ##### Wip
-- Open folder support
+
+
+
+##### Technical Debt
+- fix data flow in components: state access is often happening globally instead of through props. 
 
 
 ##### Done
@@ -22,7 +25,11 @@
 - info button shows modal describing what apply does
 - Improve logs
 - better imports for recognised libraries
+- Open folder support
 
 ##### Abandoned
 - Finish implementing saving
 - Try add workflow for formatting the javascript first, committing then converting and renaming. Might handle history tracking better.
+
+
+
