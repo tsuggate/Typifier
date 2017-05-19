@@ -11,16 +11,15 @@ import FileNavigation from './file-navigation';
 export default class Toolbar extends React.Component<{}, {}> {
    render() {
       return <div className="Toolbar">
-
          <div className="left">
-            <Button onClick={this.onClickShowLog}
-                    on={getState().viewMode === 'log'}
-                    moreClasses="minSize">Log</Button>
-
             <Button onClick={this.onClickCompareCode}
                     on={getState().viewMode === 'code'}
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Code</Button>
+
+            <Button onClick={this.onClickShowLog}
+                    on={getState().viewMode === 'log'}
+                    moreClasses="minSize">Log</Button>
          </div>
 
          <div className="middle">

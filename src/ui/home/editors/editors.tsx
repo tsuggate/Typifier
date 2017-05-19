@@ -20,7 +20,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
    render() {
       return (
          <div className="Editors">
-            <div className="editor">
+            <div className="editor left">
                <EditorToolbarLeft />
                <AceEditor
                   mode="typescript"
@@ -34,7 +34,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
                   editorProps={{$blockScrolling: 1}}
                />
             </div>
-            <div className="editor">
+            <div className="editor right">
                <EditorToolbarRight />
                <AceEditor
                   mode="typescript"
