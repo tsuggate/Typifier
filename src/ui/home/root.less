@@ -4,6 +4,24 @@ html, body {
   font-family: 'Open Sans', sans-serif;
   font-size: 17px;
   margin: 0;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+  height: 1em;
+  background: transparent;
+}
+::-webkit-scrollbar:horizontal {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
 }
 
 #react-entry {
