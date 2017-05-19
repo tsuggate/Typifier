@@ -17,16 +17,18 @@ export default class FileNavigation extends React.Component<{}, {}> {
       }
       else {
          return <div className="FileNavigation">
-            <div className="fileNumber">{this.fileNumberText()}</div>
             <div className="fileTitle">{getJavaScriptFileName()}</div>
 
-            <div className="arrows">
-               <div className="previousFile" onClick={previousFile} >
-                  <div className="arrowLeft"/>
-               </div>
+            <div className="controls">
+               <div className="fileNumber">{this.fileNumberText()}</div>
+               <div className="arrows">
+                  <div className="previousFile" onClick={previousFile} >
+                     <div className="arrowLeft"/>
+                  </div>
 
-               <div className="nextFile" onClick={nextFile} >
-                  <div className="arrowRight"/>
+                  <div className="nextFile" onClick={nextFile} >
+                     <div className="arrowRight"/>
+                  </div>
                </div>
             </div>
          </div>;
