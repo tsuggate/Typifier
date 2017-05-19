@@ -35,7 +35,11 @@
   margin: 10px;
 }
 
-.FileNavigation .nextFile:hover {
+.FileNavigation .nextFile.disabled .arrowRight {
+  border-left: 10px solid #7a7a7a;
+}
+
+.FileNavigation .nextFile:hover:not(.disabled) {
   background-color: rgba(0, 0, 0, 0.16);
 }
 
@@ -50,7 +54,11 @@
   margin: 10px;
 }
 
-.FileNavigation .previousFile:hover {
+.FileNavigation .previousFile.disabled .arrowLeft {
+  border-right:10px solid #7a7a7a;
+}
+
+.FileNavigation .previousFile:hover:not(.disabled) {
   background-color: rgba(0, 0, 0, 0.16);
 }
 

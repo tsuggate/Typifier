@@ -22,18 +22,53 @@ export default class FileNavigation extends React.Component<{}, {}> {
             <div className="controls">
                <div className="fileNumber">{this.fileNumberText()}</div>
                <div className="arrows">
-                  <div className="previousFile" onClick={previousFile} >
-                     <div className="arrowLeft"/>
-                  </div>
-
-                  <div className="nextFile" onClick={nextFile} >
-                     <div className="arrowRight"/>
-                  </div>
+                  {this.makePreviousButton()}
+                  {this.makeNextButton()}
                </div>
             </div>
          </div>;
       }
    }
+
+   makeNextButton = () => {
+      let classes = ['nextFile'];
+
+      if (this.nextDisabled()) {
+         classes.push('disabled');
+      }
+
+      return (
+         <div className={classes.join(' ')} onClick={nextFile} >
+            <div className="arrowRight"/>
+         </div>
+      );
+   };
+
+   nextDisabled = () => {
+      const folderInfo = getState().folderInfo;
+
+      return !!(folderInfo && folderInfo.currentFileIndex === folderInfo.javascriptFiles.length - 1);
+   };
+
+   makePreviousButton = () => {
+      let classes = ['previousFile'];
+
+      if (this.previousDisabled()) {
+         classes.push('disabled');
+      }
+
+      return (
+         <div className={classes.join(' ')} onClick={previousFile} >
+            <div className="arrowLeft"/>
+         </div>
+      );
+   };
+
+   previousDisabled = () => {
+      const folderInfo = getState().folderInfo;
+
+      return !!(folderInfo && folderInfo.currentFileIndex === 0);
+   };
 
    fileNumberText = () => {
       const s = getState();
