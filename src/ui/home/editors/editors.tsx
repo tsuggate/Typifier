@@ -7,7 +7,7 @@ import './editors.less';
 import 'brace';
 import 'brace/mode/javascript';
 import 'brace/mode/typescript';
-import 'brace/theme/github';
+import 'brace/theme/twilight';
 
 
 interface EditorsProps {
@@ -20,11 +20,11 @@ export class Editors extends React.Component<EditorsProps, {}> {
    render() {
       return (
          <div className="Editors">
-            <div className="leftEditor">
+            <div className="editor">
                <EditorToolbarLeft />
                <AceEditor
                   mode="typescript"
-                  theme="github"
+                  theme="twilight"
                   name="editor1"
                   width="100%"
                   height="100%"
@@ -34,11 +34,11 @@ export class Editors extends React.Component<EditorsProps, {}> {
                   editorProps={{$blockScrolling: 1}}
                />
             </div>
-            <div className="rightEditor">
+            <div className="editor">
                <EditorToolbarRight />
                <AceEditor
                   mode="typescript"
-                  theme="github"
+                  theme="twilight"
                   width="100%"
                   height="100%"
                   name="editor2"
