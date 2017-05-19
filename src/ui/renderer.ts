@@ -1,6 +1,6 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {setJavascriptFile} from "./state/state";
+import {nextFile, previousFile, setJavascriptFile} from "./state/state";
 import * as path from "path";
 
 
@@ -10,3 +10,17 @@ renderHome();
 
 // setJavascriptFile(path.join(__dirname, '..', 'test-files', 'simple.js'));
 
+document.onkeydown = (e) => {
+   e = e || window.event;
+
+   switch(e.which) {
+      case 37: // left
+         e.preventDefault();
+         previousFile();
+         break;
+      case 39: // right
+         e.preventDefault();
+         nextFile();
+         break;
+   }
+};
