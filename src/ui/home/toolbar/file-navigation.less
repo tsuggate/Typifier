@@ -4,7 +4,7 @@
   margin: auto;
   display: flex;
   justify-content: space-between;
-  width: 400px;
+  min-width: 400px;
 }
 
 .FileNavigation .fileNumber {
@@ -18,6 +18,12 @@
   font-size: 16px;
   color: #d6d6d6;
   margin: auto 0;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction:rtl;
+  padding-right: 10px;
 }
 
 .FileNavigation .fileTitle.center {

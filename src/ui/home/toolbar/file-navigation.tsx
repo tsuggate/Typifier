@@ -12,12 +12,12 @@ export default class FileNavigation extends React.Component<{}, {}> {
 
       if (s.openMode === 'file' || !fileName) {
          return <div className="FileNavigation">
-            <div className="fileTitle center">{getJavaScriptFileName()}</div>
+            <div className="fileTitle center">{fileName}</div>
          </div>;
       }
       else {
          return <div className="FileNavigation">
-            <div className="fileTitle">{getJavaScriptFileName()}</div>
+            <div className="fileTitle">{fileName}</div>
 
             <div className="controls">
                <div className="fileNumber">{this.fileNumberText()}</div>
