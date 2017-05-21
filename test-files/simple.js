@@ -21,6 +21,7 @@ define([
    var myDate = d.getDate();
 
    myFunc(3, 4);
+   myFunc(true, 'hey');
 
    return {
       myFunc: myFunc,
@@ -28,3 +29,4 @@ define([
    };
 });
 
+myFunc(3, 4);

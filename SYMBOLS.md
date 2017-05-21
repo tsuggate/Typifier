@@ -33,8 +33,10 @@ We should be able to figure out whether to use const or let.
 
 
 
+Insertion:
 
-
+What type of symbol is n?
+is it a scope symbol or not?
 
 
 
