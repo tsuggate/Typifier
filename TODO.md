@@ -1,15 +1,11 @@
 
 #### TODO
 - improve comment generation
-- imports that aren't bound to a variable are missing
-
-- improve background page
-- better theme
-
 - jsx support
+- Add "this: any" to functions that need it.
 
 ##### Wip
-
+- create symbol tree
 
 
 ##### Technical Debt
@@ -26,6 +22,8 @@
 - Improve logs
 - better imports for recognised libraries
 - Open folder support
+- better theme
+- imports that aren't bound to a variable are missing
 
 ##### Abandoned
 - Finish implementing saving
