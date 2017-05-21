@@ -1,5 +1,5 @@
 import {matchOutput, printTree} from './shared';
-import {getTestFile} from '../transpiler2/util/file-reader';
+import {getTestFileCode} from '../transpiler2/util/file-reader';
 
 
 describe('variable declarations', () => {
@@ -18,7 +18,7 @@ describe('call function', () => {
 });
 
 describe('simple.js', () => {
-   const code = getTestFile('simple');
+   const code = getTestFileCode('simple');
 
    if (code) {
       matchOutput(code);
@@ -29,7 +29,7 @@ describe('simple.js', () => {
 });
 
 // describe('simple.js to Typescript', () => {
-//    const code = getTestFile('simple');
+//    const code = getTestFileCode('simple');
 //
 //    if (code) {
 //       saveOutput(code, 'typescript');

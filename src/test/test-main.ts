@@ -1,6 +1,8 @@
 
 
-import './output-tests';
+// import './output-tests';
 
 // import './big-file';
+
+import './symbols';
 

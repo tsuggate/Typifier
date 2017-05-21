@@ -3,7 +3,7 @@ import * as path from 'path';
 
 
 
-export function getTestFile(name: string): string | null {
+export function getTestFileCode(name: string): string | null {
    const file = path.resolve('test-files', `${name}.js`);
 
    try {
