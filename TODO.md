@@ -3,6 +3,7 @@
 - improve comment generation
 - jsx support
 - Add "this: any" to functions that need it.
+- put version number in ui. About dialog?
 
 ##### Wip
 - create symbol tree
