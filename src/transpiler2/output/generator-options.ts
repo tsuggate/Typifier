@@ -1,7 +1,9 @@
+import {ESComment} from './generators/comments';
+import * as esprima from 'esprima';
+import {Program} from 'estree';
 
-
-import {ESComment} from "./generators/comments";
 export type OutputLanguage = 'javascript' | 'typescript';
+
 
 
 export interface GeneratorOptions {
@@ -9,18 +11,27 @@ export interface GeneratorOptions {
    includeComments?: boolean;
 }
 
-
 export class GenOptions {
 
-   constructor(options?: GeneratorOptions) {
-      this.setOptions(options || {});
-   }
+   private program: Program;
 
    private language: OutputLanguage;
 
    private includeComments: boolean;
 
    private generatedComments: ESComment[] = [];
+
+   constructor(options: GeneratorOptions, code?: string) {
+      this.setOptions(options);
+
+      if (options.language === 'typescript' && !code) {
+         throw new Error(`Code not provided to GenOptions. This is required for outputting Typescript.`);
+      }
+
+      if (code) {
+         this.program = esprima.parse(code, { range: true });
+      }
+   }
 
    setOptions(options: GeneratorOptions): void {
       this.language = options.language ? options.language : 'javascript';
@@ -29,6 +40,14 @@ export class GenOptions {
 
    getLanguage(): OutputLanguage {
       return this.language;
+   }
+
+   getProgram(): Program {
+      if (!this.program) {
+         throw new Error('program is not initialised');
+      }
+
+      return this.program;
    }
 
    comments(): boolean {

@@ -9,11 +9,11 @@ import {GeneratorOptions, GenOptions} from "./output/generator-options";
 
 
 export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
-   const options = new GenOptions(generatorOptions);
+   const options = new GenOptions(generatorOptions || {}, code);
 
    try {
       addLog(`Parsing ${getJavaScriptFile()}... `);
-      const program = esprima.parse(code, { attachComment: true, loc: true });
+      const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
       appendLog(`Done`);
 
 

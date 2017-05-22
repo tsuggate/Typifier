@@ -1,10 +1,8 @@
 import {walk} from 'estree-walker';
-import * as esprima from "esprima";
-import {CallExpression, FunctionDeclaration, Identifier, Literal, Node, Program} from 'estree';
+import * as esprima from 'esprima';
+import {FunctionDeclaration, Node, Program} from 'estree';
 import {traverse} from '../util/misc';
-
-
-type Range = [number, number];
+import {CodeRange, equalRange} from '../output/generators/find-types/shared';
 
 
 export function run(code: string) {
@@ -23,12 +21,13 @@ export function run(code: string) {
 
          case 'FunctionDeclaration':
             if (node.id.name === 'myFunc') {
-               const calls = findFunctionCalls(program, node, parent.range as Range);
 
-               calls.forEach(call => {
-                  const types = getArgumentTypes(call);
-                  console.log(types);
-               });
+
+               // const calls = findFunctionCalls(program, node, parent.range as CodeRange);
+
+               // const types = getFunctionTypesFromCalls(calls);
+
+               // console.log(types);
 
             }
             break;
@@ -38,67 +37,31 @@ export function run(code: string) {
 
 }
 
-function getArgumentTypes(call: CallExpression) {
-   let argTypes: string[] = [];
+// export function findParentNode2(program: Program, target: Node): Promise<Node | null> {
+//    return new Promise<Node | null>(resolve => {
+//       traverse(program, (node: Node, parent: Node) => {
+//          if (node.type === target.type && equalRange(node.range as CodeRange, target.range as CodeRange)) {
+//             resolve(parent);
+//          }
+//       });
+//       resolve(null);
+//    });
+// }
 
-   call.arguments.forEach(a => {
-      if (a.type === 'Literal') {
-         const t = getTypeOfLiteral(a);
+export function findParentNode(program: Program, target: Node): Node | null {
+   let found = false;
+   let result: Node | null = null;
 
-         argTypes.push(t);
+   traverse(program, (node: Node, parent: Node, context) => {
+      if (found) {
+         context.skip();
       }
-      else {
-         argTypes.push('any');
-      }
-   });
 
-   return argTypes;
-}
-
-
-
-function getTypeOfLiteral(l: Literal) {
-   return typeof l.value;
-}
-
-
-function findFunctionCalls(program: Program, declaration: FunctionDeclaration, parentRange: Range): CallExpression[] {
-   let calls: CallExpression[] = [];
-
-   traverse(program, (node) => {
-      switch (node.type) {
-         case 'CallExpression':
-            const name = (node.callee as Identifier).name;
-
-            if (name === declaration.id.name && insideScope(node.range as Range, parentRange)) {
-
-               calls.push(node);
-            }
-            break;
+      if (node.type === target.type && equalRange(node.range as CodeRange, target.range as CodeRange)) {
+         found = true;
+         result = parent;
       }
    });
 
-   return calls;
-}
-
-
-function findFunctionDeclaration(program: Program, callee: Identifier) {
-   traverse(program, (node, parent) => {
-      switch (node.type) {
-         case 'FunctionDeclaration':
-            const functionId = node.id as Identifier;
-
-            if (functionId.name === callee.name && insideScope(callee.range as Range, parent.range as Range)) {
-               console.log('Success!');
-               console.log('parent type: ', parent.type);
-            }
-
-            break;
-      }
-   });
-}
-
-
-function insideScope(range: Range, scope: Range): boolean {
-   return scope[0] <= range[0] && scope[1] >= range[1];
+   return result;
 }

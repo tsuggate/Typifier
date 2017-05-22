@@ -1,6 +1,7 @@
 import {Node, Declaration, FunctionDeclaration, VariableDeclaration, VariableDeclarator} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
+import {getFunctionDeclarationTypes} from './find-types/function-declaration';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
@@ -30,7 +31,6 @@ export function getVariableDeclarationNames(dec: VariableDeclaration, options: G
 }
 
 export function functionDeclaration(f: FunctionDeclaration, options: GenOptions): string {
-   // console.log('functionDeclaration');
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
@@ -40,11 +40,19 @@ export function functionDeclaration(f: FunctionDeclaration, options: GenOptions)
 }
 
 export function functionDeclarationTs(f: FunctionDeclaration, options: GenOptions): string {
-   // console.log('functionDeclarationTs');
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
-   const params = f.params.map(p => generate(p, options) + ': any').join(', ');
+
+   const types = getFunctionDeclarationTypes(f, options);
+
+   if (!types || f.params.length !== types.length) {
+      throw new Error(`functionDeclaration types don't match.`);
+   }
+
+   const params = f.params.map((p, i) => {
+      return generate(p, options) + `: ${types[i]}`;
+   }).join(', ');
 
    return `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
 }
