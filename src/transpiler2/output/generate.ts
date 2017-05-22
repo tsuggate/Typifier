@@ -17,7 +17,10 @@ import {
    unaryExpression,
    updateExpression
 } from "./generators/expression";
-import {blockStatement, forStatement, ifStatement, returnStatement} from "./generators/statement";
+import {
+   blockStatement, breakStatement, forStatement, ifStatement, returnStatement, switchCase,
+   switchStatement
+} from "./generators/statement";
 import {
    functionDeclaration,
    functionDeclarationTs,
@@ -125,6 +128,12 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return ifStatement;
       case 'ForStatement':
          return forStatement;
+      case 'SwitchStatement':
+         return switchStatement;
+      case 'SwitchCase':
+         return switchCase;
+      case 'BreakStatement':
+         return breakStatement;
 
       default:
          throw new Error(node.type + ' not implemented!');

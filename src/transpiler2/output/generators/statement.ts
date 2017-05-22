@@ -1,4 +1,7 @@
-import {BlockStatement, ForStatement, IfStatement, ReturnStatement} from 'estree';
+import {
+   BlockStatement, BreakStatement, ForStatement, IfStatement, ReturnStatement, SwitchCase,
+   SwitchStatement
+} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 
@@ -28,4 +31,31 @@ export function forStatement(s: ForStatement, options: GenOptions): string {
    const body = generate(s.body, options);
 
    return `for (${s.init && s.init.type === 'VariableDeclaration' ? init : init + ';'} ${test}; ${update}) ${body}`;
+}
+
+
+export function switchStatement(s: SwitchStatement, options: GenOptions): string {
+   const cases = s.cases.map(c => generate(c, options)).join('\n');
+
+   return `switch (${generate(s.discriminant, options)}) { ${cases} }`;
+}
+
+export function switchCase(s: SwitchCase, options): string {
+   const consequent = s.consequent.map(c => generate(c, options)).join('\n');
+
+   if (s.test) {
+      return `case ${generate(s.test, options)}: \n ${consequent}`;
+   }
+   else {
+      return `default: \n ${consequent}`;
+   }
+}
+
+export function breakStatement(s: BreakStatement, options: GenOptions): string {
+   if (s.label) {
+      return `break ${s.label};`;
+   }
+   else {
+      return `break;`;
+   }
 }
