@@ -2,18 +2,35 @@ import {Node, Declaration, FunctionDeclaration, VariableDeclaration, VariableDec
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 import {getFunctionDeclarationTypes} from './find-types/function-declaration';
+import {findParentNode} from '../../symbols/symbols';
+import {findAssignmentTo} from './find-types/declaration-kind';
+import {CodeRange} from './find-types/shared';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
-   const declarations = dec.declarations.map(d => variableDeclaratorToJs(d, options)).join(', ');
+   const declarations = dec.declarations.map(d => generate(d, options)).join(', ');
 
    return `${dec.kind} ${declarations};`;
 }
 
 export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOptions): string {
-   const declarations = dec.declarations.map(d => variableDeclaratorToJs(d, options)).join(', ');
+   const declarations = dec.declarations.map(d => generate(d, options)).join(', ');
+   let kind = 'const';
 
-   return `let ${declarations};`;
+   const parent = findParentNode(options.getProgram(), dec);
+
+   if (parent) {
+      dec.declarations.forEach(d => {
+         if (d.id.type === 'Identifier') {
+            const res = findAssignmentTo(options.getProgram(), d.id, parent.range as CodeRange);
+            if (res) {
+               kind = 'let';
+            }
+         }
+      });
+   }
+
+   return `${kind} ${declarations};`;
 }
 
 export function variableDeclaratorToJs(dec: VariableDeclarator, options: GenOptions): string {
