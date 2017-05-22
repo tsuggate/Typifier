@@ -19,7 +19,7 @@ export function getJavaScriptFileName(): string {
    if (getState().openMode === 'folder') {
       const info = getState().folderInfo;
       if (info) {
-         return jsFile.replace(info.folderPath + '/', '');
+         return jsFile.replace(info.folderPath + path.sep, '');
       }
    }
 
