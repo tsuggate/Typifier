@@ -2,7 +2,6 @@ import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
 import {nextFile, previousFile, setFolder, setJavascriptFile} from "./state/state";
 import * as path from "path";
-// import {devMode} from "../transpiler2/util/args";
 import {remote} from 'electron';
 
 
@@ -12,9 +11,7 @@ renderHome();
 if (remote.getGlobal('devMode')) {
    // setJavascriptFile(path.join(__dirname, '..', 'test-files', 'comments.js'));
 
-   // setTimeout(() => {
-      setFolder('/Users/tobysuggate/Downloads/client/src/instance/js/plugins');
-   // }, 1000);
+   setFolder('/Users/tobysuggate/Downloads/client/src/instance/js/plugins');
 }
 
 document.onkeydown = (e) => {

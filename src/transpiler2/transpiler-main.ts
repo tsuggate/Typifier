@@ -9,6 +9,7 @@ import {GeneratorOptions, GenOptions} from "./output/generator-options";
 
 
 export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
+   const t1 = +new Date();
    const options = new GenOptions(generatorOptions || {}, code);
 
    try {
@@ -32,7 +33,7 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
 
       const myOutput = jsBeautify(out, jsBeautifyOptions);
 
-
+      addLog(`Time: ${+new Date() - t1}ms.`);
       return myOutput;
    }
    catch (e) {
