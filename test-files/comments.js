@@ -1,0 +1,37 @@
+define([
+   'jquery',
+   'knockout'
+   //'knockback'
+], function($, ko) {
+
+   // Set n to 42
+   // Another pointless comment.
+   var n = 42; // a
+   var a = n / 2; // b
+
+   /* hello comment */
+   function myFunc(a1, a2) { /* hello comment */
+      var b = 2;
+
+      return a1 * a2 + b; // return some things.
+   }
+
+   var map = {
+      one: 1, // one
+      two: 2 // two
+   };
+
+   var t = [
+      'hello' // comment
+   ];
+
+   myFunc(3, 4);
+   myFunc(true, 'hey');
+
+   return {
+      myFunc: myFunc,
+      map: map
+   };
+});
+
+myFunc(3, 4);

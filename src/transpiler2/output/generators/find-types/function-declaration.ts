@@ -15,7 +15,7 @@ export function getFunctionDeclarationTypes(dec: FunctionDeclaration, options: G
       const calls = findFunctionCalls(program, dec, parent.range as CodeRange);
       const types = getFunctionTypesFromCalls(calls);
 
-      console.log(types);
+      // console.log(types);
       return types;
    }
    return null;

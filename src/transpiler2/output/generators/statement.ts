@@ -4,6 +4,7 @@ import {
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
+import {ESComment, generateTrailingComments2} from './comments';
 
 
 export function blockStatement(s: BlockStatement, options: GenOptions): string {
@@ -11,7 +12,21 @@ export function blockStatement(s: BlockStatement, options: GenOptions): string {
 }
 
 export function returnStatement(s: ReturnStatement, options: GenOptions): string {
-   return `return ${s.argument ? generate(s.argument, options) : ''};`;
+   const code = `return ${s.argument ? generate(s.argument, options) : ''};`;
+
+   return returnStatementComments(code, s, options);
+}
+
+export function returnStatementComments(code: string, s: ReturnStatement, options: GenOptions) {
+   let leadingComments = '';
+   let trailingComments = '';
+
+   if (s.trailingComments) {
+      trailingComments = generateTrailingComments2(s.trailingComments as ESComment[], options);
+      // console.log(trailingComments);
+   }
+
+   return leadingComments + code + trailingComments;
 }
 
 export function ifStatement(s: IfStatement, options: GenOptions): string {

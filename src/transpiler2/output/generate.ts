@@ -50,7 +50,11 @@ export function generate(node: Node, options: GenOptions): string {
       }
    }
 
-   return insertComments(result, node, options);
+   if (node.leadingComments || node.trailingComments) {
+      console.log(node);
+   }
+   return result;
+   // return insertComments(result, node, options);
 }
 
 function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOptions) => string) {

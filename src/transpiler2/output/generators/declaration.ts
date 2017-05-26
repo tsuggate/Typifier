@@ -5,12 +5,15 @@ import {getFunctionDeclarationTypes} from './find-types/function-declaration';
 import {findParentNode} from '../../symbols/symbols';
 import {findAssignmentTo} from './find-types/declaration-kind';
 import {CodeRange} from './find-types/shared';
+import {ESComment, generateLeadingComments2, generateTrailingComments2} from './comments';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
    const declarations = dec.declarations.map(d => generate(d, options)).join(', ');
 
-   return `${dec.kind} ${declarations};`;
+   const res = `${dec.kind} ${declarations};`;
+
+   return variableDeclarationComments(res, dec, options);
 }
 
 export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOptions): string {
@@ -30,7 +33,31 @@ export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOp
       });
    }
 
-   return `${kind} ${declarations};`;
+   const res = `${kind} ${declarations};`;
+
+   return variableDeclarationComments(res, dec, options);
+}
+
+export function variableDeclarationComments(code: string, dec: VariableDeclaration, options: GenOptions) {
+   let leadingComments = '';
+   let trailingComments = '';
+
+   if (dec.leadingComments) {
+      const c = generateLeadingComments2(dec.leadingComments as ESComment[], options);
+
+      if (c) {
+         leadingComments = '\n' + c + '\n';
+      }
+   }
+   if (dec.trailingComments) {
+      const c = generateTrailingComments2(dec.trailingComments as ESComment[], options);
+
+      if (c) {
+         trailingComments = c;
+      }
+   }
+
+   return leadingComments + code + trailingComments;
 }
 
 export function variableDeclaratorToJs(dec: VariableDeclarator, options: GenOptions): string {

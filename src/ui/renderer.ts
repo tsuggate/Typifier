@@ -8,7 +8,7 @@ renderMainWindowMenu();
 renderHome();
 
 
-// setJavascriptFile(path.join(__dirname, '..', 'test-files', 'simple.js'));
+setJavascriptFile(path.join(__dirname, '..', 'test-files', 'comments.js'));
 
 document.onkeydown = (e) => {
    e = e || window.event;

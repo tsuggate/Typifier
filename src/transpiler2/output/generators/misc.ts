@@ -1,6 +1,7 @@
 import {Identifier, Literal, Program, Property} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
+import {ESComment, generateComment2} from './comments';
 
 
 export function programToJs(program: Program, options: GenOptions): string {
@@ -16,7 +17,14 @@ export function identifierToJs(i: Identifier): string {
    return i.name;
 }
 
-export function literalToJs(l: Literal): string {
+export function literalToJs(l: Literal, options: GenOptions): string {
+   // if (l.trailingComments && l.trailingComments[0]) {
+   //    const comment = l.trailingComments[0] as ESComment;
+   //    if (l.loc && comment.loc.start === l.loc.start) {
+   //       return l.raw + generateComment2(comment, options) + '\n';
+   //    }
+   // }
+
    return l.raw;
 }
 

@@ -1,7 +1,11 @@
 import {Node, SourceLocation} from 'estree';
 import {GenOptions} from "../generator-options";
 
-// let generatedComments: ESComment[] = [];
+/*
+
+ Idea: Only generate trailing comments if they are on the same line.
+
+ */
 
 export interface ESComment {
    range: number[];
@@ -16,6 +20,8 @@ export function insertComments(code: string, node: Node, options: GenOptions): s
    const trailing = generateTrailingComments(node, options);
 
    if (options.comments()) {
+      // console.log(code);
+
       return leading + code + trailing;
    }
    return code;
@@ -39,23 +45,13 @@ function generateTrailingComments(node: Node, options: GenOptions) {
    return '';
 }
 
-function printComment(comment: ESComment, type: 'trailing' | 'leading', options: GenOptions) {
-   if (comment.type === 'Line') {
-      console.log(`//${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)}`);
-   }
-   else {
-      console.log(`/*${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)} */`);
-   }
-
-}
-
-function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions): string {
+export function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions): string {
    let res;
 
-   // printComment(comment, type, options);
+   printComment(comment, type, options);
 
    if (comment.type === 'Line') {
-      res = generateLineComment(comment, type, node, options);
+      res = generateLineComment(comment, options);
    }
    else {
       res = generateBlockComment(comment, type, node, options);
@@ -64,33 +60,56 @@ function generateComment(comment: ESComment, type: 'trailing' | 'leading', node:
    return res;
 }
 
-/*
-
- Idea: Only generate trailing comments if they are on the same line.
-
- */
-
-function generateLineComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions) {
+function generateLineComment(comment: ESComment, options: GenOptions) {
    let res = '';
 
    if (options.commentAlreadyGenerated(comment)) {
       return res;
    }
 
-   if (type === 'trailing') {
-      if (node.loc && comment.loc.start.line === node.loc.start.line) {
-         // generatedComments.push(comment);
+   // if (type === 'trailing') {
+   //    if (node.loc && comment.loc.start.line === node.loc.start.line) {
          options.setCommentAsGenerated(comment);
          res = `//${comment.value}`;
-      }
+      // }
+   // }
+   // else {
+   //    options.setCommentAsGenerated(comment);
+   //    res = `\n//${comment.value}\n`;
+   // }
+
+   return res;
+}
+
+export function generateComment2(comment: ESComment, options: GenOptions): string {
+   let res;
+
+   if (comment.type === 'Line') {
+      res = generateLineComment2(comment, options);
    }
    else {
-      // generatedComments.push(comment);
-      options.setCommentAsGenerated(comment);
-      res = `\n//${comment.value}\n`;
+      res = generateBlockComment2(comment, options);
    }
 
    return res;
+}
+
+export function generateLineComment2(comment: ESComment, options: GenOptions): string {
+   if (options.commentAlreadyGenerated(comment)) {
+      return '';
+   }
+
+   options.setCommentAsGenerated(comment);
+   return `//${comment.value}`;
+}
+
+export function generateBlockComment2(comment: ESComment, options: GenOptions) {
+   if (options.commentAlreadyGenerated(comment)) {
+      return '';
+   }
+
+   options.setCommentAsGenerated(comment);
+   return `/*${comment.value}*/`;
 }
 
 function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions) {
@@ -114,12 +133,30 @@ function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', 
    return res;
 }
 
-// function commentAlreadyGenerated(c: ESComment): boolean {
-//    return generatedComments.some(gc => equals(c, gc));
-// }
-//
-// function equals(a: ESComment, b: ESComment): boolean {
-//    // return false;
-//    // console.log(a);
-//    return a.range[0] === b.range[0] && a.range[1] === b.range[1] && a.value === b.value;
-// }
+function printComment(comment: ESComment, type: 'trailing' | 'leading', options: GenOptions) {
+   if (comment.type === 'Line') {
+      console.log(`//${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)}`);
+   }
+   else {
+      console.log(`/*${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)} */`);
+   }
+}
+
+export function generateLeadingComments2(comments: ESComment[], options: GenOptions): string {
+   if (!options.comments()) {
+      return '';
+   }
+
+   return comments.map(c => generateComment2(c, options)).filter(c => c !== '').join('\n');
+}
+
+export function generateTrailingComments2(comments: ESComment[], options: GenOptions) {
+   if (!options.comments()) {
+      return '';
+   }
+
+   if (comments[0]) {
+      return generateComment2(comments[0], options);
+   }
+   return '';
+}
