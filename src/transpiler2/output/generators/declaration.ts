@@ -5,7 +5,7 @@ import {getFunctionDeclarationTypes} from './find-types/function-declaration';
 import {findParentNode} from '../../symbols/symbols';
 import {findAssignmentTo} from './find-types/declaration-kind';
 import {CodeRange} from './find-types/shared';
-import {ESComment, generateLeadingComments2, generateTrailingComments2} from './comments';
+import {ESComment, generateComments2, generateLeadingComments2, generateTrailingComments2} from './comments';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
@@ -80,7 +80,9 @@ export function functionDeclaration(f: FunctionDeclaration, options: GenOptions)
    }
    const params = f.params.map(p => generate(p, options)).join(', ');
 
-   return `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
+   const res = `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
+
+   return functionDeclarationComments(res, f, options);
 }
 
 export function functionDeclarationTs(f: FunctionDeclaration, options: GenOptions): string {
@@ -98,7 +100,22 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
       return generate(p, options) + `: ${types[i]}`;
    }).join(', ');
 
-   return `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
+   const res = `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
+
+   return functionDeclarationComments(res, f, options);
+}
+
+export function functionDeclarationComments(code: string, f: FunctionDeclaration, options: GenOptions): string {
+   return generateComments2(code, f, options);
+   // let leadingComments = '';
+   //
+   //
+   // if (f.leadingComments) {
+   //
+   // }
+   //
+   //
+   // return code;
 }
 
 export function getFunctionDeclarationName(f: FunctionDeclaration, options: GenOptions): string {

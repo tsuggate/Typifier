@@ -107,6 +107,7 @@ function getExportNames(func: FunctionExpression, options: GenOptions): string[]
          return [ generate(arg, options) ];
       }
       else {
+         console.log(arg.type, arg);
          throw new Error('getExportNames failed');
       }
    }

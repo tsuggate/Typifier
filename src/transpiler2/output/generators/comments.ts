@@ -1,6 +1,11 @@
 import {Node, SourceLocation} from 'estree';
 import {GenOptions} from "../generator-options";
 
+// import * as temp from '../../temp';
+var temp = require('../../temp');
+
+console.log(temp);
+
 /*
 
  Idea: Only generate trailing comments if they are on the same line.
@@ -120,7 +125,7 @@ function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', 
    }
 
    if (type === 'trailing') {
-      if (node.loc && comment.loc.start.line === node.loc.start.line) {
+      if (node.loc && comment.loc.start.line === node.loc.end.line) {
          options.setCommentAsGenerated(comment);
          res =  `/*${comment.value}*/`;
       }
@@ -159,4 +164,30 @@ export function generateTrailingComments2(comments: ESComment[], options: GenOpt
       return generateComment2(comments[0], options);
    }
    return '';
+}
+
+export function generateComments2(code: string, node: Node, options: GenOptions) {
+   let leadingComments = '';
+   let trailingComments = '';
+
+   if (node.leadingComments) {
+      const c = generateLeadingComments2(node.leadingComments as ESComment[], options);
+
+      if (c) {
+         leadingComments = '\n' + c + '\n';
+      }
+   }
+   if (node.trailingComments) {
+      const comments = node.trailingComments as ESComment[];
+
+      if (comments[0] && node.loc && comments[0].loc.start === node.loc.end) {
+         const c = generateTrailingComments2(comments, options);
+
+         if (c) {
+            trailingComments = c;
+         }
+      }
+   }
+
+   return leadingComments + code + trailingComments;
 }

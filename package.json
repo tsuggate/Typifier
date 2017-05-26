@@ -10,7 +10,7 @@
     "make": "webpack --colors --progress",
     "start": "node distr/cmd.js --file ./test-files/simple.js --out ./out/out.ts",
     "gui": "electron distr/main.js --dev",
-    "debug": "nodemon --exec electron --watch distr distr/main.js",
+    "debug": "nodemon --exec electron --watch distr distr/main.js --dev",
     "pack": "build --dir",
     "dist": "build"
   },

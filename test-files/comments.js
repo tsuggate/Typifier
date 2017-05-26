@@ -10,7 +10,7 @@ define([
    var a = n / 2; // b
 
    /* hello comment */
-   function myFunc(a1, a2) { /* hello comment */
+   function myFunc(a1, a2) { /* hello comment 2 */
       var b = 2;
 
       return a1 * a2 + b; // return some things.
@@ -18,11 +18,12 @@ define([
 
    var map = {
       one: 1, // one
-      two: 2 // two
+      two: 2, // two
+      three: 3 // three
    };
 
    var t = [
-      'hello' // comment
+      'hello' // hello2
    ];
 
    myFunc(3, 4);
