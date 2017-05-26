@@ -4,6 +4,7 @@ import * as escodegen from 'escodegen';
 
 import * as jsBeautify from 'js-beautify';
 import {GenOptions} from '../transpiler2/output/generator-options';
+import {addLog} from '../ui/state/state';
 
 
 export const jsBeautifyOptions = {
@@ -38,9 +39,26 @@ export function printTree(code: string): void {
 }
 
 export function reformatCode(code: string): string {
-   const program = esprima.parse(code);
+   let program;
 
-   return escodegen.generate(program);
+   try {
+      program = esprima.parse(code);
+   }
+   catch (e) {
+      addLog(`Error: Esprima failed to parse code.`);
+      addLog(e.stack);
+      console.log(code);
+      return '';
+   }
+
+   try {
+      return escodegen.generate(program);
+   }
+   catch (e) {
+      addLog(`Error: Escodegen failed to generate code.`);
+      addLog(e.stack);
+      return '';
+   }
 }
 
 export function diffOutput(code: string) {
