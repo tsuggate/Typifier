@@ -1,8 +1,8 @@
 import {Node, SourceLocation} from 'estree';
 import {GenOptions} from "../generator-options";
 
-// import * as temp from '../../temp';
-var temp = require('../../temp');
+import temp from '../../temp';
+// var temp = require('../../temp');
 
 console.log(temp);
 

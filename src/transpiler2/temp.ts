@@ -1,6 +1,11 @@
+import * as _ from 'underscore';
 
 function maker() {
    return 'hi';
 }
 
-export default maker();
+// export { maker };
+
+export default _.extend({}, {
+   num: 5
+});

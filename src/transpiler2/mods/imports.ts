@@ -43,6 +43,9 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
          return generateDeclaration(e as Declaration, exportNames, options);
       }
       else if (e.type === 'ReturnStatement') {
+         if (exportNames.length === 0) {
+            return makeDefaultExport(e, options);
+         }
          return '';
       }
       else {
@@ -53,6 +56,13 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    const definitions = makeDefinitionsForMissingExports(func, options, importNames);
 
    return `${imports.join('')} ${body} ${definitions}`;
+}
+
+function makeDefaultExport(e: ReturnStatement, options: GenOptions) {
+   if (e.argument) {
+      return `export default ${generate(e.argument, options)}`;
+   }
+   return '';
 }
 
 function getLibraryNames(e: CallExpression, options: GenOptions): string[] {
@@ -108,7 +118,7 @@ function getExportNames(func: FunctionExpression, options: GenOptions): string[]
       }
       else {
          console.log(arg.type, arg);
-         throw new Error('getExportNames failed');
+         // throw new Error('getExportNames failed');
       }
    }
    return [];
