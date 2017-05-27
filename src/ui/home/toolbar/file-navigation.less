@@ -32,22 +32,29 @@
 }
 
 .FileNavigation .arrowRight {
-  width: 0;
-  height: 0;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
+  margin-top: 13px;
+  margin-bottom: 13px;
 
-  border-left: 10px solid #d6d6d6;
+  width: 11px;
+  height: 11px;
 
-  margin: 10px;
+  border-bottom: solid 3px #d6d6d6;
+  border-right: solid 3px #d6d6d6;
+  transform: rotate(-45deg);
+}
+
+.FileNavigation .nextFile {
+  width: 25px;
 }
 
 .FileNavigation .nextFile.disabled .arrowRight {
-  border-left: 10px solid #7a7a7a;
+  border-bottom: solid 3px #7a7a7a;
+  border-right: solid 3px #7a7a7a;
 }
+
 .FileNavigation .nextFile:hover:not(.disabled) .arrowRight {
-  border-left: 10px solid #7a7a7a;
-  border-left: 10px solid #ffffff;
+  border-bottom: solid 3px #ffffff;
+  border-right: solid 3px #ffffff;
 }
 
 .FileNavigation .nextFile:hover:not(.disabled) {
@@ -55,21 +62,30 @@
 }
 
 .FileNavigation .arrowLeft {
-  width: 0;
-  height: 0;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
+  width: 11px;
+  height: 11px;
+  border-top: solid 3px #d6d6d6;
+  border-left: solid 3px #d6d6d6;
+  transform: rotate(-45deg);
 
-  border-right:10px solid #d6d6d6;
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
 
-  margin: 10px;
+.FileNavigation .previousFile {
+  padding-left: 10px;
+  width: 20px;
+  margin-left: 10px;
 }
 
 .FileNavigation .previousFile.disabled .arrowLeft {
-  border-right:10px solid #7a7a7a;
+  border-top: solid 3px #7a7a7a;
+  border-left: solid 3px #7a7a7a;
 }
+
 .FileNavigation .previousFile:hover:not(.disabled) .arrowLeft {
-  border-right:10px solid #ffffff;
+  border-top: solid 3px #ffffff;
+  border-left: solid 3px #ffffff;
 }
 
 .FileNavigation .previousFile:hover:not(.disabled) {
