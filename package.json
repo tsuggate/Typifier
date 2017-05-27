@@ -1,6 +1,6 @@
 {
   "name": "kuraTranspiler",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Transpiler for convertion JavaScript code to Typescript in kuraCloud",
   "main": "./distr/main.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "watch": "webpack --watch --colors --progress",
     "make": "webpack --colors --progress",
     "start": "node distr/cmd.js --file ./test-files/simple.js --out ./out/out.ts",
-    "gui": "electron distr/main.js --dev",
+    "gui": "electron distr/main.js",
     "debug": "nodemon --exec electron distr/main.js --dev",
     "pack": "build --dir",
     "dist": "build"

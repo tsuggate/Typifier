@@ -14,7 +14,7 @@ if (remote.getGlobal('devMode')) {
    // setJavascriptFile(path.join(__dirname, '..', 'test-files', 'comments.js'));
 
    const subFolder = path.join('client', 'src', 'instance', 'js', 'plugins');
-   
+
    if (os.platform() === 'win32') {
       const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
 
