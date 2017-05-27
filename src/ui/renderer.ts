@@ -3,6 +3,8 @@ import {renderMainWindowMenu} from './home/menu';
 import {nextFile, previousFile, setFolder, setJavascriptFile} from "./state/state";
 import * as path from "path";
 import {remote} from 'electron';
+import * as os from 'os';
+import {existsSync} from 'fs';
 
 
 renderMainWindowMenu();
@@ -11,7 +13,14 @@ renderHome();
 if (remote.getGlobal('devMode')) {
    // setJavascriptFile(path.join(__dirname, '..', 'test-files', 'comments.js'));
 
-   setFolder('/Users/tobysuggate/Downloads/client/src/instance/js/plugins');
+   const subFolder = path.join('client', 'src', 'instance', 'js', 'plugins');
+   
+   if (os.platform() === 'win32') {
+      const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
+
+      if (existsSync(folder))
+         setFolder(folder);
+   }
 }
 
 document.onkeydown = (e) => {
