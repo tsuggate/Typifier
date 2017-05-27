@@ -6,34 +6,37 @@ import {addLog, appendLog, getJavaScriptFile} from "../ui/state/state";
 import {Program} from "estree";
 import * as escodegen from "escodegen";
 import {GeneratorOptions, GenOptions} from "./output/generator-options";
+import * as _ from 'underscore';
 
 
 export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
-   const t1 = +new Date();
+   const t1 = _.now();
    const options = new GenOptions(generatorOptions || {}, code);
 
    try {
+      const t2 = _.now();
       addLog(`Parsing ${getJavaScriptFile()}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
       console.log(program);
-      appendLog(`Done`);
+      appendLog(`Done - ${_.now() - t2}ms`);
 
-
+      const t3 = _.now();
       addLog(`Checking code gen matches escodegen... `);
       if (!jsGeneratorProducesCorrectOutput(program)) {
          addLog(`JS code generation didn't match`);
 
          return null;
       }
-      appendLog('OK');
+      appendLog(`OK - ${_.now() - t3}ms`);
 
+      const t4 = _.now();
       addLog(`Generating ${options.getLanguage()}... `);
       const out = generate(program, options);
-      appendLog(`Success`);
+      appendLog(`Success - ${_.now() - t4}ms`);
 
       const myOutput = jsBeautify(out, jsBeautifyOptions);
 
-      addLog(`Time: ${+new Date() - t1}ms.`);
+      addLog(`Total Time: ${_.now() - t1}ms`);
       return myOutput;
    }
    catch (e) {
