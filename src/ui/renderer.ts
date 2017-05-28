@@ -1,12 +1,13 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {nextFile, previousFile, setFolder, setJavascriptFile} from "./state/state";
+import {initState, nextFile, previousFile, setFolder, setJavascriptFile} from "./state/state";
 import * as path from "path";
 import {remote} from 'electron';
 import * as os from 'os';
 import {existsSync} from 'fs';
 
 
+initState();
 renderMainWindowMenu();
 renderHome();
 

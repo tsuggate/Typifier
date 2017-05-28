@@ -8,8 +8,8 @@ import {getJavaScriptFile, getState} from "../state/state";
 import {ViewMode} from "../state/schema";
 
 
-export function renderHome(): void {
-   ReactDOM.render(
+export function renderHome() {
+   return ReactDOM.render(
       <Home viewMode={getState().viewMode} />,
       document.getElementById("react-entry")
    );

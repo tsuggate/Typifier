@@ -17,7 +17,6 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
       const t2 = _.now();
       addLog(`Parsing ${getJavaScriptFile()}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
-      console.log(program);
       appendLog(`Done - ${_.now() - t2}ms`);
 
       const t3 = _.now();

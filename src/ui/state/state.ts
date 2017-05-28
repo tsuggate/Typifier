@@ -3,6 +3,8 @@ import {generateTypescript, getWindow, loadJavascriptFile} from '../global-actio
 import {State, ViewMode} from "./schema";
 import {getJavaScriptFilesInFolder} from "../util/util";
 
+import {Action, createStore} from 'redux';
+
 
 let state: State = {
    viewMode: 'log',
@@ -14,6 +16,23 @@ let state: State = {
    codeGenSucceeded: false,
    logs: []
 };
+
+const initialState = {...state};
+
+function app(s: State = initialState, action: Action): State {
+   switch (action.type) {
+
+      default:
+         return s;
+   }
+}
+
+
+export function initState() {
+   const store = createStore(app);
+   store.subscribe(renderHome);
+}
+
 
 export function getState(): State {
    return state;
