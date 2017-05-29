@@ -20,8 +20,8 @@ if (remote.getGlobal('devMode')) {
    if (os.platform() === 'win32') {
       const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
 
-      // if (existsSync(folder))
-         // openFolder(folder);
+      if (existsSync(folder))
+         openFolder(folder);
    }
 }
 

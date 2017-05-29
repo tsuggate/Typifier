@@ -13,12 +13,14 @@ export function appReducer(s: AppState = initialState, action: AppAction): AppSt
    switch (action.type) {
       case 'SET_VIEW_MODE':
          return {...s, viewMode: action.mode};
-      case 'SET_OPEN_MODE':
+      case 'SET_FOLDER':
          return {...s, openMode: 'folder'};
       case 'ADD_LOG':
          return addLog(s, action);
       case 'CLEAR_LOGS':
          return {...s, logs: []};
+      case 'CLOSE_FILE':
+         return {...s, viewMode: 'log'};
 
       default:
          return s;

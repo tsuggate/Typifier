@@ -1,5 +1,6 @@
 import {CodeState} from '../schema';
 import {CodeActions, SetFileIndex, SetFolder} from './code-actions';
+import {getAppState} from '../state';
 
 
 const initialState: CodeState = {
@@ -15,19 +16,21 @@ const initialState: CodeState = {
 export function codeReducer(s: CodeState = initialState, action: CodeActions): CodeState {
    switch (action.type) {
       case 'SET_JAVASCRIPT_FILE':
-         return setJavaScriptFile2(s, action.file, action.code);
+         return setJavaScriptFile(s, action.file, action.code);
       case 'SET_TYPESCRIPT_CODE':
          return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
       case 'SET_FOLDER':
          return setFolder(s, action);
       case 'SET_FILE_INDEX':
          return setFileIndex(s, action);
+      case 'CLOSE_FILE':
+         return closeFile(s);
       default:
          return s;
    }
 }
 
-export function setJavaScriptFile2(s: CodeState, file: string, code: string): CodeState {
+export function setJavaScriptFile(s: CodeState, file: string, code: string): CodeState {
    return {
       ...s,
       javascriptFile: file,
@@ -44,13 +47,26 @@ function setFolder(s: CodeState, action: SetFolder): CodeState {
    };
 }
 
-
 function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
    return {
       ...s,
-      currentFileIndex: action.index,
-      javascriptCode: action.javaScriptCode,
-      typescriptCode: action.typeScriptCode,
-      codeGenSucceeded: action.success
+      currentFileIndex: action.index
    };
 }
+
+function closeFile(s: CodeState): CodeState {
+   if (getAppState().openMode === 'folder') {
+      const i = s.currentFileIndex;
+
+      // TODO: Can't put logic here as this will require dispatching.
+
+      return {...s};
+   }
+   else {
+      return {...s, javascriptFile: null, javascriptCode: null, typescriptCode: null, codeGenSucceeded: false};
+   }
+
+
+}
+
+

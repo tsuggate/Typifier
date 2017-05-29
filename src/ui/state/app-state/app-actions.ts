@@ -1,7 +1,8 @@
-import {OpenMode, ViewMode} from '../schema';
+import {ViewMode} from '../schema';
+import {CloseFile, SetFolder} from '../code-state/code-actions';
 
 
-export type AppAction = SetViewMode | SetOpenMode | AddLog | ClearLogs;
+export type AppAction = SetViewMode | AddLog | ClearLogs | CloseFile | SetFolder;
 
 
 export interface SetViewMode {
@@ -9,10 +10,10 @@ export interface SetViewMode {
    mode: ViewMode;
 }
 
-export interface SetOpenMode {
-   type: 'SET_OPEN_MODE';
-   mode: OpenMode;
-}
+// export interface SetOpenMode {
+//    type: 'SET_OPEN_MODE';
+//    mode: OpenMode;
+// }
 
 export interface AddLog {
    type: 'ADD_LOG';

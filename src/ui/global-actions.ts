@@ -1,8 +1,8 @@
 import {remote} from 'electron';
-import {dispatch, getCodeState} from './state/state';
+import {dispatch, getCodeState, getJavaScriptFile} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
-import {getJavaScriptFilesInFolder} from './util/util';
+import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -50,72 +50,63 @@ export function showOpenFolderWindow(): string | null {
 
 export function openJavaScriptFile(file: string): void {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-
-   const code = loadJavaScriptFile2(file) || '';
-
-   dispatch({type: 'SET_JAVASCRIPT_FILE', file, code});
    getWindow().setTitle('kuraTranspiler - ' + file);
 
-   generateTypeScript(code);
+   generateTypeScript(file);
 }
 
 export function openFolder(folderPath: string): void {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   getWindow().setTitle('kuraTranspiler - ' + folderPath);
 
    const files = getJavaScriptFilesInFolder(folderPath);
 
-   setFolder(folderPath, files);
-   getWindow().setTitle('kuraTranspiler - ' + folderPath);
+   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files});
 
    if (files[0]) {
-      const code = loadJavaScriptFile2(files[0]) || '';
-      dispatch({type: 'SET_JAVASCRIPT_FILE', file: files[0], code});
-      generateTypeScript(code);
+      generateTypeScript(files[0]);
    }
-
 }
 
-function setFolder(folderPath: string, javaScriptFiles: string[]) {
-   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles});
-   dispatch({type: 'SET_OPEN_MODE', mode: 'folder'});
-}
+function generateTypeScript(javaScriptFile: string) {
+   const code = loadJavaScriptFile(javaScriptFile);
 
-function generateTypeScript(jsCode: string) {
-   const tsCode = transpile(jsCode, {language: 'typescript'});
-   const success = !!tsCode;
+   if (code) {
+      dispatch({type: 'SET_JAVASCRIPT_FILE', file: javaScriptFile, code});
 
-   dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
+      const tsCode = transpile(code, {language: 'typescript'});
+      const success = !!tsCode;
 
-   if (success)
-      dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+      dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
+
+      if (success) {
+         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+      }
+   }
 }
 
 export function saveTypeScriptCode(): void {
-   console.log('TODO: saveTypeScriptCode');
-   // const jsFile = getJavaScriptFile();
-   // const tsFile = getTypeScriptFilePath();
-   // const code = getState().typescriptCode;
-   //
-   // fs.writeFileSync(tsFile, code);
-   //
-   // fs.unlinkSync(jsFile);
-   // addLog(`Wrote ${tsFile}`);
-   //
-   // closeJavaScriptFile();
+   const jsFile = getJavaScriptFile();
+   const tsFile = getTypeScriptFilePath();
+   const code = getCodeState().typescriptCode;
+
+   fs.writeFileSync(tsFile, code);
+
+   fs.unlinkSync(jsFile);
+   addLog(`Wrote ${tsFile}`);
+
+   dispatch({type: 'CLOSE_FILE'});
 }
 
 export function addLog(log: string): void {
    dispatch({type: 'ADD_LOG', log});
-
 }
-
 
 export function appendLog(log: string): void {
    dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
 export function nextFile(): void {
-   console.log('nextFile');
    const s = getCodeState();
 
    if (s.currentFileIndex < s.javascriptFiles.length - 1) {
@@ -132,29 +123,15 @@ export function previousFile(): void {
 }
 
 function setFileIndex(index: number): void {
-   console.log('setFileIndex');
    const s = getCodeState();
    const jsFile = s.javascriptFiles[index];
-   const jsCode = loadJavaScriptFile2(jsFile);
 
-   if (jsCode) {
-      const tsCode = transpile(jsCode, {language: 'typescript'});
-      const success = !!tsCode;
+   dispatch({type: 'SET_FILE_INDEX', index});
 
-      dispatch({
-         type: 'SET_FILE_INDEX',
-         index, javaScriptCode:
-         jsCode, typeScriptCode:
-         tsCode || '',
-         success
-      });
-
-      if (success)
-         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
-   }
+   generateTypeScript(jsFile);
 }
 
-export function loadJavaScriptFile2(jsFile: string): string | null {
+export function loadJavaScriptFile(jsFile: string): string | null {
    if (!jsFile) {
       return null;
    }
