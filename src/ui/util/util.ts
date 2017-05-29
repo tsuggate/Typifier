@@ -1,16 +1,16 @@
-import {getJavaScriptFile, getState} from "../state/state";
+import {getJavaScriptFile2, getState} from "../state/state";
 import * as path from "path";
 import * as fs from "fs";
 
 
 export function getTypeScriptFileName(): string {
-   const jsFile = getJavaScriptFile();
+   const jsFile = getJavaScriptFile2();
 
    return path.parse(jsFile).name + '.ts';
 }
 
 export function getJavaScriptFileName(): string {
-   const jsFile = getJavaScriptFile();
+   const jsFile = getJavaScriptFile2();
 
    if (!jsFile) {
       return '';
@@ -27,7 +27,7 @@ export function getJavaScriptFileName(): string {
 }
 
 export function getTypeScriptFilePath(): string {
-   const jsFile = getJavaScriptFile();
+   const jsFile = getJavaScriptFile2();
 
    if (jsFile) {
       return jsFile.split('.')[0] + '.ts';

@@ -2,7 +2,7 @@ import {generate} from "./output/generate";
 import * as jsBeautify from "js-beautify";
 import {jsBeautifyOptions, reformatCode} from "../test/shared";
 import * as esprima from "esprima";
-import {addLog, appendLog, getJavaScriptFile} from "../ui/state/state";
+import {addLog, appendLog, getJavaScriptFile2} from "../ui/state/state";
 import {Program} from "estree";
 import * as escodegen from "escodegen";
 import {GeneratorOptions, GenOptions} from "./output/generator-options";
@@ -15,7 +15,7 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
 
    try {
       const t2 = _.now();
-      addLog(`Parsing ${getJavaScriptFile()}... `);
+      addLog(`Parsing ${getJavaScriptFile2()}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
       appendLog(`Done - ${_.now() - t2}ms`);
 

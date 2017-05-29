@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '../../components/button';
 import './toolbar.less';
 import {getWindow, saveTypeScriptCode} from '../../global-actions';
-import {getJavaScriptFile, getState, setViewMode} from '../../state/state';
+import {dispatch, getJavaScriptFile2, getState} from '../../state/state';
 import {remote} from 'electron';
 import {getJavaScriptFileName, getTypeScriptFileName} from '../../util/util';
 import FileNavigation from './file-navigation';
@@ -40,19 +40,21 @@ export default class Toolbar extends React.Component<{}, {}> {
    }
 
    shouldDisableViewCode = () => {
-      return !getJavaScriptFile();
+      return !getJavaScriptFile2();
    };
 
    shouldDisableApplyChanges = () => {
-      return !getState().codeGenSucceeded || !getJavaScriptFile();
+      return !getState().codeGenSucceeded || !getJavaScriptFile2();
    };
 
    onClickShowLog = () => {
-      setViewMode('log');
+      // setViewMode('log');
+      dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    };
 
    onClickCompareCode = () => {
-      setViewMode('code');
+      // setViewMode('code');
+      dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
    };
 
    onClickApplyChanges = () => {

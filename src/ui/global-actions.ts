@@ -1,6 +1,8 @@
 import {remote} from 'electron';
 import {
-   addLog, closeJavaScriptFile, getJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
+   addLog, closeJavaScriptFile, dispatch,  getJavaScriptFile2, getState, getStore, setFolder,
+   setJavascriptCode,
+
    setTypescriptCode
 } from './state/state';
 import * as fs from 'fs';
@@ -16,7 +18,9 @@ export function clickOpenJsFile(): void {
    const filePath = openJsFile();
 
    if (filePath) {
-      setJavascriptFile(filePath);
+      // setJavascriptFile(filePath);
+      // dispatch({type: 'OPEN_JAVASCRIPT_FILE', file: filePath});
+      openJavaScriptFile(filePath);
    }
 }
 
@@ -51,24 +55,61 @@ export function openFolder(): string | null {
    return null;
 }
 
-export function saveTypeScriptCode(): void {
-   const jsFile = getJavaScriptFile();
-   const tsFile = getTypeScriptFilePath();
-   const code = getState().typescriptCode;
+export function openJavaScriptFile(file: string): void {
+   dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
 
-   fs.writeFileSync(tsFile, code);
+   const code = loadJavaScriptFile2(file);
 
-   fs.unlinkSync(jsFile);
-   addLog(`Wrote ${tsFile}`);
+   dispatch({type: 'SET_JAVASCRIPT_FILE', file, code});
 
-   closeJavaScriptFile();
+   const tsCode = transpile(code, {language: 'typescript'});
+
+   dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success: !!tsCode});
+   dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
 }
 
-export function loadJavascriptFile(): boolean {
-   const jsFile = getJavaScriptFile();
+export function saveTypeScriptCode(): void {
+   console.log('TODO: saveTypeScriptCode');
+   // const jsFile = getJavaScriptFile();
+   // const tsFile = getTypeScriptFilePath();
+   // const code = getState().typescriptCode;
+   //
+   // fs.writeFileSync(tsFile, code);
+   //
+   // fs.unlinkSync(jsFile);
+   // addLog(`Wrote ${tsFile}`);
+   //
+   // closeJavaScriptFile();
+}
+
+// export function loadJavascriptFile(): boolean {
+//    const jsFile = getJavaScriptFile();
+//
+//    if (!jsFile) {
+//       return false;
+//    }
+//
+//    try {
+//       const file = fs.readFileSync(jsFile);
+//       const jsCode = file.toString();
+//
+//       if (jsCode) {
+//          setJavascriptCode(jsCode);
+//          return true;
+//       }
+//    }
+//    catch (e) {
+//       console.log(e);
+//       addLog(e);
+//    }
+//    return false;
+// }
+
+export function loadJavaScriptFile2(jsFile: string): string {
+   // const jsFile = getJavaScriptFile2();
 
    if (!jsFile) {
-      return false;
+      return '';
    }
 
    try {
@@ -76,26 +117,38 @@ export function loadJavascriptFile(): boolean {
       const jsCode = file.toString();
 
       if (jsCode) {
-         setJavascriptCode(jsCode);
-         return true;
+         // dispatch({type: 'SET_JAVASCRIPT_CODE', code: jsCode});
+         return jsCode;
       }
    }
    catch (e) {
       console.log(e);
       addLog(e);
    }
-   return false;
+   return '';
 }
 
-export function generateTypescript(): boolean {
-   const jsCode = getState().javascriptCode;
 
-   const tsCode = transpile(jsCode, {language: 'typescript'});
+// export function generateTypeScript2(jsCode: string): string {
+//    const tsCode = transpile(jsCode, {language: 'typescript'});
+//
+//    if (tsCode) {
+//
+//    }
+// }
 
-   if (tsCode) {
-      setTypescriptCode(tsCode);
-      return true;
-   }
-   setTypescriptCode('');
-   return false;
-}
+// export function generateTypescript(): boolean {
+//    const jsCode = getState().javascriptCode;
+//
+//    const tsCode = transpile(jsCode, {language: 'typescript'});
+//
+//    if (tsCode) {
+//       setTypescriptCode(tsCode);
+//       return true;
+//    }
+//    setTypescriptCode('');
+//    return false;
+// }
+
+
+

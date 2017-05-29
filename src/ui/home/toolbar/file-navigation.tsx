@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {getJavaScriptFile, getState, nextFile, previousFile} from '../../state/state';
+import {getJavaScriptFile2, getState, nextFile, previousFile} from '../../state/state';
 import {getJavaScriptFileName} from '../../util/util';
 import {shell} from 'electron';
 import './file-navigation.less';
-
 
 
 export default class FileNavigation extends React.Component<{}, {}> {
@@ -84,7 +83,7 @@ export default class FileNavigation extends React.Component<{}, {}> {
    };
 
    openFileLocation = () => {
-      const filePath = getJavaScriptFile();
+      const filePath = getJavaScriptFile2();
 
       shell.showItemInFolder(filePath);
    }

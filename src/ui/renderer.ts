@@ -1,13 +1,13 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {initState, nextFile, previousFile, setFolder, setJavascriptFile} from "./state/state";
+import {initStore, nextFile, previousFile, setFolder} from "./state/state";
 import * as path from "path";
 import {remote} from 'electron';
 import * as os from 'os';
 import {existsSync} from 'fs';
 
 
-initState();
+initStore();
 renderMainWindowMenu();
 renderHome();
 
@@ -19,8 +19,8 @@ if (remote.getGlobal('devMode')) {
    if (os.platform() === 'win32') {
       const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
 
-      if (existsSync(folder))
-         setFolder(folder);
+      // if (existsSync(folder))
+         // setFolder(folder);
    }
 }
 

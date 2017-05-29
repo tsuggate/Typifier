@@ -4,7 +4,7 @@ import {Editors} from "./editors/editors";
 import "./root.less";
 import Toolbar from "./toolbar/toolbar";
 import Log from "./log/log";
-import {getJavaScriptFile, getState} from "../state/state";
+import {getJavaScriptFile2, getState} from "../state/state";
 import {ViewMode} from "../state/schema";
 
 
@@ -30,9 +30,11 @@ class Home extends React.Component<HomeProps, {}> {
    buildEditors = () => {
       const s = getState();
 
-      return <Editors javascriptFile={getJavaScriptFile()}
-                      javascriptCode={s.javascriptCode}
-                      typescriptCode={s.typescriptCode} />;
+
+
+      return <Editors javascriptFile={getJavaScriptFile2()}
+                      javascriptCode={s.javascriptCode || ''}
+                      typescriptCode={s.typescriptCode || ''} />;
    };
 
    buildView = () => {

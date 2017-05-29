@@ -1,11 +1,13 @@
 import {renderHome} from '../home/home';
-import {generateTypescript, getWindow, loadJavascriptFile} from '../global-actions';
-import {State, ViewMode} from "./schema";
-import {getJavaScriptFilesInFolder} from "../util/util";
+import {getWindow} from '../global-actions';
+import {State} from './schema';
+import {getJavaScriptFilesInFolder} from '../util/util';
 
-import {Action, createStore} from 'redux';
+import {createStore, Store} from 'redux';
+import {KAction} from './actions';
 
 
+// TODO: Make this const.
 let state: State = {
    viewMode: 'log',
    openMode: 'file',
@@ -19,42 +21,77 @@ let state: State = {
 
 const initialState = {...state};
 
-function app(s: State = initialState, action: Action): State {
+function app(s: State, action: KAction): State {
    switch (action.type) {
+      case 'SET_VIEW_MODE':
+         return {...s, viewMode: action.mode};
+      case 'SET_JAVASCRIPT_FILE':
+         return setJavaScriptFile2(s, action.file, action.code);
+      case 'SET_TYPESCRIPT_CODE':
+         return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
 
       default:
          return s;
    }
 }
 
+let store: Store<State> | null = null;
 
-export function initState() {
-   const store = createStore(app);
+export function initStore() {
+   store = createStore(app, initialState);
    store.subscribe(renderHome);
+}
+
+export function getStore(): Store<State> {
+   if (!store) {
+      throw new Error(`getStore: store doesn't exist.`);
+   }
+   return store;
+}
+
+export function dispatch(action: KAction): void {
+   getStore().dispatch(action);
+}
+
+function setJavaScriptFile2(s: State, file: string, code: string): State {
+   getWindow().setTitle('kuraTranspiler - ' + file);
+
+   return {
+      ...s,
+      javascriptFile: file,
+      javascriptCode: code
+   };
 }
 
 
 export function getState(): State {
-   return state;
+   if (store)
+      return store.getState();
+
+   return initialState;
 }
 
-export function setViewMode(viewMode: ViewMode): void {
-   state.viewMode = viewMode;
-   renderHome();
-}
+// export function setViewMode(viewMode: ViewMode): void {
+//    state.viewMode = viewMode;
+//    renderHome();
+// }
 
-export function setCodeGenSuccess(succeeded: boolean): void {
-   state.codeGenSucceeded = succeeded;
+// export function setViewMode(s: State, viewMode: ViewMode) {
+//    return {...s, viewMode: viewMode};
+// }
 
-   if (succeeded) {
-      setViewMode('code');
-   }
-   else {
-      setViewMode('log');
-   }
-
-   renderHome();
-}
+// export function setCodeGenSuccess(succeeded: boolean): void {
+//    state.codeGenSucceeded = succeeded;
+//
+//    if (succeeded) {
+//       setViewMode('code');
+//    }
+//    else {
+//       setViewMode('log');
+//    }
+//
+//    renderHome();
+// }
 
 export function addLog(log: string): void {
    state.logs.push(log);
@@ -75,24 +112,24 @@ export function setFolder(folderPath: string): void {
       currentFileIndex: 0
    };
 
-   updateEditors();
+   // updateEditors();
 
    getWindow().setTitle('kuraTranspiler - ' + folderPath);
 }
 
-function updateEditors(): void {
-   const result1 = loadJavascriptFile();
-
-   if (!result1) {
-      setViewMode('log');
-   }
-   else {
-      const result2 = generateTypescript();
-
-      setCodeGenSuccess(result2);
-      renderHome();
-   }
-}
+// function updateEditors(): void {
+//    const result1 = loadJavascriptFile();
+//
+//    if (!result1) {
+//       setViewMode('log');
+//    }
+//    else {
+//       const result2 = generateTypescript();
+//
+//       setCodeGenSuccess(result2);
+//       renderHome();
+//    }
+// }
 
 export function nextFile(): void {
    const info = state.folderInfo;
@@ -124,33 +161,51 @@ function setFileIndex(index: number): void {
       clearLogs();
    }
 
-   updateEditors();
+   // updateEditors();
 }
 
-export function setJavascriptFile(file: string): void {
-   clearLogs();
+// export function setJavascriptFile(file: string): void {
+//    clearLogs();
+//
+//    state.javascriptFile = file;
+//    state.openMode = 'file';
+//    state.folderInfo = null;
+//
+//    setViewMode('log');
+//
+//    updateEditors();
+//
+//    getWindow().setTitle('kuraTranspiler - ' + file);
+// }
 
-   state.javascriptFile = file;
-   state.openMode = 'file';
-   state.folderInfo = null;
+// export function getJavaScriptFile(): string {
+//    if (state.openMode === 'file') {
+//       return state.javascriptFile;
+//    }
+//    else if (state.folderInfo) {
+//       if (!state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]) {
+//          return '';
+//       }
+//
+//       return state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]
+//    }
+//    else {
+//       throw new Error(`state.folderInfo shouldn't be null`);
+//    }
+// }
 
-   setViewMode('log');
+export function getJavaScriptFile2(): string {
+   const s = getState();
 
-   updateEditors();
-
-   getWindow().setTitle('kuraTranspiler - ' + file);
-}
-
-export function getJavaScriptFile(): string {
-   if (state.openMode === 'file') {
-      return state.javascriptFile;
+   if (s.openMode === 'file') {
+      return s.javascriptFile || '';
    }
-   else if (state.folderInfo) {
-      if (!state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]) {
+   else if (s.folderInfo) {
+      if (!s.folderInfo.javascriptFiles[s.folderInfo.currentFileIndex]) {
          return '';
       }
 
-      return state.folderInfo.javascriptFiles[state.folderInfo.currentFileIndex]
+      return s.folderInfo.javascriptFiles[s.folderInfo.currentFileIndex];
    }
    else {
       throw new Error(`state.folderInfo shouldn't be null`);
@@ -165,14 +220,16 @@ export function closeJavaScriptFile(): void {
       state.javascriptFile = '';
       state.javascriptCode = '';
       state.typescriptCode = '';
-      setViewMode('log');
+      // setViewMode('log');
+      dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    }
    else {
       if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
          setFolder(state.folderInfo.folderPath);
       }
       else {
-         setViewMode('log');
+         // setViewMode('log');
+         dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
       }
    }
 }

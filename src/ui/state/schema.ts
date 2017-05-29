@@ -13,9 +13,9 @@ export interface State {
    viewMode: ViewMode;
    openMode: OpenMode;
    folderInfo: FolderInfo | null;
-   javascriptFile: string;
-   javascriptCode: string;
-   typescriptCode: string;
+   javascriptFile: string | null;
+   javascriptCode: string | null;
+   typescriptCode: string | null;
    codeGenSucceeded: boolean;
    logs: string[];
 }
