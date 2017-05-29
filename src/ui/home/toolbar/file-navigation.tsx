@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {getAppState, getCodeState, getJavaScriptFile2, getState, nextFile, previousFile} from '../../state/state';
+import {getAppState, getCodeState, getJavaScriptFile2} from '../../state/state';
 import {getJavaScriptFileName} from '../../util/util';
 import {shell} from 'electron';
 import './file-navigation.less';
+import {nextFile, previousFile} from '../../global-actions';
 
 
 export default class FileNavigation extends React.Component<{}, {}> {
@@ -71,13 +72,13 @@ export default class FileNavigation extends React.Component<{}, {}> {
    fileNumberText = () => {
       const s = getCodeState();
 
-      if (s.currentFileIndex) {
-         const num = s.currentFileIndex + 1;
-         const total = s.javascriptFiles.length;
+      // if (s.currentFileIndex) {
+      const num = s.currentFileIndex + 1;
+      const total = s.javascriptFiles.length;
 
-         return `${num} of ${total}`;
-      }
-      return '';
+      return `${num} of ${total}`;
+      // }
+      // return '';
    };
 
    openFileLocation = () => {

@@ -40,6 +40,7 @@ export default class Toolbar extends React.Component<{}, {}> {
    }
 
    shouldDisableViewCode = () => {
+      console.log('shouldDisableViewCode: ', getJavaScriptFile2());
       return !getJavaScriptFile2();
    };
 

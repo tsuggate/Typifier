@@ -1,6 +1,6 @@
 import {renderHome} from '../home/home';
 import {getWindow, openFolder} from '../global-actions';
-import {AppState, CodeState, State, State2} from './schema';
+import {AppState, CodeState, State2} from './schema';
 import {getJavaScriptFilesInFolder} from '../util/util';
 
 import {Action, combineReducers, createStore, Store} from 'redux';
@@ -12,16 +12,16 @@ import {AppAction} from './app-state/app-actions';
 
 
 
-const state: State = {
-   viewMode: 'log',
-   openMode: 'file',
-   folderInfo: null,
-   javascriptFile: null,
-   javascriptCode: null,
-   typescriptCode: null,
-   codeGenSucceeded: false,
-   logs: []
-};
+// const state: State = {
+//    viewMode: 'log',
+//    openMode: 'file',
+//    folderInfo: null,
+//    javascriptFile: null,
+//    javascriptCode: null,
+//    typescriptCode: null,
+//    codeGenSucceeded: false,
+//    logs: []
+// };
 
 // const state2: State2 = {
 //    app: {
@@ -119,14 +119,19 @@ export function getCodeState(): CodeState {
 //    renderHome();
 // }
 
+
+// TODO: Move to global-actions?
 export function addLog(log: string): void {
-   state.logs.push(log);
-   renderHome();
+   dispatch({type: 'ADD_LOG', log});
+   // state.logs.push(log);
+   // renderHome();
 }
 
+// TODO: Move to global-actions?
 export function appendLog(log: string): void {
-   state.logs[state.logs.length - 1] += log;
-   renderHome();
+   // state.logs[state.logs.length - 1] += log;
+   // renderHome();
+   dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
 // export function setFolder(folderPath: string): void {
@@ -157,38 +162,9 @@ export function appendLog(log: string): void {
 //    }
 // }
 
-export function nextFile(): void {
-   const info = state.folderInfo;
 
-   if (!info) {
-      return;
-   }
 
-   if (info.currentFileIndex < info.javascriptFiles.length - 1) {
-      setFileIndex(info.currentFileIndex + 1);
-   }
-}
 
-export function previousFile(): void {
-   const info = state.folderInfo;
-
-   if (!info) {
-      return;
-   }
-
-   if (info.currentFileIndex > 0) {
-      setFileIndex(info.currentFileIndex - 1);
-   }
-}
-
-function setFileIndex(index: number): void {
-   if (state.folderInfo) {
-      state.folderInfo.currentFileIndex = index;
-      clearLogs();
-   }
-
-   // updateEditors();
-}
 
 // export function setJavascriptFile(file: string): void {
 //    clearLogs();
@@ -228,7 +204,7 @@ export function getJavaScriptFile2(): string {
       return codeState.javascriptFile || '';
    }
    else {
-      if (!codeState.currentFileIndex || !codeState.javascriptFiles[codeState.currentFileIndex]) {
+      if (!codeState.javascriptFiles[codeState.currentFileIndex]) {
          return '';
       }
 
@@ -240,40 +216,42 @@ export function getJavaScriptFile2(): string {
 }
 
 export function closeJavaScriptFile(): void {
-   console.log('closeJavaScriptFile');
-   console.log(state.folderInfo);
-
-   if (state.openMode === 'file') {
-      state.javascriptFile = '';
-      state.javascriptCode = '';
-      state.typescriptCode = '';
-      // setViewMode('log');
-      dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-   }
-   else {
-      if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
-         openFolder(state.folderInfo.folderPath);
-      }
-      else {
-         // setViewMode('log');
-         dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-      }
-   }
+   // TODO
+   console.log('closeJavaScriptFile: TODO');
+   // console.log('closeJavaScriptFile');
+   // console.log(state.folderInfo);
+   //
+   // if (state.openMode === 'file') {
+   //    state.javascriptFile = '';
+   //    state.javascriptCode = '';
+   //    state.typescriptCode = '';
+   //    // setViewMode('log');
+   //    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   // }
+   // else {
+   //    if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
+   //       openFolder(state.folderInfo.folderPath);
+   //    }
+   //    else {
+   //       // setViewMode('log');
+   //       dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   //    }
+   // }
 }
 
-export function setJavascriptCode(code: string): void {
-   state.javascriptCode = code;
-
-   renderHome();
-}
-
-export function setTypescriptCode(code: string): void {
-   state.typescriptCode = code;
-
-   renderHome();
-}
-
-export function clearLogs() {
-   state.logs = [];
-   renderHome();
-}
+// export function setJavascriptCode(code: string): void {
+//    state.javascriptCode = code;
+//
+//    renderHome();
+// }
+//
+// export function setTypescriptCode(code: string): void {
+//    state.typescriptCode = code;
+//
+//    renderHome();
+// }
+//
+// export function clearLogs() {
+//    state.logs = [];
+//    renderHome();
+// }

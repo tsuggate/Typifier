@@ -1,13 +1,8 @@
 import {remote} from 'electron';
-import {
-   addLog, closeJavaScriptFile, dispatch,  getJavaScriptFile2, getState, getStore,
-   setJavascriptCode,
-
-   setTypescriptCode
-} from './state/state';
+import {addLog, dispatch, getCodeState} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
-import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
+import {getJavaScriptFilesInFolder} from './util/util';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -56,7 +51,7 @@ export function showOpenFolderWindow(): string | null {
 export function openJavaScriptFile(file: string): void {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
 
-   const code = loadJavaScriptFile2(file);
+   const code = loadJavaScriptFile2(file) || '';
 
    dispatch({type: 'SET_JAVASCRIPT_FILE', file, code});
    getWindow().setTitle('kuraTranspiler - ' + file);
@@ -69,27 +64,14 @@ export function openFolder(folderPath: string): void {
 
    const files = getJavaScriptFilesInFolder(folderPath);
 
-   console.log(files);
    setFolder(folderPath, files);
    getWindow().setTitle('kuraTranspiler - ' + folderPath);
 
-
    if (files[0]) {
-      const code = loadJavaScriptFile2(files[0]);
+      const code = loadJavaScriptFile2(files[0]) || '';
+      dispatch({type: 'SET_JAVASCRIPT_FILE', file: files[0], code});
       generateTypeScript(code);
    }
-
-   // const file = getJavaScriptFile2();
-
-   // const openMode = 'folder';
-   //
-   // const folderInfo = {
-   //    folderPath,
-   //    javascriptFiles: getJavaScriptFilesInFolder(folderPath),
-   //    currentFileIndex: 0
-   // };
-   //
-   // // updateEditors();
 
 }
 
@@ -100,9 +82,12 @@ function setFolder(folderPath: string, javaScriptFiles: string[]) {
 
 function generateTypeScript(jsCode: string) {
    const tsCode = transpile(jsCode, {language: 'typescript'});
+   const success = !!tsCode;
 
-   dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success: !!tsCode});
-   dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+   dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
+
+   if (success)
+      dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
 }
 
 export function saveTypeScriptCode(): void {
@@ -119,34 +104,51 @@ export function saveTypeScriptCode(): void {
    // closeJavaScriptFile();
 }
 
-// export function loadJavascriptFile(): boolean {
-//    const jsFile = getJavaScriptFile();
-//
-//    if (!jsFile) {
-//       return false;
-//    }
-//
-//    try {
-//       const file = fs.readFileSync(jsFile);
-//       const jsCode = file.toString();
-//
-//       if (jsCode) {
-//          setJavascriptCode(jsCode);
-//          return true;
-//       }
-//    }
-//    catch (e) {
-//       console.log(e);
-//       addLog(e);
-//    }
-//    return false;
-// }
+export function nextFile(): void {
+   console.log('nextFile');
+   const s = getCodeState();
 
-export function loadJavaScriptFile2(jsFile: string): string {
+   if (s.currentFileIndex < s.javascriptFiles.length - 1) {
+      setFileIndex(s.currentFileIndex + 1);
+   }
+}
+
+export function previousFile(): void {
+   const s = getCodeState();
+
+   if (s.currentFileIndex > 0) {
+      setFileIndex(s.currentFileIndex - 1);
+   }
+}
+
+function setFileIndex(index: number): void {
+   console.log('setFileIndex');
+   const s = getCodeState();
+   const jsFile = s.javascriptFiles[index];
+   const jsCode = loadJavaScriptFile2(jsFile);
+
+   if (jsCode) {
+      const tsCode = transpile(jsCode, {language: 'typescript'});
+      const success = !!tsCode;
+
+      dispatch({
+         type: 'SET_FILE_INDEX',
+         index, javaScriptCode:
+         jsCode, typeScriptCode:
+         tsCode || '',
+         success
+      });
+
+      if (success)
+         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+   }
+}
+
+export function loadJavaScriptFile2(jsFile: string): string | null {
    // const jsFile = getJavaScriptFile2();
 
    if (!jsFile) {
-      return '';
+      return null;
    }
 
    try {
@@ -162,7 +164,7 @@ export function loadJavaScriptFile2(jsFile: string): string {
       console.log(e);
       addLog(e);
    }
-   return '';
+   return null;
 }
 
 

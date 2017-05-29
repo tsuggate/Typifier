@@ -1,6 +1,6 @@
 
 
-export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder;
+export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder | SetFileIndex;
 
 
 export interface SetJavaScriptFile {
@@ -19,5 +19,13 @@ export interface SetFolder {
    type: 'SET_FOLDER';
    folderPath: string;
    javaScriptFiles: string[];
-   // currentFileIndex: number;
 }
+
+export interface SetFileIndex {
+   type: 'SET_FILE_INDEX';
+   index: number;
+   javaScriptCode: string;
+   typeScriptCode: string;
+   success: boolean;
+}
+

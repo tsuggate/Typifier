@@ -1,11 +1,11 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {initStore, nextFile, previousFile} from './state/state';
+import {initStore} from './state/state';
 import * as path from 'path';
 import {remote} from 'electron';
 import * as os from 'os';
 import {existsSync} from 'fs';
-import {openFolder} from './global-actions';
+import {nextFile, openFolder, previousFile} from './global-actions';
 
 
 initStore();

@@ -1,5 +1,7 @@
 import {CodeState} from '../schema';
-import {CodeActions, SetFolder} from './code-actions';
+import {CodeActions, SetFileIndex, SetFolder} from './code-actions';
+import {loadJavaScriptFile2} from '../../global-actions';
+import {transpile} from '../../../transpiler2/transpiler-main';
 
 
 const initialState: CodeState = {
@@ -9,7 +11,7 @@ const initialState: CodeState = {
    typescriptCode: null,
    folderPath: null,
    javascriptFiles: [],
-   currentFileIndex: null
+   currentFileIndex: 0
 };
 
 export function codeReducer(s: CodeState = initialState, action: CodeActions): CodeState {
@@ -20,6 +22,8 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
          return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
       case 'SET_FOLDER':
          return setFolder(s, action);
+      case 'SET_FILE_INDEX':
+         return setFileIndex(s, action);
       default:
          return s;
    }
@@ -39,5 +43,16 @@ function setFolder(s: CodeState, action: SetFolder): CodeState {
       folderPath: action.folderPath,
       javascriptFiles: action.javaScriptFiles,
       currentFileIndex: 0
+   };
+}
+
+
+function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
+   return {
+      ...s,
+      currentFileIndex: action.index,
+      javascriptCode: action.javaScriptCode,
+      typescriptCode: action.typeScriptCode,
+      codeGenSucceeded: action.success
    };
 }
