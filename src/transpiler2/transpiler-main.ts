@@ -40,7 +40,6 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    }
    catch (e) {
       console.log(e);
-      // addLog(e.toString());
       addLog(e.stack);
 
       return null;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {getJavaScriptFile2, getState, nextFile, previousFile} from '../../state/state';
+import {getAppState, getCodeState, getJavaScriptFile2, getState, nextFile, previousFile} from '../../state/state';
 import {getJavaScriptFileName} from '../../util/util';
 import {shell} from 'electron';
 import './file-navigation.less';
@@ -7,10 +7,10 @@ import './file-navigation.less';
 
 export default class FileNavigation extends React.Component<{}, {}> {
    render() {
-      const s = getState();
+      // const s = getState();
       const fileName = getJavaScriptFileName();
 
-      if (s.openMode === 'file' || !fileName) {
+      if (getAppState().openMode === 'file' || !fileName) {
          return <div className="FileNavigation">
             <div className="fileTitle center" onClick={this.openFileLocation}>{fileName}</div>
          </div>;
@@ -45,9 +45,9 @@ export default class FileNavigation extends React.Component<{}, {}> {
    };
 
    nextDisabled = () => {
-      const folderInfo = getState().folderInfo;
+      const codeState = getCodeState();
 
-      return !!(folderInfo && folderInfo.currentFileIndex === folderInfo.javascriptFiles.length - 1);
+      return codeState.currentFileIndex === codeState.javascriptFiles.length - 1;
    };
 
    makePreviousButton = () => {
@@ -65,17 +65,15 @@ export default class FileNavigation extends React.Component<{}, {}> {
    };
 
    previousDisabled = () => {
-      const folderInfo = getState().folderInfo;
-
-      return !!(folderInfo && folderInfo.currentFileIndex === 0);
+      return getCodeState().currentFileIndex === 0;
    };
 
    fileNumberText = () => {
-      const s = getState();
+      const s = getCodeState();
 
-      if (s.folderInfo) {
-         const num = s.folderInfo.currentFileIndex + 1;
-         const total = s.folderInfo.javascriptFiles.length;
+      if (s.currentFileIndex) {
+         const num = s.currentFileIndex + 1;
+         const total = s.javascriptFiles.length;
 
          return `${num} of ${total}`;
       }

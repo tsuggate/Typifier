@@ -1,48 +1,76 @@
 import {renderHome} from '../home/home';
-import {getWindow} from '../global-actions';
-import {State} from './schema';
+import {getWindow, openFolder} from '../global-actions';
+import {AppState, CodeState, State, State2} from './schema';
 import {getJavaScriptFilesInFolder} from '../util/util';
 
-import {createStore, Store} from 'redux';
-import {KAction} from './actions';
+import {Action, combineReducers, createStore, Store} from 'redux';
+import {codeReducer} from './code-state/code-reducer';
+import {appReducer} from './app-state/app-reducer';
+import {CodeActions} from './code-state/code-actions';
+import {AppAction} from './app-state/app-actions';
 
 
-// TODO: Make this const.
-let state: State = {
+
+
+const state: State = {
    viewMode: 'log',
    openMode: 'file',
    folderInfo: null,
-   javascriptFile: '',
-   javascriptCode: '',
-   typescriptCode: '',
+   javascriptFile: null,
+   javascriptCode: null,
+   typescriptCode: null,
    codeGenSucceeded: false,
    logs: []
 };
 
-const initialState = {...state};
+// const state2: State2 = {
+//    app: {
+//       viewMode: 'log',
+//       openMode: 'file',
+//       logs: []
+//    },
+//    code: {
+//       codeGenSucceeded: false,
+//       javascriptFile: null,
+//       javascriptCode: null,
+//       typescriptCode: null,
+//       folderPath: null,
+//       javascriptFiles: [],
+//       currentFileIndex: null
+//    }
+// };
+//
+// const initialState = {...state2};
 
-function app(s: State, action: KAction): State {
-   switch (action.type) {
-      case 'SET_VIEW_MODE':
-         return {...s, viewMode: action.mode};
-      case 'SET_JAVASCRIPT_FILE':
-         return setJavaScriptFile2(s, action.file, action.code);
-      case 'SET_TYPESCRIPT_CODE':
-         return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
 
-      default:
-         return s;
-   }
-}
+// function app(s: State, action: Action): State {
+//    switch (action.type) {
+//       case 'SET_VIEW_MODE':
+//          return {...s, viewMode: action.mode};
+//       case 'SET_JAVASCRIPT_FILE':
+//          return setJavaScriptFile2(s, action.file, action.code);
+//       case 'SET_TYPESCRIPT_CODE':
+//          return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
+//
+//       default:
+//          return s;
+//    }
+// }
 
-let store: Store<State> | null = null;
+let store: Store<State2> | null = null;
+
+export type KAction = CodeActions | AppAction;
 
 export function initStore() {
-   store = createStore(app, initialState);
+   const app = combineReducers<State2>({code: codeReducer, app: appReducer});
+
+   store = createStore(app);
+
+   console.log(store.getState());
    store.subscribe(renderHome);
 }
 
-export function getStore(): Store<State> {
+export function getStore(): Store<State2> {
    if (!store) {
       throw new Error(`getStore: store doesn't exist.`);
    }
@@ -53,22 +81,20 @@ export function dispatch(action: KAction): void {
    getStore().dispatch(action);
 }
 
-function setJavaScriptFile2(s: State, file: string, code: string): State {
-   getWindow().setTitle('kuraTranspiler - ' + file);
+export function getState(): State2 {
+   if (!store) {
+      throw new Error(`getState(): store doesn't exist.`);
+   }
 
-   return {
-      ...s,
-      javascriptFile: file,
-      javascriptCode: code
-   };
+   return store.getState();
 }
 
+export function getAppState(): AppState {
+   return getState().app;
+}
 
-export function getState(): State {
-   if (store)
-      return store.getState();
-
-   return initialState;
+export function getCodeState(): CodeState {
+   return getState().code;
 }
 
 // export function setViewMode(viewMode: ViewMode): void {
@@ -103,19 +129,19 @@ export function appendLog(log: string): void {
    renderHome();
 }
 
-export function setFolder(folderPath: string): void {
-   state.openMode = 'folder';
-
-   state.folderInfo = {
-      folderPath,
-      javascriptFiles: getJavaScriptFilesInFolder(folderPath),
-      currentFileIndex: 0
-   };
-
-   // updateEditors();
-
-   getWindow().setTitle('kuraTranspiler - ' + folderPath);
-}
+// export function setFolder(folderPath: string): void {
+//    state.openMode = 'folder';
+//
+//    state.folderInfo = {
+//       folderPath,
+//       javascriptFiles: getJavaScriptFilesInFolder(folderPath),
+//       currentFileIndex: 0
+//    };
+//
+//    // updateEditors();
+//
+//    getWindow().setTitle('kuraTranspiler - ' + folderPath);
+// }
 
 // function updateEditors(): void {
 //    const result1 = loadJavascriptFile();
@@ -195,21 +221,22 @@ function setFileIndex(index: number): void {
 // }
 
 export function getJavaScriptFile2(): string {
-   const s = getState();
+   const codeState = getCodeState();
+   const appState = getAppState();
 
-   if (s.openMode === 'file') {
-      return s.javascriptFile || '';
+   if (appState.openMode === 'file') {
+      return codeState.javascriptFile || '';
    }
-   else if (s.folderInfo) {
-      if (!s.folderInfo.javascriptFiles[s.folderInfo.currentFileIndex]) {
+   else {
+      if (!codeState.currentFileIndex || !codeState.javascriptFiles[codeState.currentFileIndex]) {
          return '';
       }
 
-      return s.folderInfo.javascriptFiles[s.folderInfo.currentFileIndex];
+      return codeState.javascriptFiles[codeState.currentFileIndex];
    }
-   else {
-      throw new Error(`state.folderInfo shouldn't be null`);
-   }
+   // else {
+   //    throw new Error(`state.folderInfo shouldn't be null`);
+   // }
 }
 
 export function closeJavaScriptFile(): void {
@@ -225,7 +252,7 @@ export function closeJavaScriptFile(): void {
    }
    else {
       if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
-         setFolder(state.folderInfo.folderPath);
+         openFolder(state.folderInfo.folderPath);
       }
       else {
          // setViewMode('log');

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '../../components/button';
 import './toolbar.less';
 import {getWindow, saveTypeScriptCode} from '../../global-actions';
-import {dispatch, getJavaScriptFile2, getState} from '../../state/state';
+import {dispatch, getAppState, getCodeState, getJavaScriptFile2} from '../../state/state';
 import {remote} from 'electron';
 import {getJavaScriptFileName, getTypeScriptFileName} from '../../util/util';
 import FileNavigation from './file-navigation';
@@ -13,12 +13,12 @@ export default class Toolbar extends React.Component<{}, {}> {
       return <div className="Toolbar">
          <div className="left">
             <Button onClick={this.onClickCompareCode}
-                    on={getState().viewMode === 'code'}
+                    on={getAppState().viewMode === 'code'}
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Code</Button>
 
             <Button onClick={this.onClickShowLog}
-                    on={getState().viewMode === 'log'}
+                    on={getAppState().viewMode === 'log'}
                     moreClasses="minSize">Log</Button>
          </div>
 
@@ -44,16 +44,14 @@ export default class Toolbar extends React.Component<{}, {}> {
    };
 
    shouldDisableApplyChanges = () => {
-      return !getState().codeGenSucceeded || !getJavaScriptFile2();
+      return !getCodeState().codeGenSucceeded || !getJavaScriptFile2();
    };
 
    onClickShowLog = () => {
-      // setViewMode('log');
       dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    };
 
    onClickCompareCode = () => {
-      // setViewMode('code');
       dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
    };
 

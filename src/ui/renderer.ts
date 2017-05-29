@@ -1,10 +1,11 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
-import {initStore, nextFile, previousFile, setFolder} from "./state/state";
-import * as path from "path";
+import {initStore, nextFile, previousFile} from './state/state';
+import * as path from 'path';
 import {remote} from 'electron';
 import * as os from 'os';
 import {existsSync} from 'fs';
+import {openFolder} from './global-actions';
 
 
 initStore();
@@ -20,7 +21,7 @@ if (remote.getGlobal('devMode')) {
       const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
 
       // if (existsSync(folder))
-         // setFolder(folder);
+         // openFolder(folder);
    }
 }
 

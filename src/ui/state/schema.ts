@@ -19,3 +19,26 @@ export interface State {
    codeGenSucceeded: boolean;
    logs: string[];
 }
+
+export interface AppState {
+   viewMode: ViewMode;
+   openMode: OpenMode;
+   logs: string[];
+}
+
+export interface CodeState {
+   codeGenSucceeded: boolean;
+
+   javascriptFile: string | null;
+   javascriptCode: string | null;
+   typescriptCode: string | null;
+
+   folderPath: string | null;
+   javascriptFiles: string[];
+   currentFileIndex: number | null;
+}
+
+export interface State2 {
+   app: AppState;
+   code: CodeState;
+}
