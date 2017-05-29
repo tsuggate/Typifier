@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '../../components/button';
 import './toolbar.less';
 import {getWindow, saveTypeScriptCode} from '../../global-actions';
-import {dispatch, getAppState, getCodeState, getJavaScriptFile2} from '../../state/state';
+import {dispatch, getAppState, getCodeState, getJavaScriptFile} from '../../state/state';
 import {remote} from 'electron';
 import {getJavaScriptFileName, getTypeScriptFileName} from '../../util/util';
 import FileNavigation from './file-navigation';
@@ -40,12 +40,12 @@ export default class Toolbar extends React.Component<{}, {}> {
    }
 
    shouldDisableViewCode = () => {
-      console.log('shouldDisableViewCode: ', getJavaScriptFile2());
-      return !getJavaScriptFile2();
+      console.log('shouldDisableViewCode: ', getJavaScriptFile());
+      return !getJavaScriptFile();
    };
 
    shouldDisableApplyChanges = () => {
-      return !getCodeState().codeGenSucceeded || !getJavaScriptFile2();
+      return !getCodeState().codeGenSucceeded || !getJavaScriptFile();
    };
 
    onClickShowLog = () => {

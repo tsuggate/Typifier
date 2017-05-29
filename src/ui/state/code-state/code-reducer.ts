@@ -1,7 +1,5 @@
 import {CodeState} from '../schema';
 import {CodeActions, SetFileIndex, SetFolder} from './code-actions';
-import {loadJavaScriptFile2} from '../../global-actions';
-import {transpile} from '../../../transpiler2/transpiler-main';
 
 
 const initialState: CodeState = {

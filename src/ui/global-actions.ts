@@ -1,5 +1,5 @@
 import {remote} from 'electron';
-import {addLog, dispatch, getCodeState} from './state/state';
+import {dispatch, getCodeState} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
 import {getJavaScriptFilesInFolder} from './util/util';
@@ -104,6 +104,16 @@ export function saveTypeScriptCode(): void {
    // closeJavaScriptFile();
 }
 
+export function addLog(log: string): void {
+   dispatch({type: 'ADD_LOG', log});
+
+}
+
+
+export function appendLog(log: string): void {
+   dispatch({type: 'ADD_LOG', log, sameLine: true});
+}
+
 export function nextFile(): void {
    console.log('nextFile');
    const s = getCodeState();
@@ -145,8 +155,6 @@ function setFileIndex(index: number): void {
 }
 
 export function loadJavaScriptFile2(jsFile: string): string | null {
-   // const jsFile = getJavaScriptFile2();
-
    if (!jsFile) {
       return null;
    }
@@ -156,7 +164,6 @@ export function loadJavaScriptFile2(jsFile: string): string | null {
       const jsCode = file.toString();
 
       if (jsCode) {
-         // dispatch({type: 'SET_JAVASCRIPT_CODE', code: jsCode});
          return jsCode;
       }
    }
@@ -166,28 +173,6 @@ export function loadJavaScriptFile2(jsFile: string): string | null {
    }
    return null;
 }
-
-
-// export function generateTypeScript2(jsCode: string): string {
-//    const tsCode = transpile(jsCode, {language: 'typescript'});
-//
-//    if (tsCode) {
-//
-//    }
-// }
-
-// export function generateTypescript(): boolean {
-//    const jsCode = getState().javascriptCode;
-//
-//    const tsCode = transpile(jsCode, {language: 'typescript'});
-//
-//    if (tsCode) {
-//       setTypescriptCode(tsCode);
-//       return true;
-//    }
-//    setTypescriptCode('');
-//    return false;
-// }
 
 
 

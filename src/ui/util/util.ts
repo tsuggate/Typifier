@@ -1,33 +1,30 @@
-import {getAppState, getCodeState, getJavaScriptFile2} from '../state/state';
+import {getAppState, getCodeState, getJavaScriptFile} from '../state/state';
 import * as path from 'path';
 import * as fs from 'fs';
 
 
 export function getTypeScriptFileName(): string {
-   const jsFile = getJavaScriptFile2();
+   const jsFile = getJavaScriptFile();
 
    return path.parse(jsFile).name + '.ts';
 }
 
 export function getJavaScriptFileName(): string {
-   const jsFile = getJavaScriptFile2();
+   const jsFile = getJavaScriptFile();
 
    if (!jsFile) {
       return '';
    }
 
    if (getAppState().openMode === 'folder') {
-      // const info = getState().folderInfo;
-      // if (info) {
       return jsFile.replace(getCodeState().folderPath + path.sep, '');
-      // }
    }
 
    return path.parse(jsFile).name + '.js';
 }
 
 export function getTypeScriptFilePath(): string {
-   const jsFile = getJavaScriptFile2();
+   const jsFile = getJavaScriptFile();
 
    if (jsFile) {
       return jsFile.split('.')[0] + '.ts';
