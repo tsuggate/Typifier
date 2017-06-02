@@ -3,7 +3,7 @@ import {clickOpenFolder, clickOpenJsFile, getWindow} from '../global-actions';
 import {platform} from "os";
 
 
-type MenuItemOptions = Electron.MenuItemOptions;
+type MenuItemOptions = Electron.MenuItemConstructorOptions;
 
 
 function buildViewMenu() {

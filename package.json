@@ -57,7 +57,6 @@
   },
   "devDependencies": {
     "@types/commander": "^2.9.0",
-    "@types/electron": "^1.4.35",
     "@types/escodegen": "0.0.6",
     "@types/esprima": "^2.1.33",
     "@types/estree": "0.0.34",
