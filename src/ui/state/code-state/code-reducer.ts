@@ -1,5 +1,5 @@
 import {CodeState} from '../schema';
-import {CodeActions, SetFileIndex, SetFolder} from './code-actions';
+import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile} from './code-actions';
 import {getAppState} from '../state';
 
 
@@ -16,7 +16,7 @@ const initialState: CodeState = {
 export function codeReducer(s: CodeState = initialState, action: CodeActions): CodeState {
    switch (action.type) {
       case 'SET_JAVASCRIPT_FILE':
-         return setJavaScriptFile(s, action.file, action.code);
+         return setJavaScriptFile(s, action);
       case 'SET_TYPESCRIPT_CODE':
          return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
       case 'SET_FOLDER':
@@ -30,11 +30,11 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
    }
 }
 
-export function setJavaScriptFile(s: CodeState, file: string, code: string): CodeState {
+export function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
    return {
       ...s,
-      javascriptFile: file,
-      javascriptCode: code
+      javascriptFile: action.file,
+      javascriptCode: action.code
    };
 }
 

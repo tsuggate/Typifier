@@ -1,6 +1,6 @@
-import {AppState} from '../schema';
-import {AddLog, AppAction} from './app-actions';
-import * as _ from 'underscore';
+import {AppState} from "../schema";
+import {AddLog, AppAction} from "./app-actions";
+import * as _ from "underscore";
 
 
 const initialState: AppState = {
@@ -15,6 +15,8 @@ export function appReducer(s: AppState = initialState, action: AppAction): AppSt
          return {...s, viewMode: action.mode};
       case 'SET_FOLDER':
          return {...s, openMode: 'folder'};
+      case 'SET_OPEN_MODE':
+         return {...s, openMode: 'file'};
       case 'ADD_LOG':
          return addLog(s, action);
       case 'CLEAR_LOGS':
@@ -26,6 +28,8 @@ export function appReducer(s: AppState = initialState, action: AppAction): AppSt
          return s;
    }
 }
+
+
 
 function addLog(s: AppState, action: AddLog): AppState {
    if (action.sameLine && s.logs.length > 0) {

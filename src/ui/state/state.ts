@@ -1,5 +1,5 @@
 import {renderHome} from '../home/home';
-import {AppState, CodeState, State2} from './schema';
+import {AppState, CodeState, State} from './schema';
 import {combineReducers, createStore, Store} from 'redux';
 import {codeReducer} from './code-state/code-reducer';
 import {appReducer} from './app-state/app-reducer';
@@ -8,20 +8,19 @@ import {AppAction} from './app-state/app-actions';
 
 
 
-let store: Store<State2> | null = null;
+let store: Store<State> | null = null;
 
 export type KAction = CodeActions | AppAction;
 
 export function initStore() {
-   const app = combineReducers<State2>({code: codeReducer, app: appReducer});
+   const app = combineReducers<State>({code: codeReducer, app: appReducer});
 
    store = createStore(app);
 
-   console.log(store.getState());
    store.subscribe(renderHome);
 }
 
-export function getStore(): Store<State2> {
+export function getStore(): Store<State> {
    if (!store) {
       throw new Error(`getStore: store doesn't exist.`);
    }
@@ -32,7 +31,7 @@ export function dispatch(action: KAction): void {
    getStore().dispatch(action);
 }
 
-export function getState(): State2 {
+export function getState(): State {
    if (!store) {
       throw new Error(`getState(): store doesn't exist.`);
    }

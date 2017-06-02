@@ -50,6 +50,8 @@ export function showOpenFolderWindow(): string | null {
 
 export function openJavaScriptFile(file: string): void {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   dispatch({type: 'SET_OPEN_MODE', mode: 'file'});
+
    getWindow().setTitle('kuraTranspiler - ' + file);
 
    generateTypeScript(file);

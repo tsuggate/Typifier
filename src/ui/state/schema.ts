@@ -22,7 +22,7 @@ export interface CodeState {
    currentFileIndex: number;
 }
 
-export interface State2 {
+export interface State {
    app: AppState;
    code: CodeState;
 }
