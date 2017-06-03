@@ -84,6 +84,9 @@ function generateTypeScript(javaScriptFile: string) {
       if (success) {
          dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
       }
+      else {
+         dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+      }
    }
 }
 
@@ -99,10 +102,13 @@ export function saveTypeScriptCode(): void {
    fs.unlinkSync(jsFile);
    addLog(`Wrote ${tsFile}`);
 
-   dispatch({type: 'CLOSE_FILE'});
-
-   if (getAppState().openMode === 'folder' && codeState.folderPath) {
-      openFolder(codeState.folderPath, codeState.currentFileIndex);
+   if (getAppState().openMode === 'file') {
+      dispatch({type: 'CLOSE_FILE'});
+   }
+   else {
+      if (codeState.folderPath) {
+         openFolder(codeState.folderPath, codeState.currentFileIndex);
+      }
    }
 }
 
@@ -135,7 +141,7 @@ function setFileIndex(index: number): void {
    const jsFile = s.javascriptFiles[index];
 
    dispatch({type: 'SET_FILE_INDEX', index});
-
+   dispatch({type: 'CLEAR_LOGS'});
    generateTypeScript(jsFile);
 }
 

@@ -1,6 +1,5 @@
 import {CodeState} from "../schema";
 import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile} from "./code-actions";
-import {getAppState} from "../state";
 
 
 const initialState: CodeState = {
@@ -64,18 +63,7 @@ function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
 }
 
 function closeFile(s: CodeState): CodeState {
-   if (getAppState().openMode === 'folder') {
-      const i = s.currentFileIndex;
-
-      // TODO: Can't put logic here as this will require dispatching.
-
-      return {...s};
-   }
-   else {
-      return {...s, javascriptFile: null, javascriptCode: null, typescriptCode: null, codeGenSucceeded: false};
-   }
-
-
+   return {...s, javascriptFile: null, javascriptCode: null, typescriptCode: null, codeGenSucceeded: false};
 }
 
 
