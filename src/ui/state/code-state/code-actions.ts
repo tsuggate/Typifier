@@ -19,6 +19,7 @@ export interface SetFolder {
    type: 'SET_FOLDER';
    folderPath: string;
    javaScriptFiles: string[];
+   index: number;
 }
 
 export interface SetFileIndex {

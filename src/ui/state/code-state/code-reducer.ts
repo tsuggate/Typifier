@@ -1,6 +1,6 @@
-import {CodeState} from '../schema';
-import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile} from './code-actions';
-import {getAppState} from '../state';
+import {CodeState} from "../schema";
+import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile} from "./code-actions";
+import {getAppState} from "../state";
 
 
 const initialState: CodeState = {
@@ -43,14 +43,23 @@ function setFolder(s: CodeState, action: SetFolder): CodeState {
       ...s,
       folderPath: action.folderPath,
       javascriptFiles: action.javaScriptFiles,
-      currentFileIndex: 0
+      currentFileIndex: normaliseFileIndex(s, action.index, action.javaScriptFiles.length)
    };
+}
+
+function normaliseFileIndex(s: CodeState, index: number, numFiles: number): number {
+   if (index < 0)
+      return 0;
+   else if (index >= numFiles)
+      return s.javascriptFiles.length - 1;
+
+   return index;
 }
 
 function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
    return {
       ...s,
-      currentFileIndex: action.index
+      currentFileIndex: normaliseFileIndex(s, action.index, s.javascriptFiles.length)
    };
 }
 

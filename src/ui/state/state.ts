@@ -62,27 +62,3 @@ export function getJavaScriptFile(): string {
       return codeState.javascriptFiles[codeState.currentFileIndex];
    }
 }
-
-// export function closeJavaScriptFile(): void {
-//    // TODO
-//    console.log('closeJavaScriptFile: TODO');
-//    console.log('closeJavaScriptFile');
-//
-//
-//    if (state.openMode === 'file') {
-//       state.javascriptFile = '';
-//       state.javascriptCode = '';
-//       state.typescriptCode = '';
-//       // setViewMode('log');
-//       dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-//    }
-//    else {
-//       if (state.folderInfo && state.folderInfo.javascriptFiles.length > 0) {
-//          openFolder(state.folderInfo.folderPath);
-//       }
-//       else {
-//          // setViewMode('log');
-//          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-//       }
-//    }
-// }

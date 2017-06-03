@@ -1,5 +1,5 @@
 import {remote} from 'electron';
-import {dispatch, getCodeState, getJavaScriptFile} from './state/state';
+import {dispatch, getAppState, getCodeState, getJavaScriptFile} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
 import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
@@ -57,13 +57,13 @@ export function openJavaScriptFile(file: string): void {
    generateTypeScript(file);
 }
 
-export function openFolder(folderPath: string): void {
+export function openFolder(folderPath: string, index: number = 0): void {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    getWindow().setTitle('kuraTranspiler - ' + folderPath);
 
    const files = getJavaScriptFilesInFolder(folderPath);
 
-   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files});
+   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files, index});
 
    if (files[0]) {
       generateTypeScript(files[0]);
@@ -88,9 +88,11 @@ function generateTypeScript(javaScriptFile: string) {
 }
 
 export function saveTypeScriptCode(): void {
+   const codeState = getCodeState();
+
    const jsFile = getJavaScriptFile();
    const tsFile = getTypeScriptFilePath();
-   const code = getCodeState().typescriptCode;
+   const code = codeState.typescriptCode;
 
    fs.writeFileSync(tsFile, code);
 
@@ -98,6 +100,10 @@ export function saveTypeScriptCode(): void {
    addLog(`Wrote ${tsFile}`);
 
    dispatch({type: 'CLOSE_FILE'});
+
+   if (getAppState().openMode === 'folder' && codeState.folderPath) {
+      openFolder(codeState.folderPath, codeState.currentFileIndex);
+   }
 }
 
 export function addLog(log: string): void {
