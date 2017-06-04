@@ -1,5 +1,6 @@
 import {CodeState} from "../schema";
-import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile} from "./code-actions";
+import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile, SetTypeScriptCode} from "./code-actions";
+import * as diff from 'diff';
 
 
 const initialState: CodeState = {
@@ -17,7 +18,7 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
       case 'SET_JAVASCRIPT_FILE':
          return setJavaScriptFile(s, action);
       case 'SET_TYPESCRIPT_CODE':
-         return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
+         return setTypeScriptCode(s, action);
       case 'SET_FOLDER':
          return setFolder(s, action);
       case 'SET_FILE_INDEX':
@@ -29,12 +30,23 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
    }
 }
 
-export function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
+function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
+   // diff.diffChars()
+
    return {
       ...s,
       javascriptFile: action.file,
       javascriptCode: action.code
    };
+}
+
+function setTypeScriptCode(s: CodeState, action: SetTypeScriptCode): CodeState {
+   if (s.javascriptCode && action.code) {
+      const differences = diff.diffChars(s.javascriptCode, action.code);
+      console.log(differences);
+   }
+
+   return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
 }
 
 function setFolder(s: CodeState, action: SetFolder): CodeState {

@@ -9,7 +9,7 @@ import {ViewMode} from '../state/schema';
 
 
 export function renderHome() {
-   console.log(getState());
+   // console.log(getState());
 
    return ReactDOM.render(
       <Home viewMode={getAppState().viewMode} />,

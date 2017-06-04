@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@types/commander": "^2.9.0",
+    "@types/diff": "^3.2.0",
     "@types/escodegen": "0.0.6",
     "@types/esprima": "^2.1.33",
     "@types/estree": "0.0.34",
@@ -67,6 +68,7 @@
     "@types/react": "^15.0.23",
     "@types/react-dom": "^15.5.0",
     "@types/underscore": "^1.7.36",
+    "diff": "^3.2.0",
     "electron": "^1.6.2",
     "electron-builder": "^17.5.0"
   }
