@@ -1,6 +1,6 @@
-import {getJavaScriptFile, getState} from "../state/state";
-import * as path from "path";
-import * as fs from "fs";
+import {getAppState, getCodeState, getJavaScriptFile} from '../state/state';
+import * as path from 'path';
+import * as fs from 'fs';
 
 
 export function getTypeScriptFileName(): string {
@@ -16,11 +16,8 @@ export function getJavaScriptFileName(): string {
       return '';
    }
 
-   if (getState().openMode === 'folder') {
-      const info = getState().folderInfo;
-      if (info) {
-         return jsFile.replace(info.folderPath + path.sep, '');
-      }
+   if (getAppState().openMode === 'folder') {
+      return jsFile.replace(getCodeState().folderPath + path.sep, '');
    }
 
    return path.parse(jsFile).name + '.js';

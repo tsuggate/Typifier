@@ -1,16 +1,18 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import {Editors} from "./editors/editors";
-import "./root.less";
-import Toolbar from "./toolbar/toolbar";
-import Log from "./log/log";
-import {getJavaScriptFile, getState} from "../state/state";
-import {ViewMode} from "../state/schema";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import {Editors} from './editors/editors';
+import './root.less';
+import Toolbar from './toolbar/toolbar';
+import Log from './log/log';
+import {getAppState, getCodeState, getJavaScriptFile, getState} from '../state/state';
+import {ViewMode} from '../state/schema';
 
 
-export function renderHome(): void {
-   ReactDOM.render(
-      <Home viewMode={getState().viewMode} />,
+export function renderHome() {
+   console.log(getState());
+
+   return ReactDOM.render(
+      <Home viewMode={getAppState().viewMode} />,
       document.getElementById("react-entry")
    );
 }
@@ -28,15 +30,15 @@ class Home extends React.Component<HomeProps, {}> {
    }
 
    buildEditors = () => {
-      const s = getState();
+      const s = getCodeState();
 
       return <Editors javascriptFile={getJavaScriptFile()}
-                      javascriptCode={s.javascriptCode}
-                      typescriptCode={s.typescriptCode} />;
+                      javascriptCode={s.javascriptCode || ''}
+                      typescriptCode={s.typescriptCode || ''} />;
    };
 
    buildView = () => {
-      const s = getState();
+      const s = getAppState();
 
       switch (this.props.viewMode) {
          case 'code':

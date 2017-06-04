@@ -2,11 +2,12 @@ import {generate} from "./output/generate";
 import * as jsBeautify from "js-beautify";
 import {jsBeautifyOptions, reformatCode} from "../test/shared";
 import * as esprima from "esprima";
-import {addLog, appendLog, getJavaScriptFile} from "../ui/state/state";
+import {getJavaScriptFile} from "../ui/state/state";
 import {Program} from "estree";
 import * as escodegen from "escodegen";
 import {GeneratorOptions, GenOptions} from "./output/generator-options";
 import * as _ from 'underscore';
+import {addLog, appendLog} from '../ui/global-actions';
 
 
 export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
@@ -17,7 +18,6 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
       const t2 = _.now();
       addLog(`Parsing ${getJavaScriptFile()}... `);
       const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
-      console.log(program);
       appendLog(`Done - ${_.now() - t2}ms`);
 
       const t3 = _.now();
@@ -41,7 +41,6 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    }
    catch (e) {
       console.log(e);
-      // addLog(e.toString());
       addLog(e.stack);
 
       return null;

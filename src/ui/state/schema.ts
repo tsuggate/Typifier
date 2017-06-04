@@ -3,19 +3,26 @@
 export type ViewMode = 'code' | 'log';
 export type OpenMode = 'file' | 'folder';
 
-export interface FolderInfo {
-   folderPath: string;
+
+export interface AppState {
+   viewMode: ViewMode;
+   openMode: OpenMode;
+   logs: string[];
+}
+
+export interface CodeState {
+   codeGenSucceeded: boolean;
+
+   javascriptFile: string | null;
+   javascriptCode: string | null;
+   typescriptCode: string | null;
+
+   folderPath: string | null;
    javascriptFiles: string[];
-   currentFileIndex: number; // Use index or fileName?
+   currentFileIndex: number;
 }
 
 export interface State {
-   viewMode: ViewMode;
-   openMode: OpenMode;
-   folderInfo: FolderInfo | null;
-   javascriptFile: string;
-   javascriptCode: string;
-   typescriptCode: string;
-   codeGenSucceeded: boolean;
-   logs: string[];
+   app: AppState;
+   code: CodeState;
 }

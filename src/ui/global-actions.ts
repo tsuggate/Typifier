@@ -1,11 +1,8 @@
 import {remote} from 'electron';
-import {
-   addLog, closeJavaScriptFile, getJavaScriptFile, getState, setFolder, setJavascriptCode, setJavascriptFile,
-   setTypescriptCode
-} from './state/state';
+import {dispatch, getAppState, getCodeState, getJavaScriptFile} from './state/state';
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
-import {getTypeScriptFilePath} from './util/util';
+import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -13,14 +10,14 @@ export function getWindow(): Electron.BrowserWindow {
 }
 
 export function clickOpenJsFile(): void {
-   const filePath = openJsFile();
+   const filePath = showOpenJsFileWindow();
 
    if (filePath) {
-      setJavascriptFile(filePath);
+      openJavaScriptFile(filePath);
    }
 }
 
-function openJsFile(): string | null {
+function showOpenJsFileWindow(): string | null {
    const files: string[] | undefined = remote.dialog.showOpenDialog(getWindow(), {
       properties: ['openFile'],
       filters: [{name: 'javascript', extensions: ['js']}]
@@ -33,14 +30,14 @@ function openJsFile(): string | null {
 }
 
 export function clickOpenFolder(): void {
-   const folderPath = openFolder();
+   const folderPath = showOpenFolderWindow();
 
    if (folderPath) {
-      setFolder(folderPath);
+      openFolder(folderPath);
    }
 }
 
-export function openFolder(): string | null {
+export function showOpenFolderWindow(): string | null {
    const paths: string[] | undefined = remote.dialog.showOpenDialog(getWindow(), {
       properties: ['openDirectory']
    });
@@ -51,24 +48,106 @@ export function openFolder(): string | null {
    return null;
 }
 
+export function openJavaScriptFile(file: string): void {
+   dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   dispatch({type: 'SET_OPEN_MODE', mode: 'file'});
+
+   getWindow().setTitle('kuraTranspiler - ' + file);
+
+   generateTypeScript(file);
+}
+
+export function openFolder(folderPath: string, index: number = 0): void {
+   dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+   getWindow().setTitle('kuraTranspiler - ' + folderPath);
+
+   const files = getJavaScriptFilesInFolder(folderPath);
+
+   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files, index});
+
+   if (files[0]) {
+      generateTypeScript(files[0]);
+   }
+}
+
+function generateTypeScript(javaScriptFile: string) {
+   const code = loadJavaScriptFile(javaScriptFile);
+
+   if (code) {
+      dispatch({type: 'SET_JAVASCRIPT_FILE', file: javaScriptFile, code});
+
+      const tsCode = transpile(code, {language: 'typescript'});
+      const success = !!tsCode;
+
+      dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
+
+      if (success) {
+         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+      }
+      else {
+         dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+      }
+   }
+}
+
 export function saveTypeScriptCode(): void {
+   const codeState = getCodeState();
+
    const jsFile = getJavaScriptFile();
    const tsFile = getTypeScriptFilePath();
-   const code = getState().typescriptCode;
+   const code = codeState.typescriptCode;
 
    fs.writeFileSync(tsFile, code);
 
    fs.unlinkSync(jsFile);
    addLog(`Wrote ${tsFile}`);
 
-   closeJavaScriptFile();
+   if (getAppState().openMode === 'file') {
+      dispatch({type: 'CLOSE_FILE'});
+   }
+   else {
+      if (codeState.folderPath) {
+         openFolder(codeState.folderPath, codeState.currentFileIndex);
+      }
+   }
 }
 
-export function loadJavascriptFile(): boolean {
-   const jsFile = getJavaScriptFile();
+export function addLog(log: string): void {
+   dispatch({type: 'ADD_LOG', log});
+}
 
+export function appendLog(log: string): void {
+   dispatch({type: 'ADD_LOG', log, sameLine: true});
+}
+
+export function nextFile(): void {
+   const s = getCodeState();
+
+   if (s.currentFileIndex < s.javascriptFiles.length - 1) {
+      setFileIndex(s.currentFileIndex + 1);
+   }
+}
+
+export function previousFile(): void {
+   const s = getCodeState();
+
+   if (s.currentFileIndex > 0) {
+      setFileIndex(s.currentFileIndex - 1);
+   }
+}
+
+function setFileIndex(index: number): void {
+   const s = getCodeState();
+   const jsFile = s.javascriptFiles[index];
+
+   dispatch({type: 'SET_FILE_INDEX', index});
+   dispatch({type: 'CLEAR_LOGS'});
+   generateTypeScript(jsFile);
+}
+
+export function loadJavaScriptFile(jsFile: string): string | null {
    if (!jsFile) {
-      return false;
+      return null;
    }
 
    try {
@@ -76,26 +155,15 @@ export function loadJavascriptFile(): boolean {
       const jsCode = file.toString();
 
       if (jsCode) {
-         setJavascriptCode(jsCode);
-         return true;
+         return jsCode;
       }
    }
    catch (e) {
       console.log(e);
       addLog(e);
    }
-   return false;
+   return null;
 }
 
-export function generateTypescript(): boolean {
-   const jsCode = getState().javascriptCode;
 
-   const tsCode = transpile(jsCode, {language: 'typescript'});
 
-   if (tsCode) {
-      setTypescriptCode(tsCode);
-      return true;
-   }
-   setTypescriptCode('');
-   return false;
-}

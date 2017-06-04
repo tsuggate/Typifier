@@ -32,7 +32,6 @@ function createWindow(): void {
       mainWindow = null
    });
 
-   mainWindow.setMenu(null);
    mainWindowState.manage(mainWindow);
 }
 
