@@ -27,6 +27,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
                   name="editor1"
                   width="100%"
                   height="100%"
+                  fontSize={13}
                   value={this.props.javascriptCode}
                   readOnly={true}
                   onChange={() => {}}
@@ -40,6 +41,7 @@ export class Editors extends React.Component<EditorsProps, {}> {
                   theme="twilight"
                   width="100%"
                   height="100%"
+                  fontSize={13}
                   name="editor2"
                   value={this.props.typescriptCode}
                   readOnly={true}
