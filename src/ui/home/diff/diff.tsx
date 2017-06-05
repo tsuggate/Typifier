@@ -30,8 +30,8 @@ export default class Diff extends React.Component<DiffProps, {}> {
       const {javascriptCode} = this.props;
       const numLines = javascriptCode.split('\n').length;
 
-      const lineNumbers = _.range(numLines).map((n, i) => {
-         return <div className="lineNumber" key={i}>{n + 1}</div>
+      const lineNumbers = _.range(numLines).map((n: number) => {
+         return <div className={`lineNumber line${n}`} key={n}>{n + 1}</div>
       });
 
       return <div className="margin">
