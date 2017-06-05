@@ -1,6 +1,5 @@
 import * as React from 'react';
 import './diff.less';
-import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
 
@@ -14,34 +13,18 @@ interface DiffProps {
 export default class Diff extends React.Component<DiffProps, {}> {
 
    render() {
-      // const diffs = this.buildDiffs();
-
       return (
          <div className="Diff">
+            <div className="pane">
+               {this.buildMargin()}
 
-            {this.buildMargin()}
-
-            <div className="codeArea">
-               {this.buildCode(this.props.diffs)}
+               <div className="codeArea">
+                  {this.buildCode(this.props.diffs)}
+               </div>
             </div>
-
          </div>
       );
    }
-
-   buildDiffs = (): IDiffResult[] => {
-      const {javascriptCode, typescriptCode} = this.props;
-
-      const t1 = _.now();
-
-      const diffs = diff.diffWords(javascriptCode, typescriptCode);
-
-      const t2 = _.now();
-
-      console.log(`took: ${t2 - t1}ms`);
-
-      return diffs;
-   };
 
    buildMargin = () => {
       const {javascriptCode} = this.props;
