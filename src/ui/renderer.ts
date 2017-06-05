@@ -15,7 +15,7 @@ renderHome();
 
 if (remote.getGlobal('devMode')) {
 
-   const fileDemo = true;
+   const fileDemo = false;
 
    if (fileDemo) {
       const simpleJs =path.join(__dirname, '..', 'test-files', 'simple.js');

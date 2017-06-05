@@ -1,5 +1,6 @@
 
 
+import {IDiffResult} from 'diff';
 export type ViewMode = 'code' | 'diff' | 'log';
 export type OpenMode = 'file' | 'folder';
 
@@ -16,6 +17,7 @@ export interface CodeState {
    javascriptFile: string | null;
    javascriptCode: string | null;
    typescriptCode: string | null;
+   diffs: IDiffResult[] | null;
 
    folderPath: string | null;
    javascriptFiles: string[];

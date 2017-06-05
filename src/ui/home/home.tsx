@@ -39,7 +39,8 @@ class Home extends React.Component<HomeProps, {}> {
       const s = getCodeState();
 
       return <Diff javascriptCode={s.javascriptCode || ''}
-                   typescriptCode={s.typescriptCode || ''} />;
+                   typescriptCode={s.typescriptCode || ''}
+                   diffs={s.diffs} />;
    };
 
    buildView = () => {

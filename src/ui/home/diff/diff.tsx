@@ -8,12 +8,13 @@ import * as _ from 'underscore';
 interface DiffProps {
    javascriptCode: string;
    typescriptCode: string;
+   diffs: IDiffResult[] | null;
 }
 
 export default class Diff extends React.Component<DiffProps, {}> {
 
    render() {
-      const diffs = this.buildDiffs();
+      // const diffs = this.buildDiffs();
 
       return (
          <div className="Diff">
@@ -21,14 +22,14 @@ export default class Diff extends React.Component<DiffProps, {}> {
             {this.buildMargin()}
 
             <div className="codeArea">
-               {this.buildCode(diffs)}
+               {this.buildCode(this.props.diffs)}
             </div>
 
          </div>
       );
    }
 
-   buildDiffs = () => {
+   buildDiffs = (): IDiffResult[] => {
       const {javascriptCode, typescriptCode} = this.props;
 
       const t1 = _.now();
@@ -55,7 +56,11 @@ export default class Diff extends React.Component<DiffProps, {}> {
       </div>;
    };
 
-   buildCode = (diffs: IDiffResult[]) => {
+   buildCode = (diffs: IDiffResult[] | null) => {
+      if (!diffs) {
+         return null;
+      }
+
       return diffs.map((d, i) => {
          const value = d.value;
 

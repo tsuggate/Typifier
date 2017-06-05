@@ -1,6 +1,5 @@
-import {CodeState} from "../schema";
-import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile, SetTypeScriptCode} from "./code-actions";
-import * as diff from 'diff';
+import {CodeState} from '../schema';
+import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile, SetTypeScriptCode} from './code-actions';
 
 
 const initialState: CodeState = {
@@ -8,6 +7,7 @@ const initialState: CodeState = {
    javascriptFile: null,
    javascriptCode: null,
    typescriptCode: null,
+   diffs: null,
    folderPath: null,
    javascriptFiles: [],
    currentFileIndex: 0
@@ -39,7 +39,7 @@ function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
 }
 
 function setTypeScriptCode(s: CodeState, action: SetTypeScriptCode): CodeState {
-   return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
+   return {...s, typescriptCode: action.code, codeGenSucceeded: action.success, diffs: action.diffs};
 }
 
 function setFolder(s: CodeState, action: SetFolder): CodeState {

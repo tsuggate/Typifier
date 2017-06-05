@@ -3,7 +3,7 @@ import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 import * as jsBeautify from 'js-beautify';
 import {GenOptions} from '../transpiler2/output/generator-options';
-import {addLog} from '../ui/global-actions';
+import {addLogLn} from '../ui/global-actions';
 
 
 export const jsBeautifyOptions = {
@@ -44,8 +44,8 @@ export function reformatCode(code: string): string {
       program = esprima.parse(code);
    }
    catch (e) {
-      addLog(`Error: Esprima failed to parse code.`);
-      addLog(e.stack);
+      addLogLn(`Error: Esprima failed to parse code.`);
+      addLogLn(e.stack);
       console.log(code);
       return '';
    }
@@ -54,8 +54,8 @@ export function reformatCode(code: string): string {
       return escodegen.generate(program);
    }
    catch (e) {
-      addLog(`Error: Escodegen failed to generate code.`);
-      addLog(e.stack);
+      addLogLn(`Error: Escodegen failed to generate code.`);
+      addLogLn(e.stack);
       return '';
    }
 }

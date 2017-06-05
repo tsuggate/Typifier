@@ -3,6 +3,9 @@ import {dispatch, getAppState, getCodeState, getJavaScriptFile} from './state/st
 import * as fs from 'fs';
 import {transpile} from '../transpiler2/transpiler-main';
 import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
+import * as diff from 'diff';
+import {IDiffResult} from 'diff';
+import * as _ from 'underscore';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -76,10 +79,16 @@ function generateTypeScript(javaScriptFile: string) {
    if (code) {
       dispatch({type: 'SET_JAVASCRIPT_FILE', file: javaScriptFile, code});
 
+      const t1 = _.now();
+
       const tsCode = transpile(code, {language: 'typescript'});
       const success = !!tsCode;
 
-      dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
+      if (tsCode) {
+         const diffs = generateDiffs(code, tsCode);
+
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success, diffs});
+      }
 
       if (success) {
          dispatch({type: 'SET_VIEW_MODE', mode: 'diff'});
@@ -87,7 +96,21 @@ function generateTypeScript(javaScriptFile: string) {
       else {
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
       }
+
+      addLogLn(`Total Time: ${_.now() - t1}ms`);
    }
+}
+
+function generateDiffs(javaScript: string, typeScript: string): IDiffResult[] {
+   const t1 = _.now();
+
+   addLogLn('Generating diffs...');
+
+   const diffs = diff.diffWords(javaScript, typeScript);
+
+   addLog(` OK - ${_.now() - t1}ms`);
+
+   return diffs;
 }
 
 export function saveTypeScriptCode(): void {
@@ -100,7 +123,7 @@ export function saveTypeScriptCode(): void {
    fs.writeFileSync(tsFile, code);
 
    fs.unlinkSync(jsFile);
-   addLog(`Wrote ${tsFile}`);
+   addLogLn(`Wrote ${tsFile}`);
 
    if (getAppState().openMode === 'file') {
       dispatch({type: 'CLOSE_FILE'});
@@ -112,11 +135,11 @@ export function saveTypeScriptCode(): void {
    }
 }
 
-export function addLog(log: string): void {
+export function addLogLn(log: string): void {
    dispatch({type: 'ADD_LOG', log});
 }
 
-export function appendLog(log: string): void {
+export function addLog(log: string): void {
    dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
@@ -160,7 +183,7 @@ export function loadJavaScriptFile(jsFile: string): string | null {
    }
    catch (e) {
       console.log(e);
-      addLog(e);
+      addLogLn(e);
    }
    return null;
 }
