@@ -31,8 +31,6 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
 }
 
 function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
-   // diff.diffChars()
-
    return {
       ...s,
       javascriptFile: action.file,
@@ -41,11 +39,6 @@ function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
 }
 
 function setTypeScriptCode(s: CodeState, action: SetTypeScriptCode): CodeState {
-   if (s.javascriptCode && action.code) {
-      const differences = diff.diffChars(s.javascriptCode, action.code);
-      console.log(differences);
-   }
-
    return {...s, typescriptCode: action.code, codeGenSucceeded: action.success};
 }
 

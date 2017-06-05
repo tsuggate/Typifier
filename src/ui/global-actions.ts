@@ -82,7 +82,7 @@ function generateTypeScript(javaScriptFile: string) {
       dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success});
 
       if (success) {
-         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+         dispatch({type: 'SET_VIEW_MODE', mode: 'diff'});
       }
       else {
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});

@@ -17,6 +17,11 @@ export default class Toolbar extends React.Component<{}, {}> {
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Code</Button>
 
+            <Button onClick={this.onClickShowDiff}
+                    on={getAppState().viewMode === 'diff'}
+                    disabled={this.shouldDisableViewCode()}
+                    moreClasses="minSize" >Diff</Button>
+
             <Button onClick={this.onClickShowLog}
                     on={getAppState().viewMode === 'log'}
                     moreClasses="minSize">Log</Button>
@@ -53,6 +58,10 @@ export default class Toolbar extends React.Component<{}, {}> {
 
    onClickCompareCode = () => {
       dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
+   };
+
+   onClickShowDiff = () => {
+      dispatch({type: 'SET_VIEW_MODE', mode: 'diff'});
    };
 
    onClickApplyChanges = () => {

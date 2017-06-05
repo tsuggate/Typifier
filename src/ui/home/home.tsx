@@ -4,13 +4,12 @@ import {Editors} from './editors/editors';
 import './root.less';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
-import {getAppState, getCodeState, getJavaScriptFile, getState} from '../state/state';
+import {getAppState, getCodeState} from '../state/state';
 import {ViewMode} from '../state/schema';
+import Diff from './diff/diff';
 
 
 export function renderHome() {
-   // console.log(getState());
-
    return ReactDOM.render(
       <Home viewMode={getAppState().viewMode} />,
       document.getElementById("react-entry")
@@ -32,9 +31,15 @@ class Home extends React.Component<HomeProps, {}> {
    buildEditors = () => {
       const s = getCodeState();
 
-      return <Editors javascriptFile={getJavaScriptFile()}
-                      javascriptCode={s.javascriptCode || ''}
+      return <Editors javascriptCode={s.javascriptCode || ''}
                       typescriptCode={s.typescriptCode || ''} />;
+   };
+
+   buildDiff = () => {
+      const s = getCodeState();
+
+      return <Diff javascriptCode={s.javascriptCode || ''}
+                   typescriptCode={s.typescriptCode || ''} />;
    };
 
    buildView = () => {
@@ -46,7 +51,7 @@ class Home extends React.Component<HomeProps, {}> {
          case 'log':
             return <Log logs={s.logs} />;
          default:
-            return <div />;
+            return this.buildDiff();
       }
    };
 }

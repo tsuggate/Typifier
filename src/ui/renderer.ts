@@ -18,7 +18,7 @@ if (remote.getGlobal('devMode')) {
    const fileDemo = true;
 
    if (fileDemo) {
-      const simpleJs =path.join(__dirname, '..', 'test-files', 'simple2.js');
+      const simpleJs =path.join(__dirname, '..', 'test-files', 'simple.js');
       openJavaScriptFile(simpleJs);
    }
    else {

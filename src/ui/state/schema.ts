@@ -1,6 +1,6 @@
 
 
-export type ViewMode = 'code' | 'log';
+export type ViewMode = 'code' | 'diff' | 'log';
 export type OpenMode = 'file' | 'folder';
 
 
