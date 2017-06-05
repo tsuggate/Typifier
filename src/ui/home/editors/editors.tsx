@@ -11,7 +11,6 @@ import 'brace/theme/twilight';
 
 
 interface EditorsProps {
-   javascriptFile: string;
    javascriptCode: string;
    typescriptCode: string;
 }

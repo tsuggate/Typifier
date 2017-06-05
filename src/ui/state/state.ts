@@ -48,8 +48,8 @@ export function getCodeState(): CodeState {
 }
 
 export function getJavaScriptFile(): string {
-   const codeState = getCodeState();
-   const appState = getAppState();
+   const codeState = getState().code;
+   const appState = getState().app;
 
    if (appState.openMode === 'file') {
       return codeState.javascriptFile || '';
