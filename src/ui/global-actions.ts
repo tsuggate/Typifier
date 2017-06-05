@@ -12,11 +12,11 @@ export function getWindow(): Electron.BrowserWindow {
    return remote.getCurrentWindow();
 }
 
-export function clickOpenJsFile(): void {
+export async function clickOpenJsFile(): Promise<void> {
    const filePath = showOpenJsFileWindow();
 
    if (filePath) {
-      openJavaScriptFile(filePath);
+      await openFile(filePath);
    }
 }
 
@@ -32,11 +32,11 @@ function showOpenJsFileWindow(): string | null {
    return null;
 }
 
-export function clickOpenFolder(): void {
+export async function clickOpenFolder(): Promise<void> {
    const folderPath = showOpenFolderWindow();
 
    if (folderPath) {
-      openFolder(folderPath);
+      await openFolder(folderPath);
    }
 }
 
@@ -51,16 +51,16 @@ export function showOpenFolderWindow(): string | null {
    return null;
 }
 
-export function openJavaScriptFile(file: string): void {
+export async function openFile(file: string): Promise<void> {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    dispatch({type: 'SET_OPEN_MODE', mode: 'file'});
 
    getWindow().setTitle('kuraTranspiler - ' + file);
 
-   generateTypeScript(file);
+   await generateTypeScript(file);
 }
 
-export function openFolder(folderPath: string, index: number = 0): void {
+export async function openFolder(folderPath: string, index: number = 0): Promise<void> {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    getWindow().setTitle('kuraTranspiler - ' + folderPath);
 
@@ -69,12 +69,12 @@ export function openFolder(folderPath: string, index: number = 0): void {
    dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files, index});
 
    if (files[0]) {
-      generateTypeScript(files[0]);
+      await generateTypeScript(files[0]);
    }
 }
 
-function generateTypeScript(javaScriptFile: string) {
-   const code = loadJavaScriptFile(javaScriptFile);
+async function generateTypeScript(javaScriptFile: string): Promise<void> {
+   const code = await loadJavaScriptFile(javaScriptFile);
 
    if (code) {
       dispatch({type: 'SET_JAVASCRIPT_FILE', file: javaScriptFile, code});
@@ -113,7 +113,7 @@ function generateDiffs(javaScript: string, typeScript: string): IDiffResult[] {
    return diffs;
 }
 
-export function saveTypeScriptCode(): void {
+export async function saveTypeScriptCode(): Promise<void> {
    const codeState = getCodeState();
 
    const jsFile = getJavaScriptFile();
@@ -130,7 +130,7 @@ export function saveTypeScriptCode(): void {
    }
    else {
       if (codeState.folderPath) {
-         openFolder(codeState.folderPath, codeState.currentFileIndex);
+         await openFolder(codeState.folderPath, codeState.currentFileIndex);
       }
    }
 }
@@ -143,50 +143,65 @@ export function addLog(log: string): void {
    dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
-export function nextFile(): void {
+export async function nextFile(): Promise<void> {
    const s = getCodeState();
 
    if (s.currentFileIndex < s.javascriptFiles.length - 1) {
-      setFileIndex(s.currentFileIndex + 1);
+      await setFileIndex(s.currentFileIndex + 1);
    }
 }
 
-export function previousFile(): void {
+export async function previousFile(): Promise<void> {
    const s = getCodeState();
 
    if (s.currentFileIndex > 0) {
-      setFileIndex(s.currentFileIndex - 1);
+      await setFileIndex(s.currentFileIndex - 1);
    }
 }
 
-function setFileIndex(index: number): void {
+async function setFileIndex(index: number): Promise<void> {
+   dispatch({type: 'CLEAR_LOGS'});
+   dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
+
    const s = getCodeState();
    const jsFile = s.javascriptFiles[index];
 
    dispatch({type: 'SET_FILE_INDEX', index});
-   dispatch({type: 'CLEAR_LOGS'});
-   generateTypeScript(jsFile);
+   await generateTypeScript(jsFile);
 }
 
-export function loadJavaScriptFile(jsFile: string): string | null {
+export async function loadJavaScriptFile(jsFile: string): Promise<string | null> {
    if (!jsFile) {
       return null;
    }
 
-   try {
-      const file = fs.readFileSync(jsFile);
-      const jsCode = file.toString();
-
-      if (jsCode) {
-         return jsCode;
-      }
-   }
-   catch (e) {
-      console.log(e);
-      addLogLn(e);
-   }
-   return null;
+   return await readFile(jsFile);
+   // try {
+   //    const jsCode = await readFile(jsFile);
+   //
+   //    if (jsCode) {
+   //       return jsCode;
+   //    }
+   // }
+   // catch (e) {
+   //    console.log(e);
+   //    addLogLn(e);
+   // }
+   // return null;
 }
 
-
+function readFile(file: string): Promise<string | null> {
+   return new Promise<string | null>((resolve) => {
+      fs.readFile(file, (e, data) => {
+         if (e) {
+            console.log(e);
+            addLogLn(`${e.stack ? e.stack : e}`);
+            resolve(null);
+         }
+         else {
+            resolve(data.toString());
+         }
+      });
+   })
+}
 

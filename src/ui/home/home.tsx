@@ -4,39 +4,41 @@ import {Editors} from './editors/editors';
 import './root.less';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
-import {getAppState, getCodeState} from '../state/state';
-import {ViewMode} from '../state/schema';
+import {getState} from '../state/state';
+import {State} from '../state/schema';
 import Diff from './diff/diff';
 
 
 export function renderHome() {
    return ReactDOM.render(
-      <Home viewMode={getAppState().viewMode} />,
+      <Home state={getState()} />,
       document.getElementById("react-entry")
    );
 }
 
 interface HomeProps {
-   viewMode: ViewMode;
+   state: State;
 }
 
 class Home extends React.Component<HomeProps, {}> {
    render() {
+
       return <div className="main-content">
-         <Toolbar />
+         <Toolbar viewMode={this.props.state.app.viewMode}
+                  codeGenSucceeded={this.props.state.code.codeGenSucceeded} />
          {this.buildView()}
       </div>;
    }
 
    buildEditors = () => {
-      const s = getCodeState();
+      const s = this.props.state.code;
 
       return <Editors javascriptCode={s.javascriptCode || ''}
                       typescriptCode={s.typescriptCode || ''} />;
    };
 
    buildDiff = () => {
-      const s = getCodeState();
+      const s = this.props.state.code;
 
       return <Diff javascriptCode={s.javascriptCode || ''}
                    typescriptCode={s.typescriptCode || ''}
@@ -44,9 +46,9 @@ class Home extends React.Component<HomeProps, {}> {
    };
 
    buildView = () => {
-      const s = getAppState();
+      const s = this.props.state.app;
 
-      switch (this.props.viewMode) {
+      switch (s.viewMode) {
          case 'code':
             return this.buildEditors();
          case 'log':

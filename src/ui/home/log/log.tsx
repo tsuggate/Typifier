@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './log.less';
 
+
 interface LogProps {
    logs: string[];
 }

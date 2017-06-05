@@ -3,7 +3,7 @@ import {renderMainWindowMenu} from './home/menu';
 import {initStore} from './state/state';
 import * as path from 'path';
 import {remote} from 'electron';
-import {nextFile, openFolder, openJavaScriptFile, previousFile} from './global-actions';
+import {nextFile, openFolder, openFile, previousFile} from './global-actions';
 import * as os from 'os';
 import {existsSync} from 'fs';
 
@@ -19,7 +19,7 @@ if (remote.getGlobal('devMode')) {
 
    if (fileDemo) {
       const simpleJs =path.join(__dirname, '..', 'test-files', 'simple.js');
-      openJavaScriptFile(simpleJs);
+      openFile(simpleJs);
    }
    else {
       const subFolder = path.join('client', 'src', 'instance', 'js', 'plugins');
@@ -34,17 +34,17 @@ if (remote.getGlobal('devMode')) {
 
 }
 
-document.onkeydown = (e) => {
+document.onkeydown = async (e) => {
    e = e || window.event;
 
    switch(e.which) {
       case 37: // left
          e.preventDefault();
-         previousFile();
+         await previousFile();
          break;
       case 39: // right
          e.preventDefault();
-         nextFile();
+         await nextFile();
          break;
    }
 };

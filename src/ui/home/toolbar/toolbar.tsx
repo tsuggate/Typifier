@@ -2,28 +2,34 @@ import * as React from 'react';
 import Button from '../../components/button';
 import './toolbar.less';
 import {getWindow, saveTypeScriptCode} from '../../global-actions';
-import {dispatch, getAppState, getCodeState, getJavaScriptFile} from '../../state/state';
+import {dispatch, getJavaScriptFile} from '../../state/state';
 import {remote} from 'electron';
 import {getJavaScriptFileName, getTypeScriptFileName} from '../../util/util';
 import FileNavigation from './file-navigation';
+import {ViewMode} from '../../state/schema';
 
 
-export default class Toolbar extends React.Component<{}, {}> {
+interface ToolbarProps {
+   viewMode: ViewMode;
+   codeGenSucceeded: boolean;
+}
+
+export default class Toolbar extends React.Component<ToolbarProps, {}> {
    render() {
       return <div className="Toolbar">
          <div className="left">
             <Button onClick={this.onClickShowDiff}
-                    on={getAppState().viewMode === 'diff'}
+                    on={this.props.viewMode === 'diff'}
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Diff</Button>
 
             <Button onClick={this.onClickCompareCode}
-                    on={getAppState().viewMode === 'code'}
+                    on={this.props.viewMode === 'code'}
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Code</Button>
 
             <Button onClick={this.onClickShowLog}
-                    on={getAppState().viewMode === 'log'}
+                    on={this.props.viewMode === 'log'}
                     moreClasses="minSize">Log</Button>
          </div>
 
@@ -49,7 +55,7 @@ export default class Toolbar extends React.Component<{}, {}> {
    };
 
    shouldDisableApplyChanges = () => {
-      return !getCodeState().codeGenSucceeded || !getJavaScriptFile();
+      return !this.props.codeGenSucceeded || !getJavaScriptFile();
    };
 
    onClickShowLog = () => {
@@ -64,8 +70,8 @@ export default class Toolbar extends React.Component<{}, {}> {
       dispatch({type: 'SET_VIEW_MODE', mode: 'diff'});
    };
 
-   onClickApplyChanges = () => {
-      saveTypeScriptCode();
+   onClickApplyChanges = async () => {
+      await saveTypeScriptCode();
    };
 
    onClickInfoButton = () => {
