@@ -13,6 +13,8 @@ define([
    function myFunc(a1, a2) { /* hello comment */
       var b = 2;
 
+      this.n = b;
+
       return a1 * a2 + b; // return some things.
    }
 

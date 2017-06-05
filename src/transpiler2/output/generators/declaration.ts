@@ -86,8 +86,6 @@ export function functionDeclaration(f: FunctionDeclaration, options: GenOptions)
 }
 
 export function functionDeclarationTs(f: FunctionDeclaration, options: GenOptions): string {
-   console.log('functionDeclarationTs');
-
    if (f.generator) {
       throw 'functionDeclaration.generator not implemented!';
    }
@@ -98,17 +96,19 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
       throw new Error(`functionDeclaration types don't match.`);
    }
 
-   const params = f.params.map((p, i) => {
+   const paramsArray = f.params.map((p, i) => {
       return generate(p, options) + `: ${types[i]}`;
-   }).join(', ');
+   });
 
+   if (containsThisUsage(f.body)) {
+      paramsArray.unshift('this: any');
+   }
+
+   const params = paramsArray.join(', ');
    const name = generate(f.id, options);
-
    const body = generate(f.body, options);
 
    const res = `function ${name}(${params}) ${body}`;
-
-   containsThisUsage(f.body);
 
    return functionDeclarationComments(res, f, options);
 }
