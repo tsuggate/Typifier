@@ -12,15 +12,15 @@ export default class Toolbar extends React.Component<{}, {}> {
    render() {
       return <div className="Toolbar">
          <div className="left">
-            <Button onClick={this.onClickCompareCode}
-                    on={getAppState().viewMode === 'code'}
-                    disabled={this.shouldDisableViewCode()}
-                    moreClasses="minSize" >Code</Button>
-
             <Button onClick={this.onClickShowDiff}
                     on={getAppState().viewMode === 'diff'}
                     disabled={this.shouldDisableViewCode()}
                     moreClasses="minSize" >Diff</Button>
+
+            <Button onClick={this.onClickCompareCode}
+                    on={getAppState().viewMode === 'code'}
+                    disabled={this.shouldDisableViewCode()}
+                    moreClasses="minSize" >Code</Button>
 
             <Button onClick={this.onClickShowLog}
                     on={getAppState().viewMode === 'log'}
