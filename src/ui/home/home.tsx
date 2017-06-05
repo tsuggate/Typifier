@@ -4,49 +4,57 @@ import {Editors} from './editors/editors';
 import './root.less';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
-import {getAppState, getCodeState, getJavaScriptFile, getState} from '../state/state';
-import {ViewMode} from '../state/schema';
+import {getState} from '../state/state';
+import {State} from '../state/schema';
+import Diff from './diff/diff';
 
 
 export function renderHome() {
-   console.log(getState());
-
    return ReactDOM.render(
-      <Home viewMode={getAppState().viewMode} />,
+      <Home state={getState()} />,
       document.getElementById("react-entry")
    );
 }
 
 interface HomeProps {
-   viewMode: ViewMode;
+   state: State;
 }
 
 class Home extends React.Component<HomeProps, {}> {
    render() {
+
       return <div className="main-content">
-         <Toolbar />
+         <Toolbar viewMode={this.props.state.app.viewMode}
+                  codeGenSucceeded={this.props.state.code.codeGenSucceeded} />
          {this.buildView()}
       </div>;
    }
 
    buildEditors = () => {
-      const s = getCodeState();
+      const s = this.props.state.code;
 
-      return <Editors javascriptFile={getJavaScriptFile()}
-                      javascriptCode={s.javascriptCode || ''}
+      return <Editors javascriptCode={s.javascriptCode || ''}
                       typescriptCode={s.typescriptCode || ''} />;
    };
 
-   buildView = () => {
-      const s = getAppState();
+   buildDiff = () => {
+      const s = this.props.state.code;
 
-      switch (this.props.viewMode) {
+      return <Diff javascriptCode={s.javascriptCode || ''}
+                   typescriptCode={s.typescriptCode || ''}
+                   diffs={s.diffs} />;
+   };
+
+   buildView = () => {
+      const s = this.props.state.app;
+
+      switch (s.viewMode) {
          case 'code':
             return this.buildEditors();
          case 'log':
             return <Log logs={s.logs} />;
          default:
-            return <div />;
+            return this.buildDiff();
       }
    };
 }

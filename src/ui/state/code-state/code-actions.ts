@@ -1,5 +1,6 @@
 
 
+import {IDiffResult} from 'diff';
 export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder | SetFileIndex | CloseFile;
 
 
@@ -12,6 +13,7 @@ export interface SetJavaScriptFile {
 export interface SetTypeScriptCode {
    type: 'SET_TYPESCRIPT_CODE';
    code: string | null;
+   diffs: IDiffResult[] | null;
    success: boolean;
 }
 
@@ -30,3 +32,4 @@ export interface SetFileIndex {
 export interface CloseFile {
    type: 'CLOSE_FILE';
 }
+
