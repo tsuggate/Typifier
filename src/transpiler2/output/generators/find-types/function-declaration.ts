@@ -1,4 +1,4 @@
-import {CallExpression, FunctionDeclaration, Identifier, Literal, Program} from 'estree';
+import {BlockStatement, CallExpression, FunctionDeclaration, Identifier, Literal, Program} from 'estree';
 import {CodeRange, insideScope} from './shared';
 import {traverse} from '../../../util/misc';
 import {findParentNode} from '../../../symbols/symbols';
@@ -69,6 +69,25 @@ function findFunctionCalls(program: Program, declaration: FunctionDeclaration, p
    });
 
    return calls;
+}
+
+export function containsThisUsage(body: BlockStatement): boolean {
+   let foundThisExpression = false;
+
+   traverse(body, (node, parent, context) => {
+      switch (node.type) {
+         case 'ThisExpression':
+            foundThisExpression = true;
+            context.skip();
+            break;
+         case 'FunctionExpression':
+         case 'FunctionDeclaration':
+            context.skip();
+            break;
+      }
+   });
+
+   return foundThisExpression;
 }
 
 // function findFunctionDeclaration(program: Program, callee: Identifier) {

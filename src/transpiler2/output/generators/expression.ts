@@ -17,6 +17,7 @@ import {
 import {generate} from '../generate';
 import {operatorHasPrecedence} from './operators';
 import {GenOptions} from '../generator-options';
+import {containsThisUsage} from './find-types/function-declaration';
 
 
 export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
@@ -78,7 +79,13 @@ export function functionExpressionTs(f: FunctionExpression, options: GenOptions)
       throw 'functionExpression.id !== null';
    }
 
-   const params = f.params.map(p => generate(p, options) + ': any').join(', ');
+   const paramsArray = f.params.map(p => generate(p, options) + ': any');
+
+   if (containsThisUsage(f.body)) {
+      paramsArray.unshift('this: any');
+   }
+
+   const params = paramsArray.join(', ');
 
    return `function(${params}) ${generate(f.body, options)}`;
 }
