@@ -18,7 +18,9 @@ function createWindow(): void {
       x: mainWindowState.x,
       y: mainWindowState.y,
       width: mainWindowState.width,
-      height: mainWindowState.height
+      height: mainWindowState.height,
+      minWidth: 800,
+      minHeight: 600
    });
 
    const htmlPath = `file://${path.join(__dirname, '..', 'resources', 'index.html')}`;
