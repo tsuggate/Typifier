@@ -130,14 +130,6 @@ export async function saveTypeScriptCode(): Promise<void> {
    }
 }
 
-// export function addLogLn(log: string): void {
-//    dispatch({type: 'ADD_LOG', log});
-// }
-//
-// export function addLog(log: string): void {
-//    dispatch({type: 'ADD_LOG', log, sameLine: true});
-// }
-
 export async function nextFile(): Promise<void> {
    const s = getCodeState();
 
