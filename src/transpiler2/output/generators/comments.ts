@@ -2,12 +2,6 @@ import {Node, SourceLocation} from 'estree';
 import {GenOptions} from "../generator-options";
 
 
-/*
-
- Idea: Only generate trailing comments if they are on the same line.
-
- */
-
 export interface ESComment {
    range: number[];
    loc: SourceLocation;
@@ -15,7 +9,6 @@ export interface ESComment {
    value: string;
 }
 
-// TODO: Look at node position and figure out whether new lines should be inserted.
 export function insertComments(code: string, node: Node, options: GenOptions): string {
    if (options.comments()) {
 
@@ -46,20 +39,10 @@ function generateTrailingComments(node: Node, options: GenOptions) {
 }
 
 export function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions, index: number): string {
-   let res;
-
    if (comment.type === 'Line') {
-      if (type === 'trailing') {
-         res = generateTrailingLineComment(comment, options, index);
-      }
-      else {
-         res = generateLeadingLineComment(comment, options, index);
-      }
+      return generateLineComment(comment, options, index);
    }
-   else {
-      res = generateBlockComment(comment, type, node, options);
-   }
-   return res;
+   return generateBlockComment(comment, type, node, options);
 }
 
 function isCommentOnNewLine(comment: ESComment, options: GenOptions) {
@@ -79,44 +62,19 @@ function isLineEnding(c: string): boolean {
    return c === '\n' || c === '\r\n';
 }
 
-function generateLeadingLineComment(comment: ESComment, options: GenOptions, index: number) {
-   let res = '';
-
+function generateLineComment(comment: ESComment, options: GenOptions, index: number): string {
    if (options.commentAlreadyGenerated(comment)) {
-      return res;
+      return '';
    }
-
    options.setCommentAsGenerated(comment);
 
    if (isCommentOnNewLine(comment, options) && !(index > 0)) {
-      res = `\n//${comment.value} \n`;
+      return `\n//${comment.value} \n`;
    }
    else {
-      res = `//${comment.value} \n`;
+      return `//${comment.value} \n`;
    }
-
-   return res;
 }
-
-function generateTrailingLineComment(comment: ESComment, options: GenOptions, index: number) {
-   let res = '';
-
-   if (options.commentAlreadyGenerated(comment)) {
-      return res;
-   }
-
-   options.setCommentAsGenerated(comment);
-
-   if (isCommentOnNewLine(comment, options) && !(index > 0)) {
-      res = `\n//${comment.value} \n`;
-   }
-   else {
-      res = `//${comment.value} \n`;
-   }
-
-   return res;
-}
-
 function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions) {
    let res = '';
 
@@ -137,12 +95,3 @@ function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', 
 
    return res;
 }
-
-// function printComment(comment: ESComment, type: 'trailing' | 'leading', options: GenOptions) {
-//    if (comment.type === 'Line') {
-//       console.log(`//${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)}`);
-//    }
-//    else {
-//       console.log(`/*${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)} */`);
-//    }
-// }
