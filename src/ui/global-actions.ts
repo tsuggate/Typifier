@@ -83,6 +83,7 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
       const t1 = _.now();
 
       const tsCode = await transpile(code, {language: 'typescript'});
+      console.log('tsCode: ', tsCode);
       const success = !!tsCode;
 
       if (tsCode) {
@@ -95,6 +96,7 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
          dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
       }
       else {
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success, diffs: null});
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
       }
 
