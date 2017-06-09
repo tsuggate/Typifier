@@ -63,12 +63,13 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
 
    const types = getFunctionDeclarationTypes(f, options);
 
-   if (!types || f.params.length !== types.length) {
-      throw new Error(`functionDeclaration types don't match.`);
+   if (!types || (f.params.length !== types.length && types.length !== 0)) {
+      throw new Error(`functionDeclaration types don't match for ${generate(f.id, options)}`);
    }
 
    const paramsArray = f.params.map((p, i) => {
-      return generate(p, options) + `: ${types[i]}`;
+      const t = types[i] || 'any';
+      return generate(p, options) + `: ${t}`;
    });
 
    if (containsThisUsage(f.body)) {
