@@ -1,38 +1,16 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
 import {initStore} from './state/state';
-import * as path from 'path';
 import {remote} from 'electron';
-import {nextFile, openFolder, openFile, previousFile} from './global-actions';
-import * as os from 'os';
-import {existsSync} from 'fs';
+import {nextFile, previousFile} from './global-actions';
+import {handleDevMode} from './util/dev-mode';
 
 
 initStore();
 renderMainWindowMenu();
 renderHome();
+handleDevMode();
 
-
-if (remote.getGlobal('devMode')) {
-
-   const fileDemo = true;
-
-   if (fileDemo) {
-      const simpleJs =path.join(__dirname, '..', 'test-files', 'comments.js');
-      openFile(simpleJs);
-   }
-   else {
-      const subFolder = path.join('client', 'src', 'instance', 'js', 'plugins');
-
-      if (os.platform() === 'win32') {
-         const folder = path.join(os.homedir(), 'Documents', 'Repos', subFolder);
-
-         if (existsSync(folder))
-            openFolder(folder);
-      }
-   }
-
-}
 
 document.onkeydown = async (e) => {
    e = e || window.event;

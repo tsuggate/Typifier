@@ -6,6 +6,7 @@ import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
 import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
+import {addLog, addLogLn, logProgress} from './home/log/logger';
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -81,11 +82,11 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
 
       const t1 = _.now();
 
-      const tsCode = transpile(code, {language: 'typescript'});
+      const tsCode = await transpile(code, {language: 'typescript'});
       const success = !!tsCode;
 
       if (tsCode) {
-         const diffs = generateDiffs(code, tsCode);
+         const diffs = await generateDiffs(code, tsCode);
 
          dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success, diffs});
       }
@@ -101,16 +102,8 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
    }
 }
 
-function generateDiffs(javaScript: string, typeScript: string): IDiffResult[] {
-   const t1 = _.now();
-
-   addLogLn('Generating diffs...');
-
-   const diffs = diff.diffWords(javaScript, typeScript);
-
-   addLog(` OK - ${_.now() - t1}ms`);
-
-   return diffs;
+function generateDiffs(javaScript: string, typeScript: string): Promise<IDiffResult[]> {
+   return logProgress<IDiffResult[]>('Generating diffs', () => diff.diffWords(javaScript, typeScript));
 }
 
 export async function saveTypeScriptCode(): Promise<void> {
@@ -135,13 +128,13 @@ export async function saveTypeScriptCode(): Promise<void> {
    }
 }
 
-export function addLogLn(log: string): void {
-   dispatch({type: 'ADD_LOG', log});
-}
-
-export function addLog(log: string): void {
-   dispatch({type: 'ADD_LOG', log, sameLine: true});
-}
+// export function addLogLn(log: string): void {
+//    dispatch({type: 'ADD_LOG', log});
+// }
+//
+// export function addLog(log: string): void {
+//    dispatch({type: 'ADD_LOG', log, sameLine: true});
+// }
 
 export async function nextFile(): Promise<void> {
    const s = getCodeState();

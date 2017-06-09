@@ -1,43 +1,37 @@
-import {generate} from "./output/generate";
-import * as jsBeautify from "js-beautify";
-import {jsBeautifyOptions, reformatCode} from "../test/shared";
-import * as esprima from "esprima";
-import {getJavaScriptFile} from "../ui/state/state";
-import {Program} from "estree";
-import * as escodegen from "escodegen";
-import {GeneratorOptions, GenOptions} from "./output/generator-options";
-import * as _ from 'underscore';
-import {addLogLn, addLog} from '../ui/global-actions';
+import {generate} from './output/generate';
+import * as jsBeautify from 'js-beautify';
+import {jsBeautifyOptions, reformatCode} from '../test/shared';
+import * as esprima from 'esprima';
+import {getJavaScriptFile} from '../ui/state/state';
+import {Program} from 'estree';
+import * as escodegen from 'escodegen';
+import {GeneratorOptions, GenOptions} from './output/generator-options';
+import {addLogLn, logProgress} from '../ui/home/log/logger';
 
 
-export function transpile(code: string, generatorOptions?: GeneratorOptions): string | null {
-   // const t1 = _.now();
+export async function transpile(code: string, generatorOptions?: GeneratorOptions): Promise<string | null> {
    const options = new GenOptions(generatorOptions || {}, code);
 
    try {
-      const t2 = _.now();
-      addLogLn(`Parsing ${getJavaScriptFile()}... `);
-      const program = esprima.parse(code, { attachComment: true, loc: true, range: true });
-      addLog(`Done - ${_.now() - t2}ms`);
+      const program = await logProgress<Program>(
+         `Parsing ${getJavaScriptFile()}`,
+         () => esprima.parse(code, { attachComment: true, loc: true, range: true }));
 
-      const t3 = _.now();
-      addLogLn(`Checking code gen matches escodegen... `);
-      if (!jsGeneratorProducesCorrectOutput(program, code)) {
+      const generationMatches = await logProgress<boolean>(
+         `Checking code gen matches escodegen`,
+         () => jsGeneratorProducesCorrectOutput(program, code));
+
+      if (!generationMatches) {
          addLogLn(`JS code generation didn't match`);
 
          return null;
       }
-      addLog(`OK - ${_.now() - t3}ms`);
 
-      const t4 = _.now();
-      addLogLn(`Generating ${options.getLanguage()}... `);
-      const out = generate(program, options);
-      addLog(`Success - ${_.now() - t4}ms`);
+      const out = await logProgress<string>(
+         `Generating ${options.getLanguage()}`,
+         () => generate(program, options));
 
-      const myOutput = jsBeautify(out, jsBeautifyOptions);
-
-      // addLogLn(`Total Time: ${_.now() - t1}ms`);
-      return myOutput;
+      return jsBeautify(out, jsBeautifyOptions);
    }
    catch (e) {
       console.log(e);
@@ -46,6 +40,7 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
       return null;
    }
 }
+
 
 export function jsGeneratorProducesCorrectOutput(program: Program, code: string): boolean {
    const options = new GenOptions({}, code);

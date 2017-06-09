@@ -7,7 +7,6 @@ module.exports = {
    entry: {
       "main": './src/transpiler2/main-window.ts',
       "renderer": './src/ui/renderer.ts',
-      "cmd": './src/transpiler2/cmd.ts',
       "test-spec": './src/test/test-main.ts'
    },
    output: {

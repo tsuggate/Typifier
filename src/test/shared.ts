@@ -3,7 +3,7 @@ import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 import * as jsBeautify from 'js-beautify';
 import {GenOptions} from '../transpiler2/output/generator-options';
-import {addLogLn} from '../ui/global-actions';
+import {addLogLn} from '../ui/home/log/logger';
 
 
 export const jsBeautifyOptions = {
