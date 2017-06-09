@@ -89,10 +89,10 @@ function generateLeadingLineComment(comment: ESComment, options: GenOptions, ind
    options.setCommentAsGenerated(comment);
 
    if (isCommentOnNewLine(comment, options) && !(index > 0)) {
-      res = `\n//${comment.value} leading \n`;
+      res = `\n//${comment.value} \n`;
    }
    else {
-      res = `//${comment.value} leading \n`;
+      res = `//${comment.value} \n`;
    }
 
    return res;
@@ -108,66 +108,14 @@ function generateTrailingLineComment(comment: ESComment, options: GenOptions, in
    options.setCommentAsGenerated(comment);
 
    if (isCommentOnNewLine(comment, options) && !(index > 0)) {
-      res = `\n//${comment.value} trailing \n`;
+      res = `\n//${comment.value} \n`;
    }
    else {
-      res = `//${comment.value} trailing \n`;
+      res = `//${comment.value} \n`;
    }
 
    return res;
 }
-
-// function generateLineComment(comment: ESComment, options: GenOptions) {
-//    let res = '';
-//
-//    if (options.commentAlreadyGenerated(comment)) {
-//       return res;
-//    }
-//
-//    // if (type === 'trailing') {
-//    //    if (node.loc && comment.loc.start.line === node.loc.start.line) {
-//          options.setCommentAsGenerated(comment);
-//          res = `//${comment.value} \n`;
-//       // }
-//    // }
-//    // else {
-//    //    options.setCommentAsGenerated(comment);
-//    //    res = `\n//${comment.value}\n`;
-//    // }
-//
-//    return res;
-// }
-
-// export function generateComment2(comment: ESComment, options: GenOptions): string {
-//    let res;
-//
-//    if (comment.type === 'Line') {
-//       res = generateLineComment2(comment, options);
-//    }
-//    else {
-//       res = generateBlockComment2(comment, options);
-//    }
-//
-//    return res;
-// }
-
-// export function generateLineComment2(comment: ESComment, options: GenOptions): string {
-//    if (options.commentAlreadyGenerated(comment)) {
-//       return '';
-//    }
-//
-//    options.setCommentAsGenerated(comment);
-//    return `//${comment.value}`;
-// }
-//
-// export function generateBlockComment2(comment: ESComment, options: GenOptions) {
-//    if (options.commentAlreadyGenerated(comment)) {
-//       return '';
-//    }
-//
-//    options.setCommentAsGenerated(comment);
-//    return `/*${comment.value}*/`;
-// }
 
 function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions) {
    let res = '';
@@ -190,56 +138,11 @@ function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', 
    return res;
 }
 
-function printComment(comment: ESComment, type: 'trailing' | 'leading', options: GenOptions) {
-   if (comment.type === 'Line') {
-      console.log(`//${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)}`);
-   }
-   else {
-      console.log(`/*${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)} */`);
-   }
-}
-
-// export function generateLeadingComments2(comments: ESComment[], options: GenOptions): string {
-//    if (!options.comments()) {
-//       return '';
+// function printComment(comment: ESComment, type: 'trailing' | 'leading', options: GenOptions) {
+//    if (comment.type === 'Line') {
+//       console.log(`//${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)}`);
 //    }
-//
-//    return comments.map(c => generateComment2(c, options)).filter(c => c !== '').join('\n');
-// }
-
-// export function generateTrailingComments2(comments: ESComment[], options: GenOptions) {
-//    if (!options.comments()) {
-//       return '';
+//    else {
+//       console.log(`/*${comment.value} [${comment.range[0]}, ${comment.range[1]}] ${type} ${options.commentAlreadyGenerated(comment)} */`);
 //    }
-//
-//    if (comments[0]) {
-//       return generateComment2(comments[0], options);
-//    }
-//    return '';
-// }
-
-// export function generateComments2(code: string, node: Node, options: GenOptions) {
-//    let leadingComments = '';
-//    let trailingComments = '';
-//
-//    if (node.leadingComments) {
-//       const c = generateLeadingComments2(node.leadingComments as ESComment[], options);
-//
-//       if (c) {
-//          leadingComments = '\n' + c + '\n';
-//       }
-//    }
-//    if (node.trailingComments) {
-//       const comments = node.trailingComments as ESComment[];
-//
-//       if (comments[0] && node.loc && comments[0].loc.start === node.loc.end) {
-//          const c = generateTrailingComments2(comments, options);
-//
-//          if (c) {
-//             trailingComments = c;
-//          }
-//       }
-//    }
-//
-//    return leadingComments + code + trailingComments;
 // }

@@ -11,8 +11,6 @@ export const jsBeautifyOptions = {
    indent_char: ' '
 };
 
-// let _options: GenOptions = new GenOptions({});
-
 
 export function matchOutput(code: string) {
    it(code, () => {

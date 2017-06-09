@@ -16,22 +16,8 @@ export function blockStatement(s: BlockStatement, options: GenOptions): string {
 }
 
 export function returnStatement(s: ReturnStatement, options: GenOptions): string {
-   const code = `return ${s.argument ? generate(s.argument, options) : ''};`;
-   return code;
-   // return returnStatementComments(code, s, options);
+   return `return ${s.argument ? generate(s.argument, options) : ''};`;
 }
-
-// export function returnStatementComments(code: string, s: ReturnStatement, options: GenOptions) {
-//    let leadingComments = '';
-//    let trailingComments = '';
-//
-//    if (s.trailingComments) {
-//       trailingComments = generateTrailingComments2(s.trailingComments as ESComment[], options);
-//       // console.log(trailingComments);
-//    }
-//
-//    return leadingComments + code + trailingComments;
-// }
 
 export function ifStatement(s: IfStatement, options: GenOptions): string {
    let conditional = `if (${generate(s.test, options)}) ${generate(s.consequent, options)}`;

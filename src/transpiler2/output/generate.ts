@@ -55,29 +55,8 @@ export function generate(node: Node, options: GenOptions): string {
       }
    }
 
-   // logCommentNode('hello comment 2', node);
-   // return generateComments2(result, node, options);
-   // return result;
    return insertComments(result, node, options);
 }
-
-// function logCommentNode(comment: string, node: Node): void {
-//    if (node.leadingComments) {
-//       node.leadingComments.forEach(c => {
-//          if (c.value.includes(comment)) {
-//             console.log(node);
-//          }
-//       });
-//    }
-//
-//    if (node.trailingComments) {
-//       node.trailingComments.forEach(c => {
-//          if (c.value.includes(comment)) {
-//             console.log(node);
-//          }
-//       });
-//    }
-// }
 
 function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOptions) => string) {
    switch (node.type) {
