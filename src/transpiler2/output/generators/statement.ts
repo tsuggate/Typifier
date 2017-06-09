@@ -1,33 +1,37 @@
 import {
-   BlockStatement, BreakStatement, ForStatement, IfStatement, ReturnStatement, SwitchCase,
+   BlockStatement,
+   BreakStatement,
+   ForStatement,
+   IfStatement,
+   ReturnStatement,
+   SwitchCase,
    SwitchStatement
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
-import {ESComment, generateTrailingComments2} from './comments';
 
 
 export function blockStatement(s: BlockStatement, options: GenOptions): string {
-   return '{' + s.body.map(s => generate(s, options)).join('\n') + '\n}';
+   return '{' + s.body.map(s => generate(s, options)).join('') + '}';
 }
 
 export function returnStatement(s: ReturnStatement, options: GenOptions): string {
    const code = `return ${s.argument ? generate(s.argument, options) : ''};`;
-
-   return returnStatementComments(code, s, options);
+   return code;
+   // return returnStatementComments(code, s, options);
 }
 
-export function returnStatementComments(code: string, s: ReturnStatement, options: GenOptions) {
-   let leadingComments = '';
-   let trailingComments = '';
-
-   if (s.trailingComments) {
-      trailingComments = generateTrailingComments2(s.trailingComments as ESComment[], options);
-      // console.log(trailingComments);
-   }
-
-   return leadingComments + code + trailingComments;
-}
+// export function returnStatementComments(code: string, s: ReturnStatement, options: GenOptions) {
+//    let leadingComments = '';
+//    let trailingComments = '';
+//
+//    if (s.trailingComments) {
+//       trailingComments = generateTrailingComments2(s.trailingComments as ESComment[], options);
+//       // console.log(trailingComments);
+//    }
+//
+//    return leadingComments + code + trailingComments;
+// }
 
 export function ifStatement(s: IfStatement, options: GenOptions): string {
    let conditional = `if (${generate(s.test, options)}) ${generate(s.consequent, options)}`;

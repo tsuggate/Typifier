@@ -1,5 +1,5 @@
-import {Node, Program} from "estree";
-import {identifierToJs, literalToJs, programToJs, propertyToJs} from "./generators/misc";
+import {Node, Program} from 'estree';
+import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators/misc';
 import {
    arrayExpression,
    assignmentExpression,
@@ -16,21 +16,26 @@ import {
    thisExpression,
    unaryExpression,
    updateExpression
-} from "./generators/expression";
+} from './generators/expression';
 import {
-   blockStatement, breakStatement, forStatement, ifStatement, returnStatement, switchCase,
+   blockStatement,
+   breakStatement,
+   forStatement,
+   ifStatement,
+   returnStatement,
+   switchCase,
    switchStatement
-} from "./generators/statement";
+} from './generators/statement';
 import {
    functionDeclaration,
    functionDeclarationTs,
    variableDeclarationToJs,
    variableDeclarationToTs,
    variableDeclaratorToJs
-} from "./generators/declaration";
-import {generateImports, isDefine} from "../mods/imports";
-import {generateComments2, insertComments} from "./generators/comments";
-import {GenOptions} from "./generator-options";
+} from './generators/declaration';
+import {generateImports, isDefine} from '../mods/imports';
+import {insertComments} from './generators/comments';
+import {GenOptions} from './generator-options';
 
 
 export function generate(node: Node, options: GenOptions): string {
@@ -50,29 +55,29 @@ export function generate(node: Node, options: GenOptions): string {
       }
    }
 
-   logCommentNode('hello comment 2', node);
+   // logCommentNode('hello comment 2', node);
    // return generateComments2(result, node, options);
-   return result;
-   // return insertComments(result, node, options);
+   // return result;
+   return insertComments(result, node, options);
 }
 
-function logCommentNode(comment: string, node: Node): void {
-   if (node.leadingComments) {
-      node.leadingComments.forEach(c => {
-         if (c.value.includes(comment)) {
-            console.log(node);
-         }
-      });
-   }
-
-   if (node.trailingComments) {
-      node.trailingComments.forEach(c => {
-         if (c.value.includes(comment)) {
-            console.log(node);
-         }
-      });
-   }
-}
+// function logCommentNode(comment: string, node: Node): void {
+//    if (node.leadingComments) {
+//       node.leadingComments.forEach(c => {
+//          if (c.value.includes(comment)) {
+//             console.log(node);
+//          }
+//       });
+//    }
+//
+//    if (node.trailingComments) {
+//       node.trailingComments.forEach(c => {
+//          if (c.value.includes(comment)) {
+//             console.log(node);
+//          }
+//       });
+//    }
+// }
 
 function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOptions) => string) {
    switch (node.type) {

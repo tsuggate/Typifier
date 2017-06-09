@@ -13,6 +13,8 @@ export interface GeneratorOptions {
 
 export class GenOptions {
 
+   private inputCode: string;
+
    private program: Program;
 
    private language: OutputLanguage;
@@ -21,20 +23,26 @@ export class GenOptions {
 
    private generatedComments: ESComment[] = [];
 
-   constructor(options: GeneratorOptions, code?: string) {
+   constructor(options: GeneratorOptions, code: string) {
       this.setOptions(options);
+
+      if (options.includeComments && !code) {
+         throw new Error(`Code not provided to GenOptions. This is required for outputting comments.`);
+      }
 
       if (options.language === 'typescript' && !code) {
          throw new Error(`Code not provided to GenOptions. This is required for outputting Typescript.`);
       }
 
       if (code) {
+         this.inputCode = code;
          this.program = esprima.parse(code, { range: true });
       }
    }
 
    setOptions(options: GeneratorOptions): void {
       this.language = options.language ? options.language : 'javascript';
+      // Default to true? TODO: This keeps confusing me.
       this.includeComments = typeof options.includeComments !== 'undefined' ? options.includeComments : true;
    }
 
@@ -60,6 +68,10 @@ export class GenOptions {
 
    commentAlreadyGenerated(comment: ESComment): boolean {
       return this.generatedComments.some(gc => equals(comment, gc));
+   }
+
+   getInputCode(): string {
+      return this.inputCode;
    }
 }
 

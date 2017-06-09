@@ -11,14 +11,14 @@ export const jsBeautifyOptions = {
    indent_char: ' '
 };
 
-let _options: GenOptions = new GenOptions({});
+// let _options: GenOptions = new GenOptions({});
 
 
 export function matchOutput(code: string) {
    it(code, () => {
       const program = esprima.parse(code);
 
-      const myOutput = reformatCode(generate(program, _options));
+      const myOutput = reformatCode(generate(program, new GenOptions({}, code)));
       const esCodegenOutput = escodegen.generate(program);
 
       expect(myOutput).toEqual(esCodegenOutput);
@@ -28,7 +28,7 @@ export function matchOutput(code: string) {
 export function logOutput(code: string): void {
    const program = esprima.parse(code);
 
-   console.log(jsBeautify(generate(program, _options), jsBeautifyOptions));
+   console.log(jsBeautify(generate(program, new GenOptions({}, code)), jsBeautifyOptions));
 }
 
 export function printTree(code: string): void {
@@ -62,7 +62,7 @@ export function reformatCode(code: string): string {
 
 export function diffOutput(code: string) {
    const program = esprima.parse(code);
-   const out = generate(program, _options);
+   const out = generate(program, new GenOptions({}, code));
 
    try {
       const myOutput = reformatCode(out);

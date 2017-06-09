@@ -51,7 +51,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
       else {
          return generate(e, options);
       }
-   }).join('\n');
+   }).join('');
 
    const definitions = makeDefinitionsForMissingExports(func, options, importNames);
 
@@ -82,13 +82,13 @@ function getImportNames(e: FunctionExpression, options: GenOptions): string[] {
 function makeImports(libraryNames: string[], importNames: string[], exportNames: string[]): string[] {
    let imports = importNames.map((n, i) => {
       if (_.contains(exportNames, n)) {
-         return `export const ${n} = require(${libraryNames[i]});\n`;
+         return `export const ${n} = require(${libraryNames[i]});`;
       }
       if (_.contains(recognisedLibraries, libraryNames[i].replace(/['"]+/g, ''))) {
          return `import * as ${n} from ${libraryNames[i]};`;
       }
 
-      return `const ${n} = require(${libraryNames[i]});\n`;
+      return `const ${n} = require(${libraryNames[i]});`;
    });
 
    const nonBoundImports = getNonBoundImports(libraryNames, importNames);

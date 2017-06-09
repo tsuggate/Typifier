@@ -22,7 +22,7 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
 
       const t3 = _.now();
       addLogLn(`Checking code gen matches escodegen... `);
-      if (!jsGeneratorProducesCorrectOutput(program)) {
+      if (!jsGeneratorProducesCorrectOutput(program, code)) {
          addLogLn(`JS code generation didn't match`);
 
          return null;
@@ -47,8 +47,8 @@ export function transpile(code: string, generatorOptions?: GeneratorOptions): st
    }
 }
 
-export function jsGeneratorProducesCorrectOutput(program: Program): boolean {
-   const options = new GenOptions({});
+export function jsGeneratorProducesCorrectOutput(program: Program, code: string): boolean {
+   const options = new GenOptions({}, code);
 
    let generatedCode, myOutput;
 

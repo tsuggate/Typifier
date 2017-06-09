@@ -15,10 +15,10 @@ renderHome();
 
 if (remote.getGlobal('devMode')) {
 
-   const fileDemo = false;
+   const fileDemo = true;
 
    if (fileDemo) {
-      const simpleJs =path.join(__dirname, '..', 'test-files', 'simple.js');
+      const simpleJs =path.join(__dirname, '..', 'test-files', 'comments.js');
       openFile(simpleJs);
    }
    else {

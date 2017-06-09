@@ -19,7 +19,16 @@ define([
    var map = {
       one: 1, // one
       two: 2, // two
-      three: 3 // three
+      three: 3, // three
+
+      fun: function(x) {
+         // some code here
+         var sqr = x * x;
+
+         sqr++; // magic tweak
+
+         return sqr;
+      }
    };
 
    var t = [

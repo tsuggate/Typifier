@@ -91,7 +91,7 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
       }
 
       if (success) {
-         dispatch({type: 'SET_VIEW_MODE', mode: 'diff'});
+         dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
       }
       else {
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});

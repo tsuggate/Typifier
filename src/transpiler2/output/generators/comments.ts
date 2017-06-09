@@ -17,11 +17,10 @@ export interface ESComment {
 
 // TODO: Look at node position and figure out whether new lines should be inserted.
 export function insertComments(code: string, node: Node, options: GenOptions): string {
-   const leading = generateLeadingComments(node, options);
-   const trailing = generateTrailingComments(node, options);
-
    if (options.comments()) {
-      // console.log(code);
+
+      const leading = generateLeadingComments(node, options);
+      const trailing = generateTrailingComments(node, options);
 
       return leading + code + trailing;
    }
@@ -32,7 +31,7 @@ function generateLeadingComments(node: Node, options: GenOptions) {
    if (node.leadingComments) {
       const comments = node.leadingComments as ESComment[];
 
-      return comments.map(c => generateComment(c, 'leading', node, options)).join('');
+      return comments.map((c, i) => generateComment(c, 'leading', node, options, i)).join('');
    }
    return '';
 }
@@ -41,77 +40,134 @@ function generateTrailingComments(node: Node, options: GenOptions) {
    if (node.trailingComments) {
       const comments = node.trailingComments as ESComment[];
 
-      return comments.map(c => generateComment(c, 'trailing', node, options)).join('');
+      return comments.map((c, i) => generateComment(c, 'trailing', node, options, i)).join('');
    }
    return '';
 }
 
-export function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions): string {
+export function generateComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions, index: number): string {
    let res;
 
-   printComment(comment, type, options);
-
    if (comment.type === 'Line') {
-      res = generateLineComment(comment, options);
+      if (type === 'trailing') {
+         res = generateTrailingLineComment(comment, options, index);
+      }
+      else {
+         res = generateLeadingLineComment(comment, options, index);
+      }
    }
    else {
       res = generateBlockComment(comment, type, node, options);
    }
-
    return res;
 }
 
-function generateLineComment(comment: ESComment, options: GenOptions) {
+function isCommentOnNewLine(comment: ESComment, options: GenOptions) {
+   const code = options.getInputCode();
+
+   for(let i = comment.range[0] - 1; i >= 0;  i--) {
+      const c = code[i];
+
+      if (c !== ' ') {
+         return isLineEnding(c);
+      }
+   }
+   return false;
+}
+
+function isLineEnding(c: string): boolean {
+   return c === '\n' || c === '\r\n';
+}
+
+function generateLeadingLineComment(comment: ESComment, options: GenOptions, index: number) {
    let res = '';
 
    if (options.commentAlreadyGenerated(comment)) {
       return res;
    }
 
-   // if (type === 'trailing') {
-   //    if (node.loc && comment.loc.start.line === node.loc.start.line) {
-         options.setCommentAsGenerated(comment);
-         res = `//${comment.value}`;
-      // }
-   // }
-   // else {
-   //    options.setCommentAsGenerated(comment);
-   //    res = `\n//${comment.value}\n`;
-   // }
+   options.setCommentAsGenerated(comment);
 
-   return res;
-}
-
-export function generateComment2(comment: ESComment, options: GenOptions): string {
-   let res;
-
-   if (comment.type === 'Line') {
-      res = generateLineComment2(comment, options);
+   if (isCommentOnNewLine(comment, options) && !(index > 0)) {
+      res = `\n//${comment.value} leading \n`;
    }
    else {
-      res = generateBlockComment2(comment, options);
+      res = `//${comment.value} leading \n`;
    }
 
    return res;
 }
 
-export function generateLineComment2(comment: ESComment, options: GenOptions): string {
+function generateTrailingLineComment(comment: ESComment, options: GenOptions, index: number) {
+   let res = '';
+
    if (options.commentAlreadyGenerated(comment)) {
-      return '';
+      return res;
    }
 
    options.setCommentAsGenerated(comment);
-   return `//${comment.value}`;
-}
 
-export function generateBlockComment2(comment: ESComment, options: GenOptions) {
-   if (options.commentAlreadyGenerated(comment)) {
-      return '';
+   if (isCommentOnNewLine(comment, options) && !(index > 0)) {
+      res = `\n//${comment.value} trailing \n`;
+   }
+   else {
+      res = `//${comment.value} trailing \n`;
    }
 
-   options.setCommentAsGenerated(comment);
-   return `/*${comment.value}*/`;
+   return res;
 }
+
+// function generateLineComment(comment: ESComment, options: GenOptions) {
+//    let res = '';
+//
+//    if (options.commentAlreadyGenerated(comment)) {
+//       return res;
+//    }
+//
+//    // if (type === 'trailing') {
+//    //    if (node.loc && comment.loc.start.line === node.loc.start.line) {
+//          options.setCommentAsGenerated(comment);
+//          res = `//${comment.value} \n`;
+//       // }
+//    // }
+//    // else {
+//    //    options.setCommentAsGenerated(comment);
+//    //    res = `\n//${comment.value}\n`;
+//    // }
+//
+//    return res;
+// }
+
+// export function generateComment2(comment: ESComment, options: GenOptions): string {
+//    let res;
+//
+//    if (comment.type === 'Line') {
+//       res = generateLineComment2(comment, options);
+//    }
+//    else {
+//       res = generateBlockComment2(comment, options);
+//    }
+//
+//    return res;
+// }
+
+// export function generateLineComment2(comment: ESComment, options: GenOptions): string {
+//    if (options.commentAlreadyGenerated(comment)) {
+//       return '';
+//    }
+//
+//    options.setCommentAsGenerated(comment);
+//    return `//${comment.value}`;
+// }
+//
+// export function generateBlockComment2(comment: ESComment, options: GenOptions) {
+//    if (options.commentAlreadyGenerated(comment)) {
+//       return '';
+//    }
+//
+//    options.setCommentAsGenerated(comment);
+//    return `/*${comment.value}*/`;
+// }
 
 function generateBlockComment(comment: ESComment, type: 'trailing' | 'leading', node: Node, options: GenOptions) {
    let res = '';
@@ -143,47 +199,47 @@ function printComment(comment: ESComment, type: 'trailing' | 'leading', options:
    }
 }
 
-export function generateLeadingComments2(comments: ESComment[], options: GenOptions): string {
-   if (!options.comments()) {
-      return '';
-   }
+// export function generateLeadingComments2(comments: ESComment[], options: GenOptions): string {
+//    if (!options.comments()) {
+//       return '';
+//    }
+//
+//    return comments.map(c => generateComment2(c, options)).filter(c => c !== '').join('\n');
+// }
 
-   return comments.map(c => generateComment2(c, options)).filter(c => c !== '').join('\n');
-}
+// export function generateTrailingComments2(comments: ESComment[], options: GenOptions) {
+//    if (!options.comments()) {
+//       return '';
+//    }
+//
+//    if (comments[0]) {
+//       return generateComment2(comments[0], options);
+//    }
+//    return '';
+// }
 
-export function generateTrailingComments2(comments: ESComment[], options: GenOptions) {
-   if (!options.comments()) {
-      return '';
-   }
-
-   if (comments[0]) {
-      return generateComment2(comments[0], options);
-   }
-   return '';
-}
-
-export function generateComments2(code: string, node: Node, options: GenOptions) {
-   let leadingComments = '';
-   let trailingComments = '';
-
-   if (node.leadingComments) {
-      const c = generateLeadingComments2(node.leadingComments as ESComment[], options);
-
-      if (c) {
-         leadingComments = '\n' + c + '\n';
-      }
-   }
-   if (node.trailingComments) {
-      const comments = node.trailingComments as ESComment[];
-
-      if (comments[0] && node.loc && comments[0].loc.start === node.loc.end) {
-         const c = generateTrailingComments2(comments, options);
-
-         if (c) {
-            trailingComments = c;
-         }
-      }
-   }
-
-   return leadingComments + code + trailingComments;
-}
+// export function generateComments2(code: string, node: Node, options: GenOptions) {
+//    let leadingComments = '';
+//    let trailingComments = '';
+//
+//    if (node.leadingComments) {
+//       const c = generateLeadingComments2(node.leadingComments as ESComment[], options);
+//
+//       if (c) {
+//          leadingComments = '\n' + c + '\n';
+//       }
+//    }
+//    if (node.trailingComments) {
+//       const comments = node.trailingComments as ESComment[];
+//
+//       if (comments[0] && node.loc && comments[0].loc.start === node.loc.end) {
+//          const c = generateTrailingComments2(comments, options);
+//
+//          if (c) {
+//             trailingComments = c;
+//          }
+//       }
+//    }
+//
+//    return leadingComments + code + trailingComments;
+// }
