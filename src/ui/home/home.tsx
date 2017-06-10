@@ -4,14 +4,18 @@ import {Editors} from './editors/editors';
 import './root.less';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
-import {getState} from '../state/state';
+import {getState, getStore} from '../state/state';
 import {State} from '../state/schema';
 import Diff from './diff/diff';
-
+import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
+import {ComponentClass} from "react";
 
 export function renderHome() {
    return ReactDOM.render(
-      <Home state={getState()} />,
+      <Provider store={getStore()}>
+         <HomeView state={getState()} />
+      </Provider>,
       document.getElementById("react-entry")
    );
 }
@@ -19,6 +23,11 @@ export function renderHome() {
 interface HomeProps {
    state: State;
 }
+
+const mapStateToProps = (state: State, homeProps: HomeProps) => ({
+   state: state
+});
+
 
 class Home extends React.Component<HomeProps, {}> {
    render() {
@@ -59,3 +68,12 @@ class Home extends React.Component<HomeProps, {}> {
    };
 }
 
+export const HomeView: ComponentClass<HomeProps> = connect(
+   mapStateToProps, {}
+)(Home);
+
+// const App = () => (
+//    <div>
+//       <HomeView />
+//    </div>
+// );

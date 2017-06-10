@@ -83,7 +83,7 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
       const t1 = _.now();
 
       const tsCode = await transpile(code, {language: 'typescript'});
-      console.log('tsCode: ', tsCode);
+      // console.log('tsCode: ', tsCode);
       const success = !!tsCode;
 
       if (tsCode) {
@@ -163,18 +163,6 @@ export async function loadJavaScriptFile(jsFile: string): Promise<string | null>
    }
 
    return await readFile(jsFile);
-   // try {
-   //    const jsCode = await readFile(jsFile);
-   //
-   //    if (jsCode) {
-   //       return jsCode;
-   //    }
-   // }
-   // catch (e) {
-   //    console.log(e);
-   //    addLogLn(e);
-   // }
-   // return null;
 }
 
 function readFile(file: string): Promise<string | null> {

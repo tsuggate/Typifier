@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "@types/react-redux": "^4.4.42",
     "commander": "^2.9.0",
     "css-loader": "^0.28.0",
     "electron-window-state": "^4.1.1",
@@ -48,6 +49,7 @@
     "react": "^15.5.4",
     "react-ace": "^4.2.1",
     "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
     "redux": "^3.6.0",
     "style-loader": "^0.16.0",
     "ts-loader": "^2.0.0",

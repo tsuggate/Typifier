@@ -12,8 +12,8 @@ export function handleDevMode() {
 }
 
 function devMode(): void {
-   const slowFile = true;
    const fileDemo = true;
+   const slowFile = false;
 
    if (fileDemo) {
       if (!slowFile) {

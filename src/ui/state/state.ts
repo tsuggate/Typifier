@@ -17,7 +17,7 @@ export function initStore() {
 
    store = createStore(app);
 
-   store.subscribe(renderHome);
+   // store.subscribe(renderHome);
 }
 
 export function getStore(): Store<State> {
