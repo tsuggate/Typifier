@@ -8,7 +8,7 @@
     "testMon": "nodemon --watch distr spec/jasmine-runner.js",
     "watch": "webpack --watch --colors --progress",
     "make": "webpack --colors --progress",
-    "start": "node distr/cmd.js --file ./test-files/simple.js --out ./out/out.ts",
+    "start": "electron distr/main.js",
     "gui": "electron distr/main.js",
     "debug": "nodemon --exec electron distr/main.js --dev",
     "pack": "build --dir",

@@ -40,6 +40,8 @@ function operatorPrecedence(op: BinaryOperator): number {
       case 'in':
       case 'instanceof':
          return 11;
+      case '!==':
+         return 10;
       default:
          throw new Error('precedence for operator' + op + ' not implemented!');
    }

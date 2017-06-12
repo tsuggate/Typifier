@@ -1,19 +1,22 @@
 
 #### TODO
-- improve comment generation
 - jsx support
-- Add "this: any" to functions that need it.
-- put version number in ui. About dialog?
+- handle module.exports conversion
+
 
 ##### Wip
 - create symbol tree
 
 
 ##### Technical Debt
-- fix data flow in components: state access is often happening globally instead of through props. 
+
 
 
 ##### Done
+- put version number in ui. About dialog?
+- fix data flow in components: state access is often happening globally instead of through props. 
+- Add "this: any" to functions that need it.
+- improve comment generation
 - Create home page instead of showing simple.js
 - package app - windows
 - Tidy up toolbar ui
