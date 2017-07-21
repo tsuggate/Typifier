@@ -2,10 +2,12 @@
 #### TODO
 - jsx support
 - handle module.exports conversion
+- check for ++ when changing to const
 
+- create symbol tree
 
 ##### Wip
-- create symbol tree
+
 
 
 ##### Technical Debt

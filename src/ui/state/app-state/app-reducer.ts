@@ -30,9 +30,7 @@ export function appReducer(s: AppState = initialState, action: AppAction): AppSt
 }
 
 
-
 function addLog(s: AppState, action: AddLog): AppState {
-   // console.log('addLog');
    if (action.sameLine && s.logs.length > 0) {
       const i = s.logs.length - 1;
       const lastLog = s.logs[i];

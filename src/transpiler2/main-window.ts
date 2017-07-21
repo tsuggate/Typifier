@@ -2,6 +2,9 @@ import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
 import * as windowState from 'electron-window-state';
 import {devMode} from './util/args';
+import * as winston from 'winston';
+import {appName, getOsAppDataPath} from '../ui/util/config';
+import * as fs from 'fs-extra';
 
 
 
@@ -35,6 +38,13 @@ function createWindow(): void {
    });
 
    mainWindowState.manage(mainWindow);
+
+   const logPath = path.join(getOsAppDataPath(), appName, `log#${+new Date()}.json`);
+   fs.ensureFileSync(logPath);
+
+   winston.add(winston.transports.File, { filename: logPath });
+
+   winston.log('info', process.argv.toString());
 }
 
 app.on('ready', createWindow);

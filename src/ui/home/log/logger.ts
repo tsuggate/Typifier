@@ -3,10 +3,12 @@ import * as _ from 'underscore';
 
 
 export function addLogLn(log: string): void {
+   // winston.log('info', log);
    dispatch({type: 'ADD_LOG', log});
 }
 
 export function addLog(log: string): void {
+   // winston.log('info', log);
    dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
