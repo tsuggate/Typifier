@@ -1,7 +1,8 @@
 import {Node, Program} from 'estree';
+import * as escodegen from 'escodegen';
 import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators/misc';
 import {
-   arrayExpression,
+   arrayExpression, arrowFunctionExpression, arrowFunctionExpressionTs,
    assignmentExpression,
    binaryExpression,
    callExpression,
@@ -24,11 +25,11 @@ import {
    ifStatement,
    returnStatement,
    switchCase,
-   switchStatement
+   switchStatement, throwStatement
 } from './generators/statement';
 import {
    functionDeclaration,
-   functionDeclarationTs,
+   functionDeclarationTs, objectPattern,
    variableDeclarationToJs,
    variableDeclarationToTs,
    variableDeclaratorToJs
@@ -73,6 +74,8 @@ function getGenerateFunctionTs(node: Node): null | ((node: Node, options: GenOpt
 
       case 'FunctionExpression':
          return functionExpressionTs;
+      case 'ArrowFunctionExpression':
+         return arrowFunctionExpressionTs;
       default:
          return null;
    }
@@ -88,6 +91,8 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return identifierToJs;
       case 'Literal':
          return literalToJs;
+      case 'ObjectPattern':
+         return objectPattern;
 
       case 'VariableDeclaration':
          return variableDeclarationToJs;
@@ -122,6 +127,8 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return unaryExpression;
       case 'UpdateExpression':
          return updateExpression;
+      case 'ArrowFunctionExpression':
+         return arrowFunctionExpression;
 
       case 'BlockStatement':
          return blockStatement;
@@ -143,8 +150,11 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return continueStatement;
       case 'ForInStatement':
          return forInStatement;
+      case 'ThrowStatement':
+         return throwStatement;
 
       default:
+         console.log(escodegen.generate(node));
          throw new Error(node.type + ' not implemented!');
    }
 }

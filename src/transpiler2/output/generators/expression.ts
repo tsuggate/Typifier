@@ -1,23 +1,28 @@
 import {
    ArrayExpression,
+   ArrowFunctionExpression,
    AssignmentExpression,
    BinaryExpression,
+   BlockStatement,
    CallExpression,
    ConditionalExpression,
+   Expression,
    ExpressionStatement,
    FunctionExpression,
    LogicalExpression,
    MemberExpression,
    NewExpression,
    ObjectExpression,
+   Pattern,
    ThisExpression,
    UnaryExpression,
-   UpdateExpression
+   UpdateExpression,
 } from 'estree';
 import {generate} from '../generate';
 import {operatorHasPrecedence} from './operators';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage} from './find-types/function-declaration';
+import * as escodegen from 'escodegen';
 
 
 export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
@@ -152,3 +157,24 @@ export function updateExpression(e: UpdateExpression, options: GenOptions): stri
    }
 }
 
+export function arrowFunctionExpression(e: ArrowFunctionExpression, options: GenOptions) {
+   const paramsArray = e.params.map(p => generate(p, options)).join(', ');
+
+   const params = e.params.length > 1 ? `(${paramsArray})` : paramsArray;
+
+   const res = `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
+   console.log(res, escodegen.generate(e));
+   return res;
+}
+
+export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: GenOptions) {
+   const paramsArray = e.params.map(p => generate(p, options) + ': any');
+
+   const params = e.params.length > 1 ? `(${paramsArray.join(', ')})` : paramsArray.join(', ');
+
+   const res = `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
+
+   // console.log(res, escodegen.generate(e));
+
+   return res;
+}

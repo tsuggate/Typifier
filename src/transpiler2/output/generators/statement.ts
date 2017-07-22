@@ -7,7 +7,7 @@ import {
    IfStatement,
    ReturnStatement,
    SwitchCase,
-   SwitchStatement
+   SwitchStatement, ThrowStatement
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
@@ -77,4 +77,8 @@ export function forInStatement(s: ForInStatement, o: GenOptions) {
    const variableDec = generate(s.left, o).slice(0, -1);
 
    return `for (${variableDec} in ${generate(s.right, o)}) ${generate(s.body, o)}`;
+}
+
+export function throwStatement(s: ThrowStatement, o: GenOptions) {
+   return `throw ${generate(s.argument, o)}`;
 }

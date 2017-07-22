@@ -1,4 +1,4 @@
-import {Declaration, FunctionDeclaration, Node, VariableDeclaration, VariableDeclarator} from 'estree';
+import {Declaration, FunctionDeclaration, Node, ObjectPattern, VariableDeclaration, VariableDeclarator} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage, getFunctionDeclarationTypes} from './find-types/function-declaration';
@@ -81,6 +81,12 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
    const body = generate(f.body, options);
 
    return `function ${name}(${params}) ${body}`;
+}
+
+export function objectPattern(o: ObjectPattern, options: GenOptions): string {
+   const properties = o.properties.map(p => generate(p, options)).join(', ');
+
+   return `{${properties}}`;
 }
 
 export function getFunctionDeclarationName(f: FunctionDeclaration, options: GenOptions): string {
