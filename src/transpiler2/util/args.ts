@@ -2,12 +2,14 @@ import * as program from 'commander';
 import * as path from 'path';
 const packageJson = require('../../../package.json');
 
+const args = atLeastTwoArgs(process.argv);
+console.log(args);
 
 program
    .version(packageJson.version)
    .option('--open [file]', 'Open a file.')
    .option('-d, --dev', 'Open dev tools on start.')
-   .parse(atLeastTwoArgs(process.argv));
+   .parse(args);
 
 
 
@@ -15,8 +17,8 @@ export let openFileArg = program['open'];
 export const devMode = !!program['dev'];
 
 
-if (process.argv[1] && process.argv[1].endsWith('.js')) {
-   openFileArg = process.argv[1];
+if (args[2] && args[2].endsWith('.js')) {
+   openFileArg = args[2];
 }
 
 global['devMode'] = devMode;

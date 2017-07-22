@@ -9,7 +9,6 @@
     "watch": "webpack --watch --colors --progress",
     "make": "webpack --colors --progress",
     "start": "electron distr/main.js",
-    "gui": "electron distr/main.js",
     "debug": "nodemon --exec electron distr/main.js --dev",
     "pack": "build --dir",
     "dist": "build"
