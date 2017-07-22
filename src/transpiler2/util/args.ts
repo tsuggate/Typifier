@@ -3,14 +3,12 @@ import * as path from 'path';
 const packageJson = require('../../../package.json');
 
 const args = atLeastTwoArgs(process.argv);
-console.log(args);
 
 program
    .version(packageJson.version)
    .option('--open [file]', 'Open a file.')
    .option('-d, --dev', 'Open dev tools on start.')
    .parse(args);
-
 
 
 export let openFileArg = program['open'];

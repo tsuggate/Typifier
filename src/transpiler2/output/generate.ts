@@ -19,7 +19,7 @@ import {
 } from './generators/expression';
 import {
    blockStatement,
-   breakStatement,
+   breakStatement, continueStatement, forInStatement,
    forStatement,
    ifStatement,
    returnStatement,
@@ -139,6 +139,10 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return switchCase;
       case 'BreakStatement':
          return breakStatement;
+      case 'ContinueStatement':
+         return continueStatement;
+      case 'ForInStatement':
+         return forInStatement;
 
       default:
          throw new Error(node.type + ' not implemented!');

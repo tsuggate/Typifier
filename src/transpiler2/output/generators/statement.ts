@@ -1,6 +1,8 @@
 import {
    BlockStatement,
    BreakStatement,
+   ContinueStatement,
+   ForInStatement,
    ForStatement,
    IfStatement,
    ReturnStatement,
@@ -38,7 +40,6 @@ export function forStatement(s: ForStatement, options: GenOptions): string {
    return `for (${s.init && s.init.type === 'VariableDeclaration' ? init : init + ';'} ${test}; ${update}) ${body}`;
 }
 
-
 export function switchStatement(s: SwitchStatement, options: GenOptions): string {
    const cases = s.cases.map(c => generate(c, options)).join('\n');
 
@@ -63,4 +64,17 @@ export function breakStatement(s: BreakStatement, options: GenOptions): string {
    else {
       return `break;`;
    }
+}
+
+export function continueStatement(s: ContinueStatement, options: GenOptions) {
+   return 'continue;';
+}
+
+export function forInStatement(s: ForInStatement, o: GenOptions) {
+   console.log(s);
+
+   // Remove trailing semicolon.
+   const variableDec = generate(s.left, o).slice(0, -1);
+
+   return `for (${variableDec} in ${generate(s.right, o)}) ${generate(s.body, o)}`;
 }
