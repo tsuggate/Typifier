@@ -13,6 +13,12 @@ export function findAssignmentTo(program: Program, id: Identifier, parentRange: 
             context.skip();
          }
       }
+      else if (node.type === 'UpdateExpression' && insideScope(node.range as CodeRange, parentRange)) {
+         if (node.argument.type === 'Identifier' && node.argument.name === id.name) {
+            foundAssignment = true;
+            context.skip();
+         }
+      }
    });
 
    return foundAssignment;
