@@ -1,8 +1,8 @@
 # Typifier
 
-A desktop app for converting JavaScript files to Typescript. Most types are set to 'any'. The purpose of this app is make conversion of large JavaScript code bases much easier.
+A desktop app for converting JavaScript files to Typescript. Most types are set to 'any'. The purpose of this app is make conversion of large JavaScript code bases easier.
 
-![Screen1](docs/TypifyScreen.PNG)
+![Screen1](docs/screen1.PNG)
 
 ### Build App/Installer
 
