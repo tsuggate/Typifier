@@ -1,4 +1,4 @@
-import {Identifier, Literal, Program, Property} from 'estree';
+import {Identifier, Literal, Program, Property, TemplateLiteral} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 
@@ -33,4 +33,18 @@ export function propertyToJs(p: Property, options: GenOptions): string {
    else {
       return `${generate(p.key, options)}: ${generate(p.value, options)}`;
    }
+}
+
+
+export function templateLiteral(t: TemplateLiteral, options: GenOptions): string {
+   const str = t.quasis.map((q, i) => {
+      if (!q.tail) {
+         return q.value.raw + '${' + generate(t.expressions[i], options) + '}';
+      }
+      else {
+         return q.value.raw;
+      }
+   }).join('');
+
+   return `\`${str}\``;
 }
