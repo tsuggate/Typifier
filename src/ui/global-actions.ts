@@ -7,6 +7,7 @@ import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
 import {addLog, addLogLn, logProgress} from './home/log/logger';
+const packageJson = require('../../package.json');
 
 
 export function getWindow(): Electron.BrowserWindow {
@@ -56,14 +57,14 @@ export async function openFile(file: string): Promise<void> {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    dispatch({type: 'SET_OPEN_MODE', mode: 'file'});
 
-   getWindow().setTitle('kuraTranspiler - ' + file);
+   getWindow().setTitle(`${packageJson.name} - ${file}`);
 
    await generateTypeScript(file);
 }
 
 export async function openFolder(folderPath: string, index: number = 0): Promise<void> {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
-   getWindow().setTitle('kuraTranspiler - ' + folderPath);
+   getWindow().setTitle(`${packageJson.name} - ${folderPath}`);
 
    const files = getJavaScriptFilesInFolder(folderPath);
 
