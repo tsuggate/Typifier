@@ -33,6 +33,10 @@ function operatorPrecedence(op: BinaryOperator): number {
       case '+':
       case '-':
          return 13;
+      case '<<':
+      case '>>':
+      case '>>>':
+         return 12;
       case '<':
       case '<=':
       case '>':
@@ -40,8 +44,15 @@ function operatorPrecedence(op: BinaryOperator): number {
       case 'in':
       case 'instanceof':
          return 11;
+      case '===':
+      case '==':
       case '!==':
+      case '!=':
          return 10;
+      case '|':
+         return 7;
+      case '&':
+         return 9;
       default:
          throw new Error('precedence for operator' + op + ' not implemented!');
    }
