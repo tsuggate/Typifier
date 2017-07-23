@@ -117,7 +117,7 @@ export function assignmentExpression(e: AssignmentExpression, options: GenOption
 export function logicalExpression(e: LogicalExpression, options: GenOptions): string {
    let left, right;
 
-   if (e.operator === '&&') {
+   if (e.operator === '&&' || e.operator === '||') {
       left = e.left.type === 'LogicalExpression' ?
        `(${generate(e.left, options)})` : generate(e.left, options);
 
