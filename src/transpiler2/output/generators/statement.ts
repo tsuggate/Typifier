@@ -1,13 +1,17 @@
 import {
    BlockStatement,
-   BreakStatement, CatchClause,
+   BreakStatement,
+   CatchClause,
    ContinueStatement,
    ForInStatement,
    ForStatement,
    IfStatement,
    ReturnStatement,
    SwitchCase,
-   SwitchStatement, ThrowStatement, TryStatement
+   SwitchStatement,
+   ThrowStatement,
+   TryStatement,
+   WhileStatement
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
@@ -99,3 +103,8 @@ export function catchClause(c: CatchClause, o: GenOptions): string {
    console.log(res);
    return res;
 }
+
+export function whileStatement(s: WhileStatement, o: GenOptions): string {
+   return `while (${generate(s.test, o)}) ${generate(s.body, o)}`;
+}
+

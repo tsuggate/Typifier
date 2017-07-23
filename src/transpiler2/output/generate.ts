@@ -2,7 +2,9 @@ import {Node, Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {identifierToJs, literalToJs, programToJs, propertyToJs} from './generators/misc';
 import {
-   arrayExpression, arrowFunctionExpression, arrowFunctionExpressionTs,
+   arrayExpression,
+   arrowFunctionExpression,
+   arrowFunctionExpressionTs,
    assignmentExpression,
    binaryExpression,
    callExpression,
@@ -20,16 +22,23 @@ import {
 } from './generators/expression';
 import {
    blockStatement,
-   breakStatement, catchClause, continueStatement, forInStatement,
+   breakStatement,
+   catchClause,
+   continueStatement,
+   forInStatement,
    forStatement,
    ifStatement,
    returnStatement,
    switchCase,
-   switchStatement, throwStatement, tryStatement
+   switchStatement,
+   throwStatement,
+   tryStatement,
+   whileStatement
 } from './generators/statement';
 import {
    functionDeclaration,
-   functionDeclarationTs, objectPattern,
+   functionDeclarationTs,
+   objectPattern,
    variableDeclarationToJs,
    variableDeclarationToTs,
    variableDeclaratorToJs
@@ -156,8 +165,11 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return tryStatement;
       case 'CatchClause':
          return catchClause;
+      case 'WhileStatement':
+         return whileStatement;
 
       default:
+         console.log(node);
          console.log(escodegen.generate(node));
          throw new Error(node.type + ' not implemented!');
    }
