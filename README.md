@@ -1,4 +1,6 @@
-## Transpile js files in client to TypeScript (TODO)
+# Typify
+
+A desktop app for converting JavaScript files to Typescript. 
 
 Get dependencies:
 `npm install`
@@ -7,13 +9,10 @@ Build and watch:
 `npm run watch`
 
 Run:
-`npm run gui`
+`npm start`
 
 Run unit tests:
 `npm test`
-
-Continuously run tests:
-`npm run testMon`
 
 Build installer:
 `npm run dist`
