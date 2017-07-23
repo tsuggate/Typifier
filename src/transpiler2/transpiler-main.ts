@@ -22,9 +22,9 @@ export interface TranspileOutput {
 }
 
 export async function transpile(code: string, generatorOptions?: GeneratorOptions): Promise<TranspileOutput> {
-   const options = new GenOptions(generatorOptions || {}, code);
-
    try {
+      const options = new GenOptions(generatorOptions || {}, code);
+
       const program = await logProgress<Program>(
          `Parsing ${getJavaScriptFile()}`,
          () => esprima.parse(code, { attachComment: true, loc: true, range: true }));

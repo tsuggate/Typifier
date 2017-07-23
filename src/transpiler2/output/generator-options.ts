@@ -27,16 +27,22 @@ export class GenOptions {
       this.setOptions(options);
 
       if (options.includeComments && !code) {
-         throw new Error(`Code not provided to GenOptions. This is required for outputting comments.`);
+         throw new Error(`GenOptions: Code not provided. This is required for outputting comments.`);
       }
 
       if (options.language === 'typescript' && !code) {
-         throw new Error(`Code not provided to GenOptions. This is required for outputting Typescript.`);
+         throw new Error(`GenOptions: Code not provided. This is required for outputting Typescript.`);
       }
 
       if (code) {
          this.inputCode = code;
-         this.program = esprima.parse(code, { range: true });
+
+         try {
+            this.program = esprima.parse(code, { range: true });
+         }
+         catch (e) {
+            throw new Error(`GenOptions: Esprima failed to parse code. ${e.stack}`)
+         }
       }
    }
 
