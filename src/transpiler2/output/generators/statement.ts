@@ -1,13 +1,13 @@
 import {
    BlockStatement,
-   BreakStatement,
+   BreakStatement, CatchClause,
    ContinueStatement,
    ForInStatement,
    ForStatement,
    IfStatement,
    ReturnStatement,
    SwitchCase,
-   SwitchStatement, ThrowStatement
+   SwitchStatement, ThrowStatement, TryStatement
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
@@ -66,17 +66,36 @@ export function breakStatement(s: BreakStatement, options: GenOptions): string {
    }
 }
 
-export function continueStatement(s: ContinueStatement, options: GenOptions) {
+export function continueStatement(s: ContinueStatement, options: GenOptions): string {
    return 'continue;';
 }
 
-export function forInStatement(s: ForInStatement, o: GenOptions) {
-   // Remove trailing semicolon.
-   const variableDec = generate(s.left, o).slice(0, -1);
+export function forInStatement(s: ForInStatement, o: GenOptions): string {
+   const variableDec = removeTrailingSemicolon(generate(s.left, o));
 
    return `for (${variableDec} in ${generate(s.right, o)}) ${generate(s.body, o)}`;
 }
 
-export function throwStatement(s: ThrowStatement, o: GenOptions) {
+function removeTrailingSemicolon(code: string): string {
+   if (code.endsWith(';')) {
+      return code.slice(0, -1);
+   }
+   return code;
+}
+
+export function throwStatement(s: ThrowStatement, o: GenOptions): string {
    return `throw ${generate(s.argument, o)};`;
+}
+
+export function tryStatement(s: TryStatement, o: GenOptions): string {
+   const handler = s.handler ? generate(s.handler, o) : '';
+   const finalizer = s.finalizer ? generate(s.finalizer, o) : '';
+
+   return `try ${generate(s.block, o)} ${handler} ${finalizer}`;
+}
+
+export function catchClause(c: CatchClause, o: GenOptions): string {
+   const res =  `catch (${generate(c.param, o)}) ${generate(c.body, o)}`;
+   console.log(res);
+   return res;
 }

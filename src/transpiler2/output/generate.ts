@@ -20,12 +20,12 @@ import {
 } from './generators/expression';
 import {
    blockStatement,
-   breakStatement, continueStatement, forInStatement,
+   breakStatement, catchClause, continueStatement, forInStatement,
    forStatement,
    ifStatement,
    returnStatement,
    switchCase,
-   switchStatement, throwStatement
+   switchStatement, throwStatement, tryStatement
 } from './generators/statement';
 import {
    functionDeclaration,
@@ -152,6 +152,10 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return forInStatement;
       case 'ThrowStatement':
          return throwStatement;
+      case 'TryStatement':
+         return tryStatement;
+      case 'CatchClause':
+         return catchClause;
 
       default:
          console.log(escodegen.generate(node));
