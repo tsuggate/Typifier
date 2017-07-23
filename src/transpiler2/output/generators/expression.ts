@@ -162,19 +162,13 @@ export function arrowFunctionExpression(e: ArrowFunctionExpression, options: Gen
 
    const params = e.params.length > 1 ? `(${paramsArray})` : paramsArray;
 
-   const res = `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
-   console.log(res, escodegen.generate(e));
-   return res;
+   return `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
 }
 
 export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: GenOptions) {
    const paramsArray = e.params.map(p => generate(p, options) + ': any');
 
-   const params = e.params.length > 1 ? `(${paramsArray.join(', ')})` : paramsArray.join(', ');
+   const params = `(${paramsArray.join(', ')})`;
 
-   const res = `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
-
-   // console.log(res, escodegen.generate(e));
-
-   return res;
+   return `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
 }

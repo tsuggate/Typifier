@@ -82,21 +82,21 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
 
       const t1 = _.now();
 
-      const tsCode = await transpile(code, {language: 'typescript'});
-      // console.log('tsCode: ', tsCode);
-      const success = !!tsCode;
+      const output = await transpile(code, {language: 'typescript'});
 
-      if (tsCode) {
-         const diffs = await generateDiffs(code, tsCode);
+      if (output.success) {
+         const diffs = await generateDiffs(code, output.code);
 
-         dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success, diffs});
-      }
-
-      if (success) {
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs});
          dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
       }
       else {
-         dispatch({type: 'SET_TYPESCRIPT_CODE', code: tsCode, success, diffs: null});
+         let diffs;
+
+         if (output.javascriptOutput && !output.javascriptOutput.matches) {
+            diffs = await generateDiffs(output.javascriptOutput.escodegen, output.javascriptOutput.generated);
+         }
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs});
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
       }
 

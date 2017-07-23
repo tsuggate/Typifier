@@ -71,8 +71,6 @@ export function continueStatement(s: ContinueStatement, options: GenOptions) {
 }
 
 export function forInStatement(s: ForInStatement, o: GenOptions) {
-   console.log(s);
-
    // Remove trailing semicolon.
    const variableDec = generate(s.left, o).slice(0, -1);
 
@@ -80,5 +78,5 @@ export function forInStatement(s: ForInStatement, o: GenOptions) {
 }
 
 export function throwStatement(s: ThrowStatement, o: GenOptions) {
-   return `throw ${generate(s.argument, o)}`;
+   return `throw ${generate(s.argument, o)};`;
 }

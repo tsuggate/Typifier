@@ -9,7 +9,19 @@ import {GeneratorOptions, GenOptions} from './output/generator-options';
 import {addLogLn, logProgress} from '../ui/home/log/logger';
 
 
-export async function transpile(code: string, generatorOptions?: GeneratorOptions): Promise<string | null> {
+interface JavascriptOutput {
+   matches: boolean;
+   generated: string;
+   escodegen: string;
+}
+
+export interface TranspileOutput {
+   code: string;
+   success: boolean;
+   javascriptOutput: JavascriptOutput | null;
+}
+
+export async function transpile(code: string, generatorOptions?: GeneratorOptions): Promise<TranspileOutput> {
    const options = new GenOptions(generatorOptions || {}, code);
 
    try {
@@ -17,36 +29,48 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
          `Parsing ${getJavaScriptFile()}`,
          () => esprima.parse(code, { attachComment: true, loc: true, range: true }));
 
-      const generationMatches = await logProgress<boolean>(
+      const javascriptOutput = await logProgress<JavascriptOutput>(
          `Checking code gen matches escodegen`,
-         () => jsGeneratorProducesCorrectOutput(program, code));
+         () => jsGenerators(program, code));
 
-      if (!generationMatches) {
+      if (!javascriptOutput.matches) {
          addLogLn(`JS code generation didn't match`);
 
-         return null;
+         return {
+            code: '',
+            success: false,
+            javascriptOutput
+         }
       }
 
       const out = await logProgress<string>(
          `Generating ${options.getLanguage()}`,
          () => generate(program, options));
 
-      return jsBeautify(out, jsBeautifyOptions);
+      const outputCode = jsBeautify(out, jsBeautifyOptions);
+
+      return {
+         code: outputCode,
+         success: true,
+         javascriptOutput
+      }
    }
    catch (e) {
       console.log(e);
       addLogLn(e.stack);
 
-      return null;
+      return {
+         code: '',
+         success: false,
+         javascriptOutput: null
+      };
    }
 }
 
-
-export function jsGeneratorProducesCorrectOutput(program: Program, code: string): boolean {
+export function jsGenerators(program: Program, code: string): JavascriptOutput {
    const options = new GenOptions({}, code);
 
    let generatedCode, myOutput;
-
 
    try {
       generatedCode = generate(program, options);
@@ -69,11 +93,51 @@ export function jsGeneratorProducesCorrectOutput(program: Program, code: string)
 
    const esCodegenOutput = escodegen.generate(program);
 
-   const res = myOutput === esCodegenOutput;
+   const matches = myOutput === esCodegenOutput;
 
-   if (!res) {
+   if (!matches) {
       console.log(myOutput);
    }
 
-   return res;
+   return {
+      matches: matches,
+      generated: myOutput,
+      escodegen: esCodegenOutput
+   };
 }
+
+// export function jsGeneratorProducesCorrectOutput(program: Program, code: string): boolean {
+//    const options = new GenOptions({}, code);
+//
+//    let generatedCode, myOutput;
+//
+//
+//    try {
+//       generatedCode = generate(program, options);
+//    }
+//    catch (e) {
+//       addLogLn('Generating JavaScript code failed:');
+//       addLogLn(e.stack);
+//       console.log(e);
+//    }
+//
+//    try {
+//       myOutput = reformatCode(generatedCode);
+//    }
+//    catch (e) {
+//       addLogLn('Reformatting generated code failed:');
+//       addLogLn(e.stack);
+//       console.log(generatedCode);
+//       console.log(e);
+//    }
+//
+//    const esCodegenOutput = escodegen.generate(program);
+//
+//    const res = myOutput === esCodegenOutput;
+//
+//    if (!res) {
+//       console.log(myOutput);
+//    }
+//
+//    return res;
+// }
