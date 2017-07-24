@@ -1,6 +1,7 @@
 import {ESComment} from './generators/comments';
 import * as esprima from 'esprima';
 import {Program} from 'estree';
+import {parseJavaScript} from '../util/javascript-parser';
 
 export type OutputLanguage = 'javascript' | 'typescript';
 
@@ -38,7 +39,7 @@ export class GenOptions {
          this.inputCode = code;
 
          try {
-            this.program = esprima.parse(code, { range: true });
+            this.program = parseJavaScript(code);
          }
          catch (e) {
             throw new Error(`GenOptions: Esprima failed to parse code. ${e.stack}`)

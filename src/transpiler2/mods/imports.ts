@@ -30,7 +30,8 @@ export function isDefine(es: ExpressionStatement): boolean {
 
 export function generateImports(es: ExpressionStatement, options: GenOptions): string {
    const e = es.expression as CallExpression;
-   const func = e.arguments[1] as FunctionExpression;
+   // Use first arg if there is only a function and no library array.
+   const func = (e.arguments[1] || e.arguments[0]) as FunctionExpression;
 
    const libraryNames = getLibraryNames(e, options);
    const importNames = getImportNames(func, options);
@@ -68,15 +69,21 @@ function makeDefaultExport(e: ReturnStatement, options: GenOptions) {
 function getLibraryNames(e: CallExpression, options: GenOptions): string[] {
    const namesArrayExpression = e.arguments[0] as ArrayExpression;
 
-   return namesArrayExpression.elements.map(n => {
-      return generate(n, options);
-   });
+   if (namesArrayExpression.elements) {
+      return namesArrayExpression.elements.map(n => {
+         return generate(n, options);
+      });
+   }
+   return [];
 }
 
 function getImportNames(e: FunctionExpression, options: GenOptions): string[] {
-   return e.params.map(p => {
-      return generate(p, options);
-   })
+   if (e && e.params) {
+      return e.params.map(p => {
+         return generate(p, options);
+      });
+   }
+   return [];
 }
 
 function makeImports(libraryNames: string[], importNames: string[], exportNames: string[]): string[] {

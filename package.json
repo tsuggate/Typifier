@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@types/react-redux": "^4.4.42",
+    "acorn": "https://registry.npmjs.org/acorn/-/acorn-5.1.1.tgz",
     "commander": "^2.9.0",
     "css-loader": "^0.28.0",
     "electron-window-state": "^4.1.1",
