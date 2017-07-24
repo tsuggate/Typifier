@@ -76,19 +76,25 @@ export function arrayExpression(a: ArrayExpression, options: GenOptions): string
 }
 
 export function functionExpression(f: FunctionExpression, options: GenOptions): string {
-   if (f.id !== null) {
-      throw 'functionExpression.id !== null';
-   }
+   // if (f.id !== null) {
+   //    console.log(f);
+   //    throw 'functionExpression.id !== null';
+   // }
+
+   const functionId = f.id ? ` ${generate(f.id, options)}` : '';
 
    const params = f.params.map(p => generate(p, options)).join(', ');
 
-   return `function(${params}) ${generate(f.body, options)}`;
+   return `function${functionId}(${params}) ${generate(f.body, options)}`;
 }
 
 export function functionExpressionTs(f: FunctionExpression, options: GenOptions): string {
-   if (f.id !== null) {
-      throw 'functionExpression.id !== null';
-   }
+   // if (f.id !== null) {
+   //    console.log(f);
+   //    throw 'functionExpression.id !== null';
+   // }
+
+   const functionId = f.id ? ` ${generate(f.id, options)}` : '';
 
    const paramsArray = f.params.map(p => generate(p, options) + ': any');
 
@@ -98,7 +104,7 @@ export function functionExpressionTs(f: FunctionExpression, options: GenOptions)
 
    const params = paramsArray.join(', ');
 
-   return `function(${params}) ${generate(f.body, options)}`;
+   return `function${functionId}(${params}) ${generate(f.body, options)}`;
 }
 
 export function memberExpression(e: MemberExpression, options: GenOptions): string {
@@ -168,7 +174,7 @@ export function arrowFunctionExpression(e: ArrowFunctionExpression, options: Gen
 
    const params = e.params.length > 1 ? `(${paramsArray})` : paramsArray;
 
-   return `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
+   return `${e.async ? 'async ' : ''}${params || '()'} => ${generate(e.body, options)}`;
 }
 
 export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: GenOptions) {
