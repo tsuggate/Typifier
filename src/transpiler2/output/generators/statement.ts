@@ -3,6 +3,8 @@ import {
    BreakStatement,
    CatchClause,
    ContinueStatement,
+   DoWhileStatement,
+   EmptyStatement,
    ForInStatement,
    ForStatement,
    IfStatement,
@@ -108,3 +110,10 @@ export function whileStatement(s: WhileStatement, o: GenOptions): string {
    return `while (${generate(s.test, o)}) ${generate(s.body, o)}`;
 }
 
+export function doWhileStatement(s: DoWhileStatement, o: GenOptions): string {
+   return `do ${generate(s.body, o)} while (${generate(s.test, o)})`;
+}
+
+export function emptyStatement(s: EmptyStatement, o: GenOptions): string {
+   return ';';
+}

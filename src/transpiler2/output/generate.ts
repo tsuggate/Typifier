@@ -15,7 +15,7 @@ import {
    logicalExpression,
    memberExpression,
    newExpression,
-   objectExpression,
+   objectExpression, sequenceExpression,
    thisExpression,
    unaryExpression,
    updateExpression
@@ -25,6 +25,7 @@ import {
    breakStatement,
    catchClause,
    continueStatement,
+   doWhileStatement, emptyStatement,
    forInStatement,
    forStatement,
    ifStatement,
@@ -140,6 +141,8 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return updateExpression;
       case 'ArrowFunctionExpression':
          return arrowFunctionExpression;
+      case 'SequenceExpression':
+         return sequenceExpression;
 
       case 'BlockStatement':
          return blockStatement;
@@ -169,6 +172,10 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return catchClause;
       case 'WhileStatement':
          return whileStatement;
+      case 'DoWhileStatement':
+         return doWhileStatement;
+      case 'EmptyStatement':
+         return emptyStatement;
 
       default:
          console.log(node);

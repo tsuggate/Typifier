@@ -11,9 +11,9 @@ import {
    FunctionExpression,
    LogicalExpression,
    MemberExpression,
-   NewExpression,
+   NewExpression, Node,
    ObjectExpression,
-   Pattern,
+   Pattern, SequenceExpression,
    ThisExpression,
    UnaryExpression,
    UpdateExpression,
@@ -28,14 +28,16 @@ import * as escodegen from 'escodegen';
 export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
    let left, right;
 
-   if (e.left.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.left.operator)) {
+   if (e.left.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.left.operator)
+      || e.left.type === 'ConditionalExpression') {
       left = `(${generate(e.left, options)})`;
    }
    else {
       left = `${generate(e.left, options)}`;
    }
 
-   if (e.right.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.right.operator)) {
+   if (e.right.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.right.operator)
+      || e.right.type === 'ConditionalExpression') {
       right = `(${generate(e.right, options)})`;
    }
    else {
@@ -175,4 +177,8 @@ export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: G
    const params = `(${paramsArray.join(', ')})`;
 
    return `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
+}
+
+export function sequenceExpression(e: SequenceExpression, options: GenOptions): string {
+   return e.expressions.map(exp => generate(exp, options)).join(', ');
 }
