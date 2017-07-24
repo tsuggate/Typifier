@@ -61,11 +61,11 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
       throw 'functionDeclaration.generator not implemented!';
    }
 
-   const types = getFunctionDeclarationTypes(f, options);
+   const types = getFunctionDeclarationTypes(f, options) || [];
 
-   if (!types || (f.params.length !== types.length && types.length !== 0)) {
-      throw new Error(`functionDeclaration types don't match for ${generate(f.id, options)}`);
-   }
+   // if (!types || (f.params.length !== types.length && types.length !== 0)) {
+   //    throw new Error(`functionDeclaration types don't match for ${generate(f.id, options)}`);
+   // }
 
    const paramsArray = f.params.map((p, i) => {
       const t = types[i] || 'any';
