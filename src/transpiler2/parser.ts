@@ -1,10 +1,10 @@
-import * as esprima from 'esprima';
 import * as fs from 'fs';
 import * as escodegen from 'escodegen';
-import {Program, Node} from 'estree';
+import {Node, Program} from 'estree';
 
 import {isDefine} from './mods/imports';
 import {walk} from 'estree-walker';
+import {parseJavaScript} from './util/javascript-parser';
 
 
 export function parseAndLog(filePath: string): void {
@@ -12,7 +12,7 @@ export function parseAndLog(filePath: string): void {
       const code = fs.readFileSync(filePath).toString();
 
       if (code) {
-         const program: Program = esprima.parse(code);
+         const program: Program = parseJavaScript(code);
 
          applyMods(program);
 

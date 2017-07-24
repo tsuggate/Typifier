@@ -1,12 +1,12 @@
 import {generate} from './output/generate';
 import * as jsBeautify from 'js-beautify';
 import {jsBeautifyOptions, reformatCode} from '../test/shared';
-import * as esprima from 'esprima';
 import {getJavaScriptFile} from '../ui/state/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {GeneratorOptions, GenOptions} from './output/generator-options';
 import {addLogLn, logProgress} from '../ui/home/log/logger';
+import {parseJavaScript} from './util/javascript-parser';
 
 
 interface JavascriptOutput {
@@ -27,7 +27,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 
       const program = await logProgress<Program>(
          `Parsing ${getJavaScriptFile()}`,
-         () => esprima.parse(code, { attachComment: true, loc: true, range: true }));
+         () => parseJavaScript(code, true));
 
       const javascriptOutput = await logProgress<JavascriptOutput>(
          `Checking code gen matches escodegen`,

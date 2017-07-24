@@ -1,13 +1,13 @@
 import {walk} from 'estree-walker';
-import * as esprima from 'esprima';
 import {FunctionDeclaration, Node, Program} from 'estree';
 import {traverse} from '../util/misc';
 import {CodeRange, equalRange} from '../output/generators/find-types/shared';
+import {parseJavaScript} from '../util/javascript-parser';
 
 
 export function run(code: string) {
 
-   const program = esprima.parse(code, { range: true });
+   const program = parseJavaScript(code);
 
    traverse(program, (node, parent) => {
 

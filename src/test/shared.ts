@@ -4,6 +4,7 @@ import * as escodegen from 'escodegen';
 import * as jsBeautify from 'js-beautify';
 import {GenOptions} from '../transpiler2/output/generator-options';
 import {addLogLn} from '../ui/home/log/logger';
+import {parseJavaScript} from '../transpiler2/util/javascript-parser';
 
 
 export const jsBeautifyOptions = {
@@ -14,7 +15,7 @@ export const jsBeautifyOptions = {
 
 export function matchOutput(code: string) {
    it(code, () => {
-      const program = esprima.parse(code);
+      const program = parseJavaScript(code);
 
       const myOutput = reformatCode(generate(program, new GenOptions({}, code)), 'matchOutput: myOutput');
       const esCodegenOutput = escodegen.generate(program);
@@ -23,23 +24,23 @@ export function matchOutput(code: string) {
    });
 }
 
-export function logOutput(code: string): void {
-   const program = esprima.parse(code);
-
-   console.log(jsBeautify(generate(program, new GenOptions({}, code)), jsBeautifyOptions));
-}
-
-export function printTree(code: string): void {
-   const program = esprima.parse(code, {sourceType: 'module'});
-
-   console.log(JSON.stringify(program, null, 3));
-}
+// export function logOutput(code: string): void {
+//    const program = esprima.parse(code);
+//
+//    console.log(jsBeautify(generate(program, new GenOptions({}, code)), jsBeautifyOptions));
+// }
+//
+// export function printTree(code: string): void {
+//    const program = esprima.parse(code, {sourceType: 'module'});
+//
+//    console.log(JSON.stringify(program, null, 3));
+// }
 
 export function reformatCode(code: string, codeName: string): string {
    let program;
 
    try {
-      program = esprima.parse(code);
+      program = parseJavaScript(code);
    }
    catch (e) {
       addLogLn(`Error: Esprima failed to parse ${codeName}.`);
@@ -59,7 +60,7 @@ export function reformatCode(code: string, codeName: string): string {
 }
 
 export function diffOutput(code: string) {
-   const program = esprima.parse(code);
+   const program = parseJavaScript(code);
    const out = generate(program, new GenOptions({}, code));
 
    try {

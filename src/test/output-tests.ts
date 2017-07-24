@@ -1,4 +1,4 @@
-import {matchOutput, printTree} from './shared';
+import {matchOutput} from './shared';
 import {getTestFileCode} from '../transpiler2/util/file-reader';
 
 
@@ -57,6 +57,6 @@ describe('for loops', () => {
 
 
 describe('test export', () => {
-   printTree('export const a = 5;');
+   // printTree('export const a = 5;');
 });
 

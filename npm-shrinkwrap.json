@@ -1,6 +1,6 @@
 {
   "name": "Typifier",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "dependencies": {
     "@types/commander": {
       "version": "2.9.1",
@@ -104,7 +104,7 @@
     },
     "acorn": {
       "version": "5.1.1",
-      "from": "acorn@>=5.0.0 <6.0.0",
+      "from": "https://registry.npmjs.org/acorn/-/acorn-5.1.1.tgz",
       "resolved": "https://registry.npmjs.org/acorn/-/acorn-5.1.1.tgz"
     },
     "acorn-dynamic-import": {
