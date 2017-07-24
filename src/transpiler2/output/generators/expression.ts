@@ -56,6 +56,10 @@ export function expressionStatement(e: ExpressionStatement, options: GenOptions)
 export function callExpression(e: CallExpression, options: GenOptions): string {
    const args = e.arguments.map(a => generate(a, options)).join(', ');
 
+   if (e.callee.type === 'FunctionExpression') {
+      return `(${generate(e.callee, options)}(${args}))`;
+   }
+
    return `${generate(e.callee, options)}(${args})`;
 }
 

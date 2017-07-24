@@ -35,6 +35,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 
       if (!javascriptOutput.matches) {
          addLogLn(`JS code generation didn't match`);
+         console.log(javascriptOutput);
 
          return {
             code: '',
@@ -68,6 +69,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 }
 
 export function jsGenerators(program: Program, code: string): JavascriptOutput {
+   console.log(program);
    const options = new GenOptions({}, code);
 
    let generatedCode, myOutput;
@@ -82,12 +84,11 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    }
 
    try {
-      myOutput = reformatCode(generatedCode);
+      myOutput = reformatCode(generatedCode, 'jsGenerators: generatedCode');
    }
    catch (e) {
       addLogLn('Reformatting generated code failed:');
       addLogLn(e.stack);
-      console.log(generatedCode);
       console.log(e);
    }
 
@@ -96,7 +97,11 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    const matches = myOutput === esCodegenOutput;
 
    if (!matches) {
-      console.log(myOutput);
+      return {
+         matches: matches,
+         generated: '/* generated code */' + generatedCode,
+         escodegen: ''
+      };
    }
 
    return {
@@ -106,38 +111,3 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    };
 }
 
-// export function jsGeneratorProducesCorrectOutput(program: Program, code: string): boolean {
-//    const options = new GenOptions({}, code);
-//
-//    let generatedCode, myOutput;
-//
-//
-//    try {
-//       generatedCode = generate(program, options);
-//    }
-//    catch (e) {
-//       addLogLn('Generating JavaScript code failed:');
-//       addLogLn(e.stack);
-//       console.log(e);
-//    }
-//
-//    try {
-//       myOutput = reformatCode(generatedCode);
-//    }
-//    catch (e) {
-//       addLogLn('Reformatting generated code failed:');
-//       addLogLn(e.stack);
-//       console.log(generatedCode);
-//       console.log(e);
-//    }
-//
-//    const esCodegenOutput = escodegen.generate(program);
-//
-//    const res = myOutput === esCodegenOutput;
-//
-//    if (!res) {
-//       console.log(myOutput);
-//    }
-//
-//    return res;
-// }

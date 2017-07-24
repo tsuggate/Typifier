@@ -16,7 +16,7 @@ export function matchOutput(code: string) {
    it(code, () => {
       const program = esprima.parse(code);
 
-      const myOutput = reformatCode(generate(program, new GenOptions({}, code)));
+      const myOutput = reformatCode(generate(program, new GenOptions({}, code)), 'matchOutput: myOutput');
       const esCodegenOutput = escodegen.generate(program);
 
       expect(myOutput).toEqual(esCodegenOutput);
@@ -35,16 +35,16 @@ export function printTree(code: string): void {
    console.log(JSON.stringify(program, null, 3));
 }
 
-export function reformatCode(code: string): string {
+export function reformatCode(code: string, codeName: string): string {
    let program;
 
    try {
       program = esprima.parse(code);
    }
    catch (e) {
-      addLogLn(`Error: Esprima failed to parse code.`);
+      addLogLn(`Error: Esprima failed to parse ${codeName}.`);
       addLogLn(e.stack);
-      console.log(code);
+      // console.log(code);
       return '';
    }
 
@@ -52,7 +52,7 @@ export function reformatCode(code: string): string {
       return escodegen.generate(program);
    }
    catch (e) {
-      addLogLn(`Error: Escodegen failed to generate code.`);
+      addLogLn(`Error: Escodegen failed to generate ${codeName}.`);
       addLogLn(e.stack);
       return '';
    }
@@ -63,8 +63,8 @@ export function diffOutput(code: string) {
    const out = generate(program, new GenOptions({}, code));
 
    try {
-      const myOutput = reformatCode(out);
-      const esCodegenOutput = reformatCode(code);
+      const myOutput = reformatCode(out, 'diffOutput: myOutput');
+      const esCodegenOutput = reformatCode(code, 'diffOutput: esCodegenOutput');
 
       console.log(findDifference(esCodegenOutput, myOutput));
    }
