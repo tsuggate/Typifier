@@ -1,4 +1,4 @@
-import {Identifier, Literal, Program, Property, TemplateLiteral} from 'estree';
+import {AssignmentPattern, Identifier, Literal, Program, Property, TemplateLiteral} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 
@@ -35,7 +35,6 @@ export function propertyToJs(p: Property, options: GenOptions): string {
    }
 }
 
-
 export function templateLiteral(t: TemplateLiteral, options: GenOptions): string {
    const str = t.quasis.map((q, i) => {
       if (!q.tail) {
@@ -47,4 +46,8 @@ export function templateLiteral(t: TemplateLiteral, options: GenOptions): string
    }).join('');
 
    return `\`${str}\``;
+}
+
+export function assignmentPattern(p: AssignmentPattern, options: GenOptions): string {
+   return `${generate(p.left, options)} = ${generate(p.right, options)}`;
 }

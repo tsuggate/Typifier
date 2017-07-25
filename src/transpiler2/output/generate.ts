@@ -1,6 +1,9 @@
 import {Node, Program} from 'estree';
 import * as escodegen from 'escodegen';
-import {identifierToJs, literalToJs, programToJs, propertyToJs, templateLiteral} from './generators/misc';
+import {
+   assignmentPattern, identifierToJs, literalToJs, programToJs, propertyToJs,
+   templateLiteral
+} from './generators/misc';
 import {
    arrayExpression,
    arrowFunctionExpression,
@@ -105,6 +108,8 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return objectPattern;
       case 'TemplateLiteral':
          return templateLiteral;
+      case 'AssignmentPattern':
+         return assignmentPattern;
 
       case 'VariableDeclaration':
          return variableDeclarationToJs;
