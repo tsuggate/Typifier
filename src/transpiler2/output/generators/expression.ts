@@ -76,11 +76,6 @@ export function arrayExpression(a: ArrayExpression, options: GenOptions): string
 }
 
 export function functionExpression(f: FunctionExpression, options: GenOptions): string {
-   // if (f.id !== null) {
-   //    console.log(f);
-   //    throw 'functionExpression.id !== null';
-   // }
-
    const functionId = f.id ? ` ${generate(f.id, options)}` : '';
 
    const params = f.params.map(p => generate(p, options)).join(', ');
@@ -89,22 +84,21 @@ export function functionExpression(f: FunctionExpression, options: GenOptions): 
 }
 
 export function functionExpressionTs(f: FunctionExpression, options: GenOptions): string {
-   // if (f.id !== null) {
-   //    console.log(f);
-   //    throw 'functionExpression.id !== null';
-   // }
-
    const functionId = f.id ? ` ${generate(f.id, options)}` : '';
 
    const paramsArray = f.params.map(p => generate(p, options) + ': any');
 
    if (containsThisUsage(f.body)) {
       paramsArray.unshift('this: any');
+      const params = paramsArray.join(', ');
+
+      return `function${functionId}(${params}) ${generate(f.body, options)}`;
    }
+   else {
+      const params = paramsArray.join(', ');
 
-   const params = paramsArray.join(', ');
-
-   return `function${functionId}(${params}) ${generate(f.body, options)}`;
+      return `(${params}) => ${generate(f.body, options)}`;
+   }
 }
 
 export function memberExpression(e: MemberExpression, options: GenOptions): string {
