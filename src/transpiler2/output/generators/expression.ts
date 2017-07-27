@@ -145,7 +145,7 @@ export function conditionalExpression(e: ConditionalExpression, options: GenOpti
 
 export function unaryExpression(e: UnaryExpression, options: GenOptions): string {
    if (e.prefix) {
-      if (e.operator === '!' && e.argument.type === 'LogicalExpression') {
+      if (e.operator === '!' && (e.argument.type === 'LogicalExpression' || e.argument.type === 'BinaryExpression')) {
          return `${e.operator}(${generate(e.argument, options)})`;
       }
 

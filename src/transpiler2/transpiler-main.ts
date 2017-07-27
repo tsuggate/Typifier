@@ -99,8 +99,8 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    if (!matches) {
       return {
          matches: matches,
-         generated: '/* generated code */' + generatedCode,
-         escodegen: ''
+         generated: myOutput ? myOutput : generatedCode,
+         escodegen: esCodegenOutput
       };
    }
 

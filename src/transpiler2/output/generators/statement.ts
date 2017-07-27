@@ -95,7 +95,7 @@ export function throwStatement(s: ThrowStatement, o: GenOptions): string {
 
 export function tryStatement(s: TryStatement, o: GenOptions): string {
    const handler = s.handler ? generate(s.handler, o) : '';
-   const finalizer = s.finalizer ? generate(s.finalizer, o) : '';
+   const finalizer = s.finalizer ? ' finally ' + generate(s.finalizer, o) : '';
 
    return `try ${generate(s.block, o)} ${handler} ${finalizer}`;
 }

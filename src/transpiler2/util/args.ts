@@ -23,11 +23,13 @@ export function parseArgs(argsIn: string[], cb: (program: any) => void): void {
    openFileArg = program['open'];
    devMode = !!program['dev'];
 
-   if (args[2] && args[2].endsWith('.js')) {
-      openFileArg = args[2];
-   }
-   else if (args[0].endsWith('.exe') && args[1].endsWith('.js')) {
-      openFileArg = args[1];
+   if (!program['open']) {
+      if (args[2] && args[2].endsWith('.js')) {
+         openFileArg = args[2];
+      }
+      else if (args[0].endsWith('.exe') && args[1].endsWith('.js')) {
+         openFileArg = args[1];
+      }
    }
 
    global['devMode'] = devMode;
