@@ -27,7 +27,7 @@ export function parseArgs(argsIn: string[], cb: (program: any) => void): void {
       if (args[2] && args[2].endsWith('.js')) {
          openFileArg = args[2];
       }
-      else if (args[0].endsWith('.exe') && args[1].endsWith('.js')) {
+      else if (args[0].endsWith(`${packageJson.name}.exe`) && args[1].endsWith('.js')) {
          openFileArg = args[1];
       }
    }
