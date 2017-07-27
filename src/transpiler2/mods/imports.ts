@@ -44,7 +44,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
          return generateDeclaration(e as Declaration, exportNames, options);
       }
       else if (e.type === 'ReturnStatement') {
-         if (exportNames.length === 0) {
+         if (exportNames.length <= 1) {
             return makeDefaultExport(e, options);
          }
          return '';
