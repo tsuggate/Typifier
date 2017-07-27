@@ -1,7 +1,7 @@
 import {renderHome} from './home/home';
 import {renderMainWindowMenu} from './home/menu';
 import {initStore} from './state/state';
-import {remote} from 'electron';
+import {remote, ipcRenderer} from 'electron';
 import {nextFile, openFile, previousFile} from './global-actions';
 import {handleDevMode} from './util/dev-mode';
 
@@ -35,3 +35,9 @@ function openFileArg(): void {
       openFile(openFileArg).catch(e => console.log(e));
    }
 }
+
+ipcRenderer.on('openFile', (event, filePath: string) => {
+   if (filePath) {
+      openFile(filePath).catch(e => console.log(e));
+   }
+});

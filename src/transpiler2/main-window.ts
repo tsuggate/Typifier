@@ -1,7 +1,7 @@
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
 import * as windowState from 'electron-window-state';
-import {devMode} from './util/args';
+import {devMode, openFileArg, parseArgs} from './util/args';
 import * as winston from 'winston';
 import {appName, getOsAppDataPath} from '../ui/util/config';
 import * as fs from 'fs-extra';
@@ -60,3 +60,36 @@ app.on('activate', () => {
       createWindow();
    }
 });
+
+preventMultipleAppInstances();
+
+
+function preventMultipleAppInstances() {
+   const shouldQuit = app.makeSingleInstance((args: string[], workingDirectory: string) => {
+      if (mainWindow) {
+         if (mainWindow.isMinimized()) {
+            mainWindow.restore();
+         }
+         mainWindow.focus();
+      }
+
+      parseArgs(args, (() => {
+         if (openFileArg) {
+            // The second instance was going to open a file, so we should open
+            // that file in this instance.
+            const filePath = path.resolve(workingDirectory, openFileArg);
+
+            if (mainWindow && mainWindow.webContents) {
+               mainWindow.webContents.send('openFile', filePath);
+            }
+         }
+      }));
+
+      return true;
+   });
+
+   if (shouldQuit) {
+      app.quit();
+      return;
+   }
+}
