@@ -13,12 +13,25 @@ export const jsBeautifyOptions = {
 };
 
 
-export function matchOutput(code: string) {
+export function matchOutput(code: string): void {
    it(code, () => {
       const program = parseJavaScript(code);
 
       const myOutput = reformatCode(generate(program, new GenOptions({}, code)), 'matchOutput: myOutput');
       const esCodegenOutput = escodegen.generate(program);
+
+      expect(myOutput).toEqual(esCodegenOutput);
+   });
+}
+
+export function matchOutputRaw(code: string): void {
+   it(code, () => {
+      const program = parseJavaScript(code);
+
+      const myOutput = generate(program, new GenOptions({}, code));
+      const esCodegenOutput = escodegen.generate(program);
+
+      console.log(myOutput);
 
       expect(myOutput).toEqual(esCodegenOutput);
    });

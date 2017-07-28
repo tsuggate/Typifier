@@ -1,5 +1,6 @@
-import {BinaryOperator} from 'estree';
+import {BinaryOperator, LogicalOperator} from 'estree';
 
+export type Operator = BinaryOperator | LogicalOperator;
 
 export type Precedence = 'less' | 'greater' | 'equal';
 
@@ -7,7 +8,7 @@ export function operatorHasPrecedence(thisOp: BinaryOperator, other: BinaryOpera
    return precedence(thisOp, other) === 'greater';
 }
 
-export function precedence(thisOp: BinaryOperator, other: BinaryOperator): Precedence {
+export function precedence(thisOp: Operator, other: Operator): Precedence {
    const a = operatorPrecedence(thisOp);
    const b = operatorPrecedence(other);
 
@@ -22,7 +23,12 @@ export function precedence(thisOp: BinaryOperator, other: BinaryOperator): Prece
    }
 }
 
-function operatorPrecedence(op: BinaryOperator): number {
+export function operatorPrecedence(op: Operator): number {
+   return binaryOperatorPrecedence(op as BinaryOperator)
+      || logicalOperatorPrecedence(op as LogicalOperator);
+}
+
+function binaryOperatorPrecedence(op: BinaryOperator): number {
    switch (op) {
       case '**':
          return 15;
@@ -49,11 +55,20 @@ function operatorPrecedence(op: BinaryOperator): number {
       case '!==':
       case '!=':
          return 10;
-      case '|':
-         return 7;
       case '&':
          return 9;
-      default:
-         throw new Error('precedence for operator' + op + ' not implemented!');
+      case '|':
+         return 7;
+      case '^':
+         return 8;
+   }
+}
+
+function logicalOperatorPrecedence(op: LogicalOperator): number {
+   switch (op) {
+      case '&&':
+         return 6;
+      case '||':
+         return 5;
    }
 }
