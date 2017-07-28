@@ -1,4 +1,5 @@
 import {Operator, operatorPrecedence} from '../transpiler2/output/generators/operators';
+import {matchOutputRaw} from './shared';
 
 
 function checkPrecedence(operator: Operator, expectedPrecedence: number) {
@@ -18,4 +19,6 @@ describe('operator precedence', () => {
    checkPrecedence('&&', 6);
    checkPrecedence('||', 5);
    checkPrecedence('+', 13);
+
+   matchOutputRaw(`uploadInProgress() && (viewModel.panelState == panelState || disposed)`);
 });

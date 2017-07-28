@@ -19,7 +19,7 @@ import {
    UpdateExpression,
 } from 'estree';
 import {generate} from '../generate';
-import {operatorHasPrecedence} from './operators';
+import {operatorHasPrecedence, operatorPrecedence, precedence} from './operators';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage} from './find-types/function-declaration';
 import * as escodegen from 'escodegen';
@@ -123,18 +123,32 @@ export function assignmentExpression(e: AssignmentExpression, options: GenOption
 export function logicalExpression(e: LogicalExpression, options: GenOptions): string {
    let left, right;
 
-   if (e.operator === '&&' || e.operator === '||') {
-      left = e.left.type === 'LogicalExpression' ?
-       `(${generate(e.left, options)})` : generate(e.left, options);
-
-      right = e.right.type === 'LogicalExpression' ?
-       `(${generate(e.right, options)})` : generate(e.right, options);
+   if (e.left.type === 'LogicalExpression' && operatorPrecedence(e.left.operator) < operatorPrecedence(e.operator)) {
+      left = `(${generate(e.left, options)})`;
    }
    else {
       left = generate(e.left, options);
+   }
 
+   if (e.right.type === 'LogicalExpression' && operatorPrecedence(e.right.operator) <= operatorPrecedence(e.operator)) {
+      right = `(${generate(e.right, options)})`;
+   }
+   else {
       right = generate(e.right, options);
    }
+
+   // if (e.operator === '&&' || e.operator === '||') {
+   //    left = e.left.type === 'LogicalExpression' ?
+   //     `(${generate(e.left, options)})` : generate(e.left, options);
+   //
+   //    right = e.right.type === 'LogicalExpression' ?
+   //     `(${generate(e.right, options)})` : generate(e.right, options);
+   // }
+   // else {
+   //    left = generate(e.left, options);
+   //
+   //    right = generate(e.right, options);
+   // }
 
    return `${left} ${e.operator} ${right}`;
 }
