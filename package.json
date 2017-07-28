@@ -1,6 +1,6 @@
 {
   "name": "Typifier",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Transpiler for convertion JavaScript code to Typescript in kuraCloud",
   "main": "./distr/main.js",
   "scripts": {
