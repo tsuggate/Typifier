@@ -1,6 +1,7 @@
 import * as program from 'commander';
 import * as path from 'path';
 
+
 const packageJson = require('../../../package.json');
 
 export let openFileArg;
@@ -23,7 +24,7 @@ export function parseArgs(argsIn: string[], cb: (program: any) => void): void {
    openFileArg = program['open'];
    devMode = !!program['dev'];
 
-   if (!program['open']) {
+   if (!program['open'] && process.platform === 'win32') {
       if (args[2] && args[2].endsWith('.js')) {
          openFileArg = args[2];
       }
