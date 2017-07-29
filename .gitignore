@@ -86,3 +86,5 @@ jspm_packages
 /dist/
 /.idea/
 /distr/
+
+\.DS_Store
