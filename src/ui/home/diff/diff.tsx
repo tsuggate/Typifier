@@ -2,6 +2,8 @@ import * as React from 'react';
 import './diff.less';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
+import {generateDiffs} from "../../global-actions";
+import {dispatch} from '../../state/state';
 
 
 interface DiffProps {
@@ -10,7 +12,28 @@ interface DiffProps {
    diffs: IDiffResult[] | null;
 }
 
-export default class Diff extends React.Component<DiffProps, {}> {
+interface DiffState {
+   diffs: IDiffResult[] | null;
+}
+
+export default class Diff extends React.Component<DiffProps, DiffState> {
+
+   constructor() {
+      super();
+
+      this.state = {
+         diffs: null
+      };
+   }
+
+   componentWillMount() {
+      if (!this.props.diffs && !this.state.diffs && this.props.javascriptCode && this.props.typescriptCode) {
+         generateDiffs(this.props.javascriptCode, this.props.typescriptCode).then(diffs => {
+            dispatch({type: 'SET_DIFFS', diffs});
+            this.setState({diffs});
+         });
+      }
+   }
 
    render() {
       return (
@@ -19,7 +42,7 @@ export default class Diff extends React.Component<DiffProps, {}> {
                {this.buildMargin()}
 
                <div className="codeArea">
-                  {this.buildCode(this.props.diffs)}
+                  {this.buildCode(this.props.diffs || this.state.diffs)}
                </div>
             </div>
          </div>
@@ -41,7 +64,7 @@ export default class Diff extends React.Component<DiffProps, {}> {
 
    buildCode = (diffs: IDiffResult[] | null) => {
       if (!diffs) {
-         return null;
+         return <span>Generating diffs...</span>;
       }
 
       return diffs.map((d, i) => {

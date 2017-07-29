@@ -3,26 +3,23 @@ import {
    ArrowFunctionExpression,
    AssignmentExpression,
    BinaryExpression,
-   BlockStatement,
    CallExpression,
    ConditionalExpression,
-   Expression,
    ExpressionStatement,
    FunctionExpression,
    LogicalExpression,
    MemberExpression,
-   NewExpression, Node,
+   NewExpression,
    ObjectExpression,
-   Pattern, SequenceExpression,
+   SequenceExpression,
    ThisExpression,
    UnaryExpression,
    UpdateExpression,
 } from 'estree';
 import {generate} from '../generate';
-import {operatorHasPrecedence, operatorPrecedence, precedence} from './operators';
+import {operatorHasPrecedence, operatorPrecedence} from './operators';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage} from './find-types/function-declaration';
-import * as escodegen from 'escodegen';
 
 
 export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
@@ -136,19 +133,6 @@ export function logicalExpression(e: LogicalExpression, options: GenOptions): st
    else {
       right = generate(e.right, options);
    }
-
-   // if (e.operator === '&&' || e.operator === '||') {
-   //    left = e.left.type === 'LogicalExpression' ?
-   //     `(${generate(e.left, options)})` : generate(e.left, options);
-   //
-   //    right = e.right.type === 'LogicalExpression' ?
-   //     `(${generate(e.right, options)})` : generate(e.right, options);
-   // }
-   // else {
-   //    left = generate(e.left, options);
-   //
-   //    right = generate(e.right, options);
-   // }
 
    return `${left} ${e.operator} ${right}`;
 }

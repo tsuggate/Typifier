@@ -1,7 +1,7 @@
-
-
 import {IDiffResult} from 'diff';
-export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder | SetFileIndex | CloseFile;
+
+
+export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder | SetFileIndex | CloseFile | SetDiffs;
 
 
 export interface SetJavaScriptFile {
@@ -15,6 +15,11 @@ export interface SetTypeScriptCode {
    code: string | null;
    diffs: IDiffResult[] | null;
    success: boolean;
+}
+
+export interface SetDiffs {
+   type: 'SET_DIFFS';
+   diffs: IDiffResult[];
 }
 
 export interface SetFolder {

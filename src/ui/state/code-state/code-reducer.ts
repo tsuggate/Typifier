@@ -19,6 +19,8 @@ export function codeReducer(s: CodeState = initialState, action: CodeActions): C
          return setJavaScriptFile(s, action);
       case 'SET_TYPESCRIPT_CODE':
          return setTypeScriptCode(s, action);
+      case 'SET_DIFFS':
+         return {...s, diffs: action.diffs};
       case 'SET_FOLDER':
          return setFolder(s, action);
       case 'SET_FILE_INDEX':

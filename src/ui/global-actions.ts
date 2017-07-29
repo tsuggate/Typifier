@@ -86,18 +86,18 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
       const output = await transpile(code, {language: 'typescript'});
 
       if (output.success) {
-         const diffs = await generateDiffs(code, output.code);
+         // const diffs = await generateDiffs(code, output.code);
 
-         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs});
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs: null});
          dispatch({type: 'SET_VIEW_MODE', mode: 'code'});
       }
       else {
-         let diffs;
+         // let diffs;
 
-         if (output.javascriptOutput && !output.javascriptOutput.matches) {
-            diffs = await generateDiffs(output.javascriptOutput.escodegen, output.javascriptOutput.generated);
-         }
-         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs});
+         // if (output.javascriptOutput && !output.javascriptOutput.matches) {
+            // diffs = await generateDiffs(output.javascriptOutput.escodegen, output.javascriptOutput.generated);
+         // }
+         dispatch({type: 'SET_TYPESCRIPT_CODE', code: output.code, success: output.success, diffs: null});
          dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
       }
 
@@ -105,7 +105,7 @@ async function generateTypeScript(javaScriptFile: string): Promise<void> {
    }
 }
 
-function generateDiffs(javaScript: string, typeScript: string): Promise<IDiffResult[]> {
+export function generateDiffs(javaScript: string, typeScript: string): Promise<IDiffResult[]> {
    return logProgress<IDiffResult[]>('Generating diffs', () => diff.diffWords(javaScript, typeScript));
 }
 

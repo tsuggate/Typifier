@@ -1,4 +1,3 @@
-import * as esprima from 'esprima';
 import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
 import * as jsBeautify from 'js-beautify';
