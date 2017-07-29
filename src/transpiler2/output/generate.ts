@@ -45,7 +45,7 @@ import {
    objectPattern,
    variableDeclarationToJs,
    variableDeclarationToTs,
-   variableDeclaratorToJs
+   variableDeclarator
 } from './generators/declaration';
 import {generateImports, isDefine} from '../mods/imports';
 import {insertComments} from './generators/comments';
@@ -114,7 +114,7 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
       case 'VariableDeclaration':
          return variableDeclarationToJs;
       case 'VariableDeclarator':
-         return variableDeclaratorToJs;
+         return variableDeclarator;
       case 'FunctionDeclaration':
          return functionDeclaration;
 

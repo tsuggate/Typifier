@@ -33,10 +33,14 @@ export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOp
    return `${kind} ${declarations};`;
 }
 
-export function variableDeclaratorToJs(dec: VariableDeclarator, options: GenOptions): string {
+export function variableDeclarator(dec: VariableDeclarator, options: GenOptions): string {
    const name = generate(dec.id, options);
 
    if (dec.init) {
+      if (options.isTypeScript() && dec.init.type === 'ArrayExpression' && dec.init.elements.length === 0) {
+         return `${name}: any[] = []`;
+      }
+
       return `${name} = ${generate(dec.init, options)}`;
    }
 

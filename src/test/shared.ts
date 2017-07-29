@@ -23,6 +23,16 @@ export function matchOutput(code: string): void {
    });
 }
 
+export function checkTSOutput(input: string, output: string): void {
+   it(input, () => {
+      const program = parseJavaScript(input);
+
+      const myOutput = generate(program, new GenOptions({language: 'typescript'}, input));
+
+      expect(myOutput).toEqual(output);
+   });
+}
+
 export function matchOutputRaw(code: string): void {
    it(code, () => {
       const program = parseJavaScript(code);

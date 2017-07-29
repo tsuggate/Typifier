@@ -1,5 +1,12 @@
 
 
-row = (fixedRow ? '$' : '') + row;
+this.scrollSelectionPosition = ko.pureComputed({
+   read: function() {
+      return this.scrollPosition();
+   },
+   write: function(newScrollPosition, userEvent) {
+      this.setScrollPosition(newScrollPosition, userEvent);
+   },
+   owner: this
+});
 
-const a = row ? 2 : 4 + 3;

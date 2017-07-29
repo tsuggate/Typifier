@@ -57,6 +57,10 @@ export class GenOptions {
       return this.language;
    }
 
+   isTypeScript(): boolean {
+      return this.language === 'typescript';
+   }
+
    getProgram(): Program {
       if (!this.program) {
          throw new Error('program is not initialised');
