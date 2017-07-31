@@ -1,4 +1,4 @@
 
-for (const name in modules) {
+for (var name in modules) {
    moduleNames[index++] = name;
 }

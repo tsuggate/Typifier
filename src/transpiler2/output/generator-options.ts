@@ -1,7 +1,7 @@
 import {ESComment} from './generators/comments';
-import * as esprima from 'esprima';
-import {Program} from 'estree';
+import {Node, Program} from 'estree';
 import {parseJavaScript} from '../util/javascript-parser';
+import {findParentNode} from '../symbols/symbols';
 
 export type OutputLanguage = 'javascript' | 'typescript';
 
@@ -9,6 +9,7 @@ export type OutputLanguage = 'javascript' | 'typescript';
 
 export interface GeneratorOptions {
    language?: OutputLanguage;
+   insertAny?: boolean;
    includeComments?: boolean;
 }
 
@@ -20,7 +21,10 @@ export class GenOptions {
 
    private language: OutputLanguage;
 
-   private includeComments: boolean;
+   private includeComments: boolean = true;
+
+   // Default to inserting any if language is typescript.
+   private insertAny: boolean = true;
 
    private generatedComments: ESComment[] = [];
 
@@ -49,8 +53,16 @@ export class GenOptions {
 
    setOptions(options: GeneratorOptions): void {
       this.language = options.language ? options.language : 'javascript';
-      // Default to true? TODO: This keeps confusing me.
-      this.includeComments = typeof options.includeComments !== 'undefined' ? options.includeComments : true;
+
+      // Default to true if option undefined.
+      if (typeof options.includeComments !== 'undefined') {
+         this.includeComments = options.includeComments;
+      }
+
+      // Default to true if option undefined.
+      if (typeof options.insertAny !== 'undefined') {
+         this.insertAny = options.insertAny;
+      }
    }
 
    getLanguage(): OutputLanguage {
@@ -61,12 +73,29 @@ export class GenOptions {
       return this.language === 'typescript';
    }
 
+   shouldInsertAny(): boolean {
+      return this.isTypeScript() && this.insertAny;
+   }
+
    getProgram(): Program {
       if (!this.program) {
          throw new Error('program is not initialised');
       }
 
       return this.program;
+   }
+
+   findParentNode(node: Node): Node | null {
+      return findParentNode(this.program, node);
+   }
+
+   findGranParentNode(node: Node): Node | null {
+      const parent = findParentNode(this.program, node);
+
+      if (parent) {
+         return findParentNode(this.program, parent);
+      }
+      return null;
    }
 
    comments(): boolean {

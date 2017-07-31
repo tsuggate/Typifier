@@ -2,7 +2,6 @@ import {Declaration, FunctionDeclaration, Node, ObjectPattern, VariableDeclarati
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage, getFunctionDeclarationTypes} from './find-types/function-declaration';
-import {findParentNode} from '../../symbols/symbols';
 import {findAssignmentTo} from './find-types/declaration-kind';
 import {CodeRange} from './find-types/shared';
 
@@ -17,7 +16,7 @@ export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOp
    const declarations = dec.declarations.map(d => generate(d, options)).join(', ');
    let kind = 'const';
 
-   const parent = findParentNode(options.getProgram(), dec);
+   const parent = options.findParentNode(dec);
 
    if (parent) {
       dec.declarations.forEach(d => {
@@ -37,7 +36,7 @@ export function variableDeclarator(dec: VariableDeclarator, options: GenOptions)
    const name = generate(dec.id, options);
 
    if (dec.init) {
-      if (options.isTypeScript()) {
+      if (options.shouldInsertAny()) {
          if (dec.init.type === 'ArrayExpression' && dec.init.elements.length === 0) {
             return `${name}: any[] = []`;
          }
@@ -49,7 +48,13 @@ export function variableDeclarator(dec: VariableDeclarator, options: GenOptions)
       return `${name} = ${generate(dec.init, options)}`;
    }
 
-   if (options.isTypeScript()) {
+   if (options.shouldInsertAny()) {
+      const grandParent = options.findGranParentNode(dec);
+
+      if (grandParent && grandParent.type === 'ForInStatement') {
+         return `${name}`;
+      }
+
       return `${name}: any`;
    }
    return `${name}`;
