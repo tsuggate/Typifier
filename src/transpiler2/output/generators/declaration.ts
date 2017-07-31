@@ -37,13 +37,21 @@ export function variableDeclarator(dec: VariableDeclarator, options: GenOptions)
    const name = generate(dec.id, options);
 
    if (dec.init) {
-      if (options.isTypeScript() && dec.init.type === 'ArrayExpression' && dec.init.elements.length === 0) {
-         return `${name}: any[] = []`;
+      if (options.isTypeScript()) {
+         if (dec.init.type === 'ArrayExpression' && dec.init.elements.length === 0) {
+            return `${name}: any[] = []`;
+         }
+         else if (dec.init.type === 'ObjectExpression' && dec.init.properties.length === 0) {
+            return `${name}: Record<string, any> = {}`;
+         }
       }
 
       return `${name} = ${generate(dec.init, options)}`;
    }
 
+   if (options.isTypeScript()) {
+      return `${name}: any`;
+   }
    return `${name}`;
 }
 

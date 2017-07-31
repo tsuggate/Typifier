@@ -46,18 +46,6 @@ export function matchOutputRaw(code: string): void {
    });
 }
 
-// export function logOutput(code: string): void {
-//    const program = esprima.parse(code);
-//
-//    console.log(jsBeautify(generate(program, new GenOptions({}, code)), jsBeautifyOptions));
-// }
-//
-// export function printTree(code: string): void {
-//    const program = esprima.parse(code, {sourceType: 'module'});
-//
-//    console.log(JSON.stringify(program, null, 3));
-// }
-
 export function reformatCode(code: string, codeName: string): string {
    let program;
 
@@ -67,7 +55,6 @@ export function reformatCode(code: string, codeName: string): string {
    catch (e) {
       addLogLn(`Error: Esprima failed to parse ${codeName}.`);
       addLogLn(e.stack);
-      // console.log(code);
       return '';
    }
 
@@ -116,21 +103,3 @@ export function findDifference(a: string, b: string) {
    };
 }
 
-// export function saveOutput(code: string) {
-//    fs.ensureDirSync(path.resolve('.', 'out'));
-//
-//    const outPath = path.resolve('.', 'out', 'out.js');
-//    const program = esprima.parse(code);
-//
-//    const out = generate(program);
-//
-//    try {
-//       const myOutput = jsBeautify(out, jsBeautifyOptions);
-//       fs.writeFileSync(outPath, myOutput);
-//    }
-//    catch (e) {
-//       console.log('failed to parse output');
-//       console.log(e);
-//       // console.log(jsBeautify(out));
-//    }
-// }
