@@ -6,7 +6,8 @@ import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
 import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
-import {addLog, addLogLn, logProgress} from './home/log/logger';
+import {addLogLn, logProgress} from './home/log/logger';
+
 const packageJson = require('../../package.json');
 
 
@@ -121,13 +122,10 @@ export async function saveTypeScriptCode(): Promise<void> {
    fs.unlinkSync(jsFile);
    addLogLn(`Wrote ${tsFile}`);
 
-   if (getAppState().openMode === 'file') {
-      dispatch({type: 'CLOSE_FILE'});
-   }
-   else {
-      if (codeState.folderPath) {
-         await openFolder(codeState.folderPath, codeState.currentFileIndex);
-      }
+   dispatch({type: 'CLOSE_FILE'});
+
+   if (getAppState().openMode !== 'file' && codeState.folderPath) {
+      await openFolder(codeState.folderPath, codeState.currentFileIndex);
    }
 }
 

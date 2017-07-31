@@ -61,7 +61,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
 
 function makeDefaultExport(e: ReturnStatement, options: GenOptions) {
    if (e.argument) {
-      return `module.exports = ${generate(e.argument, options)};`;
+      return `export = ${generate(e.argument, options)};`;
    }
    return '';
 }
