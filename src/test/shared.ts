@@ -23,13 +23,13 @@ export function matchOutput(code: string): void {
    });
 }
 
-export function checkTSOutput(input: string, output: string): void {
+export function checkTSOutput(input: string, expectedOutput: string): void {
    it(input, () => {
       const program = parseJavaScript(input);
 
-      const myOutput = generate(program, new GenOptions({language: 'typescript'}, input));
+      const myOutput = generate(program, new GenOptions({language: 'typescript'}, input)).trim();
 
-      expect(myOutput).toEqual(output);
+      expect(myOutput).toEqual(expectedOutput);
    });
 }
 

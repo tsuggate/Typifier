@@ -40,7 +40,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    const imports = makeImports(libraryNames, importNames, exportNames);
 
    const body = func.body.body.map(e => {
-      if (isDeclaration(e)) {
+      if (isDeclaration(e) && exportNames.length > 1) {
          return generateDeclaration(e as Declaration, exportNames, options);
       }
       else if (e.type === 'ReturnStatement') {
