@@ -15,7 +15,7 @@ describe('any insertion', () => {
    describe('not inserted in for-in loop', () => {
       checkTSOutput('for (var a in array) {}', 'for (const a in array) {}');
    });
-   
+
 });
 
 
