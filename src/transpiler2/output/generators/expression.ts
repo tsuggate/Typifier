@@ -45,7 +45,7 @@ export function binaryExpression(e: BinaryExpression, options: GenOptions): stri
 }
 
 export function expressionStatement(e: ExpressionStatement, options: GenOptions): string {
-   if (options.getLanguage() === 'typescript' && e['directive'] && e['directive'].includes('use strict')) {
+   if (options.getLanguage() === 'typescript' && (e as any)['directive'] && (e as any)['directive'].includes('use strict')) {
       return '';
    }
 

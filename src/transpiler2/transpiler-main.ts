@@ -84,7 +84,7 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    }
 
    try {
-      myOutput = reformatCode(generatedCode, 'jsGenerators: generatedCode');
+      myOutput = reformatCode(generatedCode || '', 'jsGenerators: generatedCode');
    }
    catch (e) {
       addLogLn('Reformatting generated code failed:');
@@ -99,14 +99,14 @@ export function jsGenerators(program: Program, code: string): JavascriptOutput {
    if (!matches) {
       return {
          matches: matches,
-         generated: myOutput ? myOutput : generatedCode,
+         generated: myOutput ? myOutput : (generatedCode || ''),
          escodegen: esCodegenOutput
       };
    }
 
    return {
       matches: matches,
-      generated: myOutput,
+      generated: myOutput || '',
       escodegen: esCodegenOutput
    };
 }

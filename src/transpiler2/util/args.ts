@@ -4,8 +4,8 @@ import * as path from 'path';
 
 const packageJson = require('../../../package.json');
 
-export let openFileArg;
-export let devMode;
+export let openFileArg: string | null = null;
+export let devMode = false;
 
 
 parseArgs(process.argv, () => {});
@@ -33,8 +33,8 @@ export function parseArgs(argsIn: string[], cb: (program: any) => void): void {
       }
    }
 
-   global['devMode'] = devMode;
-   global['openFileArg'] = openFileArg;
+   (global as any)['devMode'] = devMode;
+   (global as any)['openFileArg'] = openFileArg;
 
    cb(program);
 

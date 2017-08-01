@@ -52,7 +52,7 @@ export function switchStatement(s: SwitchStatement, options: GenOptions): string
    return `switch (${generate(s.discriminant, options)}) { ${cases} }`;
 }
 
-export function switchCase(s: SwitchCase, options): string {
+export function switchCase(s: SwitchCase, options: GenOptions): string {
    const consequent = s.consequent.map(c => generate(c, options)).join('\n');
 
    if (s.test) {

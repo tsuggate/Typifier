@@ -1,7 +1,8 @@
-import * as acorn from 'acorn';
 import * as escodegen from 'escodegen';
 import {Program} from 'estree';
 import * as esprima from 'esprima';
+
+const acorn = require('acorn');
 
 
 const useEsprima = true;

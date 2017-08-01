@@ -36,7 +36,7 @@ function openFileArg(): void {
    }
 }
 
-ipcRenderer.on('openFile', (event, filePath: string) => {
+ipcRenderer.on('openFile', (event: string, filePath: string) => {
    if (filePath) {
       openFile(filePath).catch(e => console.log(e));
    }

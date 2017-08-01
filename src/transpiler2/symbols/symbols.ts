@@ -1,52 +1,7 @@
-import {walk} from 'estree-walker';
-import {FunctionDeclaration, Node, Program} from 'estree';
+import {Node, Program} from 'estree';
 import {traverse} from '../util/misc';
 import {CodeRange, equalRange} from '../output/generators/find-types/shared';
-import {parseJavaScript} from '../util/javascript-parser';
 
-
-export function run(code: string) {
-
-   const program = parseJavaScript(code);
-
-   traverse(program, (node, parent) => {
-
-      switch (node.type) {
-         // case 'CallExpression':
-         //    const callee = node.callee as Identifier;
-         //    if (callee.name === 'myFunc') {
-         //       // findFunctionDeclaration(program, callee);
-         //    }
-         //    break;
-
-         case 'FunctionDeclaration':
-            if (node.id.name === 'myFunc') {
-
-
-               // const calls = findFunctionCalls(program, node, parent.range as CodeRange);
-
-               // const types = getFunctionTypesFromCalls(calls);
-
-               // console.log(types);
-
-            }
-            break;
-      }
-
-   });
-
-}
-
-// export function findParentNode2(program: Program, target: Node): Promise<Node | null> {
-//    return new Promise<Node | null>(resolve => {
-//       traverse(program, (node: Node, parent: Node) => {
-//          if (node.type === target.type && equalRange(node.range as CodeRange, target.range as CodeRange)) {
-//             resolve(parent);
-//          }
-//       });
-//       resolve(null);
-//    });
-// }
 
 export function findParentNode(program: Program, target: Node): Node | null {
    let found = false;
