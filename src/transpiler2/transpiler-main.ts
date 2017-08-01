@@ -1,12 +1,12 @@
 import {generate} from './output/generate';
-import * as jsBeautify from 'js-beautify';
-import {jsBeautifyOptions, reformatCode} from '../test/shared';
+import {reformatCode} from '../test/shared';
 import {getJavaScriptFile} from '../ui/state/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {GeneratorOptions, GenOptions} from './output/generator-options';
 import {addLogLn, logProgress} from '../ui/home/log/logger';
 import {parseJavaScript} from './util/javascript-parser';
+import {prettify} from './util/format-code';
 
 
 interface JavascriptOutput {
@@ -48,7 +48,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
          `Generating ${options.getLanguage()}`,
          () => generate(program, options));
 
-      const outputCode = jsBeautify(out, jsBeautifyOptions);
+      const outputCode = prettify(out);
 
       return {
          code: outputCode,

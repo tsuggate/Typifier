@@ -1,15 +1,9 @@
 import {generate} from '../transpiler2/output/generate';
 import * as escodegen from 'escodegen';
-import * as jsBeautify from 'js-beautify';
 import {GenOptions} from '../transpiler2/output/generator-options';
 import {addLogLn} from '../ui/home/log/logger';
 import {parseJavaScript} from '../transpiler2/util/javascript-parser';
-
-
-export const jsBeautifyOptions = {
-   indent_size: 3,
-   indent_char: ' '
-};
+import {prettify} from '../transpiler2/util/format-code';
 
 
 export function matchOutput(code: string): void {
@@ -80,7 +74,7 @@ export function diffOutput(code: string) {
    }
    catch (e) {
       console.log('failed to parse output');
-      console.log(jsBeautify(out));
+      console.log(prettify(out));
    }
 }
 
