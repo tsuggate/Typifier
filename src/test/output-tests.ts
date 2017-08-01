@@ -1,5 +1,5 @@
 import {matchOutput} from './shared';
-import {getTestFileCode} from '../transpiler2/util/file-reader';
+import {getTestFileCode} from '../transpiler/util/file-reader';
 
 
 describe('variable declarations', () => {

@@ -1,9 +1,9 @@
-import {generate} from '../transpiler2/output/generate';
+import {generate} from '../transpiler/output/generate';
 import * as escodegen from 'escodegen';
-import {GenOptions} from '../transpiler2/output/generator-options';
-import {addLogLn} from '../ui/home/log/logger';
-import {parseJavaScript} from '../transpiler2/util/javascript-parser';
-import {prettify} from '../transpiler2/util/format-code';
+import {GenOptions} from '../transpiler/output/generator-options';
+import {addLogLn} from '../renderer/home/log/logger';
+import {parseJavaScript} from '../transpiler/util/javascript-parser';
+import {prettify} from '../transpiler/util/format-code';
 
 
 export function matchOutput(code: string): void {

@@ -1,12 +1,12 @@
-import {generate} from './output/generate';
+import {generate} from '../transpiler/output/generate';
 import {reformatCode} from '../test/shared';
-import {getJavaScriptFile} from '../ui/state/state';
+import {getJavaScriptFile} from './state/state';
 import {Program} from 'estree';
 import * as escodegen from 'escodegen';
-import {GeneratorOptions, GenOptions} from './output/generator-options';
-import {addLogLn, logProgress} from '../ui/home/log/logger';
-import {parseJavaScript} from './util/javascript-parser';
-import {prettify} from './util/format-code';
+import {GeneratorOptions, GenOptions} from '../transpiler/output/generator-options';
+import {addLogLn, logProgress} from './home/log/logger';
+import {parseJavaScript} from '../transpiler/util/javascript-parser';
+import {prettify} from '../transpiler/util/format-code';
 
 
 interface JavascriptOutput {

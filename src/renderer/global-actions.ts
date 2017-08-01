@@ -1,7 +1,7 @@
 import {remote} from 'electron';
 import {dispatch, getAppState, getCodeState, getJavaScriptFile} from './state/state';
 import * as fs from 'fs';
-import {transpile} from '../transpiler2/transpiler-main';
+import {transpile} from './transpiler-main';
 import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
 import * as diff from 'diff';
 import {IDiffResult} from 'diff';

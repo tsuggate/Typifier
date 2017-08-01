@@ -2,7 +2,7 @@ import * as program from 'commander';
 import * as path from 'path';
 
 
-const packageJson = require('../../../package.json');
+const packageJson = require('../../package.json');
 
 export let openFileArg: string | null = null;
 export let devMode = false;

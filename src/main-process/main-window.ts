@@ -1,8 +1,8 @@
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
-import {devMode, openFileArg, parseArgs} from './util/args';
+import {devMode, openFileArg, parseArgs} from './args';
 import * as winston from 'winston';
-import {appName, getOsAppDataPath} from '../ui/util/config';
+import {appName, getOsAppDataPath} from '../renderer/util/config';
 import * as fs from 'fs-extra';
 
 const windowState = require('electron-window-state');

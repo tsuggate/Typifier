@@ -1,4 +1,4 @@
-import {Operator, operatorPrecedence} from '../transpiler2/output/generators/operators';
+import {Operator, operatorPrecedence} from '../transpiler/output/generators/operators';
 import {matchOutputRaw} from './shared';
 
 

@@ -5,8 +5,8 @@ var webpack = require('webpack');
 
 module.exports = {
    entry: {
-      "main": './src/transpiler2/main-window.ts',
-      "renderer": './src/ui/renderer.ts'
+      "main": './src/main-process/main-window.ts',
+      "renderer": './src/renderer/renderer.ts'
    },
    output: {
       path: path.join(__dirname, 'distr/'),
