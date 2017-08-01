@@ -101,9 +101,7 @@ export function tryStatement(s: TryStatement, o: GenOptions): string {
 }
 
 export function catchClause(c: CatchClause, o: GenOptions): string {
-   const res =  `catch (${generate(c.param, o)}) ${generate(c.body, o)}`;
-   console.log(res);
-   return res;
+   return `catch (${generate(c.param, o)}) ${generate(c.body, o)}`;
 }
 
 export function whileStatement(s: WhileStatement, o: GenOptions): string {

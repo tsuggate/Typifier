@@ -36,7 +36,8 @@ function setJavaScriptFile(s: CodeState, action: SetJavaScriptFile): CodeState {
    return {
       ...s,
       javascriptFile: action.file,
-      javascriptCode: action.code
+      javascriptCode: action.code,
+      codeGenSucceeded: false
    };
 }
 
@@ -49,7 +50,8 @@ function setFolder(s: CodeState, action: SetFolder): CodeState {
       ...s,
       folderPath: action.folderPath,
       javascriptFiles: action.javaScriptFiles,
-      currentFileIndex: normaliseFileIndex(s, action.index, action.javaScriptFiles.length)
+      currentFileIndex: normaliseFileIndex(s, action.index, action.javaScriptFiles.length),
+      codeGenSucceeded: false
    };
 }
 
@@ -65,7 +67,8 @@ function normaliseFileIndex(s: CodeState, index: number, numFiles: number): numb
 function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
    return {
       ...s,
-      currentFileIndex: normaliseFileIndex(s, action.index, s.javascriptFiles.length)
+      currentFileIndex: normaliseFileIndex(s, action.index, s.javascriptFiles.length),
+      codeGenSucceeded: false
    };
 }
 

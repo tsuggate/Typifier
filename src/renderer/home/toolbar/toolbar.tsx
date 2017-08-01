@@ -71,7 +71,9 @@ export default class Toolbar extends React.Component<ToolbarProps, {}> {
    };
 
    onClickApplyChanges = async () => {
-      await saveTypeScriptCode();
+      if (!this.shouldDisableApplyChanges()) {
+         await saveTypeScriptCode();
+      }
    };
 
    onClickInfoButton = () => {
