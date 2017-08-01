@@ -31,10 +31,10 @@ export function propertyToJs(p: Property, options: GenOptions): string {
       throw 'propertyToJs.computed not implemented!';
    }
    else {
-      if (options.shouldInsertAny() && p.key.type === 'Identifier'
-         && p.key.name === 'write' && p.value.type === 'FunctionExpression') {
-         return `${generate(p.key, options)}: (${generate(p.value, options)} as any)`;
-      }
+      // if (options.shouldInsertAny() && p.key.type === 'Identifier'
+      //    && p.key.name === 'write' && p.value.type === 'FunctionExpression') {
+      //    return `${generate(p.key, options)}: (${generate(p.value, options)} as any)`;
+      // }
 
       return `${generate(p.key, options)}: ${generate(p.value, options)}`;
    }
