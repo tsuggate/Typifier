@@ -1,5 +1,6 @@
 import {CodeState} from '../schema';
 import {CodeActions, SetFileIndex, SetFolder, SetJavaScriptFile, SetTypeScriptCode} from './code-actions';
+import {normaliseFileIndex} from "../../util/util";
 
 
 const initialState: CodeState = {
@@ -50,24 +51,17 @@ function setFolder(s: CodeState, action: SetFolder): CodeState {
       ...s,
       folderPath: action.folderPath,
       javascriptFiles: action.javaScriptFiles,
-      currentFileIndex: normaliseFileIndex(s, action.index, action.javaScriptFiles.length),
+      currentFileIndex: normaliseFileIndex(action.index, action.javaScriptFiles.length),
       codeGenSucceeded: false
    };
 }
 
-function normaliseFileIndex(s: CodeState, index: number, numFiles: number): number {
-   if (index < 0)
-      return 0;
-   else if (index >= numFiles)
-      return s.javascriptFiles.length - 1;
 
-   return index;
-}
 
 function setFileIndex(s: CodeState, action: SetFileIndex): CodeState {
    return {
       ...s,
-      currentFileIndex: normaliseFileIndex(s, action.index, s.javascriptFiles.length),
+      currentFileIndex: normaliseFileIndex(action.index, s.javascriptFiles.length),
       codeGenSucceeded: false
    };
 }

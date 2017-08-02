@@ -2,7 +2,7 @@ import {remote} from 'electron';
 import {dispatch, getAppState, getCodeState, getJavaScriptFile} from './state/state';
 import * as fs from 'fs';
 import {transpile} from './transpiler-main';
-import {getJavaScriptFilesInFolder, getTypeScriptFilePath} from './util/util';
+import {getJavaScriptFilesInFolder, getTypeScriptFilePath, normaliseFileIndex} from './util/util';
 import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
@@ -63,16 +63,18 @@ export async function openFile(file: string): Promise<void> {
    await generateTypeScript(file);
 }
 
-export async function openFolder(folderPath: string, index: number = 0): Promise<void> {
+export async function openFolder(folderPath: string, indexIn: number = 0): Promise<void> {
    dispatch({type: 'SET_VIEW_MODE', mode: 'log'});
    getWindow().setTitle(`${packageJson.name} - ${folderPath}`);
 
    const files = getJavaScriptFilesInFolder(folderPath);
 
-   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files, index});
+   const index = normaliseFileIndex(indexIn, files.length);
 
-   if (files[0]) {
-      await generateTypeScript(files[0]);
+   dispatch({type: 'SET_FOLDER', folderPath, javaScriptFiles: files, index: index});
+
+   if (files[index]) {
+      await generateTypeScript(files[index]);
    }
 }
 

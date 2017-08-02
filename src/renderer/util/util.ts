@@ -57,3 +57,12 @@ export function getJavaScriptFilesInFolder(folderPath: string): string[] {
    }
    return [];
 }
+
+export function normaliseFileIndex(index: number, numFiles: number): number {
+   if (index < 0)
+      return 0;
+   else if (index >= numFiles)
+      return numFiles - 1;
+
+   return index;
+}
