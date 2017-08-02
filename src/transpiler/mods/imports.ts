@@ -10,6 +10,7 @@ import {generate} from "../output/generate";
 import {getNamesFromDeclaration, isDeclaration} from "../output/generators/declaration";
 import * as _ from "underscore";
 import {GenOptions} from "../output/generator-options";
+import {appName} from '../../renderer/util/config';
 
 
 const recognisedLibraries = [
@@ -37,7 +38,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    const libraryNames = getLibraryNames(e, options);
    const importNames = getImportNames(func, options);
 
-   const exportNames = getExportNames(func, options);
+   const exportNames = getExportNames(func, importNames, options);
    const imports = makeImports(libraryNames, importNames, exportNames);
 
    const body = func.body.body.map(e => {
@@ -117,14 +118,26 @@ function getNonBoundImports(libraryNames: string[], importNames: string[]): stri
    return _.rest(libraryNames, importNames.length);
 }
 
-function getExportNames(func: FunctionExpression, options: GenOptions): string[] {
+function getExportNames(func: FunctionExpression, importNames: string[], options: GenOptions): string[] {
    const returnStatement = func.body.body.find(e => e.type === 'ReturnStatement') as ReturnStatement | undefined;
 
    if (returnStatement && returnStatement.argument) {
       const arg = returnStatement.argument;
 
       if (arg.type === 'ObjectExpression') {
-         return arg.properties.map(p => generate(p.key, options));
+         return arg.properties.map(p => {
+            const key = generate(p.key, options);
+
+            if (p.value.type === 'Identifier') {
+               const value = generate(p.value, options);
+
+               if (value !== key && importNames.includes(key)) {
+                  throw new Error(`${appName} can't export "${value}" as "${key}" since "${key}" is the name of an import. Try renaming "${key}".`);
+               }
+            }
+
+            return key;
+         });
       }
       else if (arg.type === 'Identifier') {
          return [ generate(arg, options) ];

@@ -3,52 +3,47 @@ import * as _ from 'underscore';
 
 
 export function addLogLn(log: string): void {
-   // winston.log('info', log);
    dispatch({type: 'ADD_LOG', log});
 }
 
 export function addLog(log: string): void {
-   // winston.log('info', log);
    dispatch({type: 'ADD_LOG', log, sameLine: true});
 }
 
 export async function logProgress<Output>(description: string, operation: () => Output): Promise<Output> {
    const t1 = _.now();
 
-   // console.log(`before promise ${calcTime(t1)}`);
-   const promise = new Promise<Output>(resolve => {
-      setTimeout(() => {
-         // console.log(`doing operation ${calcTime(t1)}`);
-         resolve(operation());
-      }, 0);
-   });
-   // console.log(`after promise ${calcTime(t1)}`);
-   addLogLn(description + '...');
+   try {
+      console.log('before');
+      const promise = new Promise<Output>(resolve => {
+         setTimeout(() => {
+            try {
+               resolve(operation());
+            }
+            catch (e) {
+               addLogLn(e.stack);
+               resolve();
+            }
 
-   const id = setInterval(() => {
-      console.log('setInterval');
-      addLog('.');
-   }, 100);
+         }, 0);
+      });
 
-   // console.log(`before await ${calcTime(t1)}`);
-   const output = await promise;
-   // console.log(`after await ${calcTime(t1)}`);
-   clearInterval(id);
+      addLogLn(description + '...');
 
-   addLog(` - ${calcTime(t1)}`);
+      const output = await promise;
 
-   return output;
+      addLog(` - ${calcTime(t1)}`);
+
+      return output;
+   }
+   catch (e) {
+      console.log('catch');
+      addLogLn(e.stack);
+      throw e;
+   }
 }
 
 export function calcTime(start: number) {
    return `${_.now() - start}ms`;
 }
 
-//
-// function delay(ms: number): Promise<void> {
-//    return new Promise<void>(resolve => {
-//       setTimeout(() => {
-//          resolve();
-//       }, ms);
-//    });
-// }

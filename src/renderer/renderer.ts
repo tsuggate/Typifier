@@ -3,13 +3,11 @@ import {renderMainWindowMenu} from './home/menu';
 import {initStore} from './state/state';
 import {remote, ipcRenderer} from 'electron';
 import {nextFile, openFile, previousFile} from './global-actions';
-import {handleDevMode} from './util/dev-mode';
 
 
 initStore();
 renderMainWindowMenu();
 renderHome();
-handleDevMode();
 openFileArg();
 
 

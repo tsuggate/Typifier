@@ -27,6 +27,11 @@ export function checkTSOutput(input: string, expectedOutput: string): void {
    });
 }
 
+export function convertToTypescript(code: string): string {
+   const program = parseJavaScript(code);
+   return generate(program, new GenOptions({language: 'typescript'}, code)).trim();
+}
+
 export function matchOutputRaw(code: string): void {
    it(code, () => {
       const program = parseJavaScript(code);

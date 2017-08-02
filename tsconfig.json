@@ -12,7 +12,7 @@
     "jsx": "react",
     "lib": [
       "dom",
-      "es6",
+      "es2016",
       "es2015.iterable",
       "scripthost"
     ],
