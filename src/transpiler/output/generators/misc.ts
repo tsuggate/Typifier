@@ -25,7 +25,7 @@ export function propertyToJs(p: Property, options: GenOptions): string {
       throw 'propertyToJs.method not implemented!';
    }
    else if (p.shorthand) {
-      throw 'propertyToJs.shorthand not implemented!';
+      return `${generate(p.value, options)}`;
    }
    else if (p.computed) {
       throw 'propertyToJs.computed not implemented!';
