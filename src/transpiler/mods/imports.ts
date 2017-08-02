@@ -29,6 +29,7 @@ export function isDefine(es: ExpressionStatement): boolean {
 }
 
 export function generateImports(es: ExpressionStatement, options: GenOptions): string {
+   let hasDefaultExport = false;
    const e = es.expression as CallExpression;
    // Use first arg if there is only a function and no library array.
    const func = (e.arguments[1] || e.arguments[0]) as FunctionExpression;
@@ -45,7 +46,12 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
       }
       else if (e.type === 'ReturnStatement') {
          if (exportNames.length <= 1) {
-            return makeDefaultExport(e, options);
+            const defaultExport = makeDefaultExport(e, options);
+
+            if (defaultExport) {
+               hasDefaultExport = true;
+            }
+            return defaultExport;
          }
          return '';
       }
@@ -54,7 +60,7 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
       }
    }).join('');
 
-   const definitions = makeDefinitionsForMissingExports(func, options, importNames);
+   const definitions = hasDefaultExport ? '' : makeDefinitionsForMissingExports(func, options, importNames);
 
    return `${imports.join('')} ${body} ${definitions}`;
 }
