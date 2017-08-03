@@ -28,17 +28,6 @@ describe('simple.js', () => {
    }
 });
 
-// describe('simple.js to Typescript', () => {
-//    const code = getTestFileCode('simple');
-//
-//    if (code) {
-//       saveOutput(code, 'typescript');
-//    }
-//    else {
-//       throw new Error('simple.js not found');
-//    }
-// });
-
 describe('conditionals', () => {
    matchOutput('if ((a === 5 && c === 6) || (d !== 3)) { b = 4; } else { }');
    matchOutput('if (a === 5) b = 4; else { b = 2; }');
@@ -51,12 +40,6 @@ describe('boolean expressions', () => {
 });
 
 describe('for loops', () => {
-   // logOutput('for (var i = 0; i < 5; i++) { var a = i; }');
    matchOutput('for (var i = 0; i < 5; i++) { var a = i; }');
-});
-
-
-describe('test export', () => {
-   // printTree('export const a = 5;');
 });
 
