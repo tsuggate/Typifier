@@ -43,6 +43,9 @@ export function variableDeclarator(dec: VariableDeclarator, options: GenOptions)
          else if (dec.init.type === 'ObjectExpression' && dec.init.properties.length === 0) {
             return `${name}: Record<string, any> = {}`;
          }
+         else if (dec.init.type === 'Literal' && dec.init.raw === 'null') {
+            return `${name}: any = null`;
+         }
       }
 
       return `${name} = ${generate(dec.init, options)}`;

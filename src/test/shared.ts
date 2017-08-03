@@ -39,8 +39,6 @@ export function matchOutputRaw(code: string): void {
       const myOutput = generate(program, new GenOptions({}, code));
       const esCodegenOutput = escodegen.generate(program);
 
-      console.log(myOutput);
-
       expect(myOutput).toEqual(esCodegenOutput);
    });
 }
