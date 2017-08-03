@@ -1,5 +1,5 @@
 import {Operator, operatorPrecedence} from '../transpiler/output/generators/operators';
-import {matchOutputRaw} from './shared';
+import {matchOutput, matchOutputRaw} from './shared';
 
 
 function checkPrecedence(operator: Operator, expectedPrecedence: number) {
@@ -21,4 +21,6 @@ describe('operator precedence', () => {
    checkPrecedence('+', 13);
 
    matchOutputRaw(`uploadInProgress() && (viewModel.panelState == panelState || disposed)`);
+
+   matchOutput('var num = -(intercept - meanY);');
 });
