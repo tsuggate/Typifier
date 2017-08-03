@@ -1,6 +1,11 @@
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var path = require('path');
 var webpack = require('webpack');
+var packageJson = require('./package.json');
+
+
+var setupFilename = packageJson.name + ' Setup ' + packageJson.version + '.exe';
+console.log('##teamcity[setParameter name=\'setupFilename\' value=\'' + setupFilename + '\']');
 
 
 module.exports = {
