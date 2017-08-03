@@ -14,7 +14,6 @@ export async function logProgress<Output>(description: string, operation: () => 
    const t1 = _.now();
 
    try {
-      console.log('before');
       const promise = new Promise<Output>(resolve => {
          setTimeout(() => {
             try {
@@ -37,7 +36,6 @@ export async function logProgress<Output>(description: string, operation: () => 
       return output;
    }
    catch (e) {
-      console.log('catch');
       addLogLn(e.stack);
       throw e;
    }

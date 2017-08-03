@@ -143,7 +143,7 @@ function getExportNames(func: FunctionExpression, importNames: string[], options
          return [ generate(arg, options) ];
       }
       else {
-         console.log(arg.type, arg);
+         // console.log(arg.type, arg);
          // throw new Error('getExportNames failed');
       }
    }
