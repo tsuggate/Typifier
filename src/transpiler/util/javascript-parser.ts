@@ -16,6 +16,11 @@ export function parseJavaScript(code: string, includeComments = false): Program 
    }
 }
 
+export function printAST(code: string): void {
+   const ast = esprima.parse(code, {});
+   console.log(JSON.stringify(ast, null, 3));
+}
+
 function parseWithAcorn(code: string, includeComments: boolean): Program {
    if (includeComments) {
       let comments: any[] = [];

@@ -5,7 +5,7 @@ import {Program} from 'estree';
 import * as escodegen from 'escodegen';
 import {GeneratorOptions, GenOptions} from '../transpiler/output/generator-options';
 import {addLogLn, logProgress} from './home/log/logger';
-import {parseJavaScript} from '../transpiler/util/javascript-parser';
+import {parseJavaScript, printAST} from '../transpiler/util/javascript-parser';
 import {prettify} from '../transpiler/util/format-code';
 
 
@@ -70,6 +70,8 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 
 export function jsGenerators(program: Program, code: string): JavascriptOutput {
    console.log(program);
+   // printAST(code);
+   
    const options = new GenOptions({}, code);
 
    let generatedCode, myOutput;
