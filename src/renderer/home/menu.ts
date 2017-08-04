@@ -32,8 +32,8 @@ function buildHelpMenu() {
          click: () => {
             remote.dialog.showMessageBox(getWindow(), {
                type: 'info',
-               title: 'Kura Transpiler',
-               message: `Kura Transpiler`,
+               title: packageJson.name,
+               message: packageJson.name,
                detail: `Version ${packageJson.version}`
             });
          }

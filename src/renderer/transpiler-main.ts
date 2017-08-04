@@ -71,7 +71,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 export function jsGenerators(program: Program, code: string): JavascriptOutput {
    console.log(program);
    // printAST(code);
-   
+
    const options = new GenOptions({}, code);
 
    let generatedCode, myOutput;
