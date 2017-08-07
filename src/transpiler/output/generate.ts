@@ -40,8 +40,9 @@ import {
    whileStatement
 } from './generators/statement';
 import {
+   exportDefaultDeclaration,
    functionDeclaration,
-   functionDeclarationTs,
+   functionDeclarationTs, importDeclaration, importDefaultSpecifier,
    objectPattern,
    variableDeclarationToJs,
    variableDeclarationToTs,
@@ -117,6 +118,12 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return variableDeclarator;
       case 'FunctionDeclaration':
          return functionDeclaration;
+      case 'ImportDeclaration':
+         return importDeclaration;
+      case 'ImportDefaultSpecifier':
+         return importDefaultSpecifier;
+      case 'ExportDefaultDeclaration':
+         return exportDefaultDeclaration;
 
       case 'BinaryExpression':
          return binaryExpression;

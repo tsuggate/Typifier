@@ -4,12 +4,13 @@ import {GenOptions} from '../generator-options';
 
 
 export function programToJs(program: Program, options: GenOptions): string {
-   if (program.sourceType === 'script') {
-      return program.body.map(node => generate(node, options)).join('');
-   }
-   else {
-      return 'Not Implemented! (programToJs)';
-   }
+   // if (program.sourceType === 'script') {
+   return program.body.map(node => generate(node, options)).join('');
+   // }
+   // else {
+   //    console.log(program);
+   //    return 'Not Implemented! (programToJs)';
+   // }
 }
 
 export function identifierToJs(i: Identifier): string {

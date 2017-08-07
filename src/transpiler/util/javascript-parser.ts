@@ -39,9 +39,9 @@ function parseWithAcorn(code: string, includeComments: boolean): Program {
 
 function parseWithEsprima(code: string, includeComments: boolean): Program {
    if (includeComments) {
-      return esprima.parse(code, { attachComment: true, loc: true, range: true });
+      return esprima.parse(code, { attachComment: true, loc: true, range: true, sourceType: 'module' });
    }
    else {
-      return esprima.parse(code, { loc: true, range: true });
+      return esprima.parse(code, { loc: true, range: true, sourceType: 'module' });
    }
 }

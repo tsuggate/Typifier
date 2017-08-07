@@ -21,7 +21,6 @@ describe(`doesn't clash with common js`, () => {
    );
 });
 
-
 describe('misc', () => {
 
    it('detects mixed up import/exports', () => {
@@ -31,5 +30,11 @@ describe('misc', () => {
          );
       }).toThrowError();
    });
+
+});
+
+describe('generate imports', () => {
+
+   checkTSOutput(`import ctor from 'utility/ctor';`, `import ctor from 'utility/ctor';`);
 
 });

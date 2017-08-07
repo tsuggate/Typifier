@@ -1,9 +1,15 @@
-import {Declaration, FunctionDeclaration, Node, ObjectPattern, VariableDeclaration, VariableDeclarator} from 'estree';
+import {
+   Declaration, ExportDefaultDeclaration, FunctionDeclaration, ImportDeclaration, ImportDefaultSpecifier, Node,
+   ObjectPattern,
+   VariableDeclaration,
+   VariableDeclarator
+} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage, getFunctionDeclarationTypes} from './find-types/function-declaration';
 import {findAssignmentTo} from './find-types/declaration-kind';
 import {CodeRange} from './find-types/shared';
+import * as escodegen from 'escodegen';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
@@ -126,4 +132,21 @@ export function getNamesFromDeclaration(d: Declaration, options: GenOptions): st
 
 export function isDeclaration(node: Node): boolean {
    return node.type.includes('Declaration');
+}
+
+export function importDeclaration(d: ImportDeclaration, options: GenOptions): string {
+   const specifiers = d.specifiers.map(s => generate(s, options)).join(', ');
+
+   if (specifiers) {
+      return `import ${specifiers} from ${generate(d.source, options)};\n`;
+   }
+   return `import ${generate(d.source, options)};\n`;
+}
+
+export function importDefaultSpecifier(i: ImportDefaultSpecifier, options: GenOptions): string {
+   return `${generate(i.local, options)}`;
+}
+
+export function exportDefaultDeclaration(e: ExportDefaultDeclaration, options: GenOptions): string {
+   return `export default ${generate(e.declaration, options)}`;
 }
