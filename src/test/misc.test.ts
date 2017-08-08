@@ -21,4 +21,9 @@ describe('any insertion', () => {
       checkTSOutput('for (var a in array) {}', 'for (const a in array) {}');
    });
 
+   describe('assignments in parameters', () => {
+      checkTSOutput('function t(a = []) {}', 'function t(a: any = []) {}');
+      checkTSOutput('var f = (a = []) => {};', 'const f = (a: any = []) => {};');
+   });
+
 });

@@ -8,5 +8,7 @@ describe('parentheses tests', () => {
    matchOutput('var end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;');
 
    matchOutput('val = +(+val).toFixed(3);');
-   
+
+   matchOutput('var f = a => a * a;');
+
 });

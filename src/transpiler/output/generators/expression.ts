@@ -164,16 +164,23 @@ export function updateExpression(e: UpdateExpression, options: GenOptions): stri
    }
 }
 
-export function arrowFunctionExpression(e: ArrowFunctionExpression, options: GenOptions) {
+export function arrowFunctionExpression(e: ArrowFunctionExpression, options: GenOptions): string {
    const paramsArray = e.params.map(p => generate(p, options)).join(', ');
 
-   const params = e.params.length > 1 ? `(${paramsArray})` : paramsArray;
+   // E.g. wrap in parenthesis if assignment pattern
+   const params = e.params.length === 1 && e.params[0].type === 'Identifier' ? paramsArray : `(${paramsArray})`;
 
    return `${e.async ? 'async ' : ''}${params || '()'} => ${generate(e.body, options)}`;
 }
 
-export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: GenOptions) {
-   const paramsArray = e.params.map(p => generate(p, options) + ': any');
+export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: GenOptions): string {
+   const paramsArray = e.params.map(p => {
+      if (p.type === 'AssignmentPattern') {
+         return generate(p, options);
+      }
+
+      return generate(p, options) + ': any';
+   });
 
    const params = `(${paramsArray.join(', ')})`;
 

@@ -55,5 +55,8 @@ export function templateLiteral(t: TemplateLiteral, options: GenOptions): string
 }
 
 export function assignmentPattern(p: AssignmentPattern, options: GenOptions): string {
+   if (options.shouldInsertAny()) {
+      return `${generate(p.left, options)}: any = ${generate(p.right, options)}`;
+   }
    return `${generate(p.left, options)} = ${generate(p.right, options)}`;
 }

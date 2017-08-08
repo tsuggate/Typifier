@@ -94,6 +94,10 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
    // }
 
    const paramsArray = f.params.map((p, i) => {
+      if (p.type === 'AssignmentPattern') {
+         return generate(p, options);
+      }
+
       const t = types[i] || 'any';
       return generate(p, options) + `: ${t}`;
    });
