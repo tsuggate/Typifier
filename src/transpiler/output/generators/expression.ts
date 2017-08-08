@@ -99,10 +99,13 @@ export function functionExpressionTs(f: FunctionExpression, options: GenOptions)
 }
 
 export function memberExpression(e: MemberExpression, options: GenOptions): string {
+   const object = e.object.type === 'UnaryExpression' ?
+      `(${generate(e.object, options)})` : generate(e.object, options);
+
    if (e.computed) {
-      return `${generate(e.object, options)}[${generate(e.property, options)}]`;
+      return `${object}[${generate(e.property, options)}]`;
    }
-   return `${generate(e.object, options)}.${generate(e.property, options)}`
+   return `${object}.${generate(e.property, options)}`
 }
 
 export function objectExpression(e: ObjectExpression, options: GenOptions): string {
