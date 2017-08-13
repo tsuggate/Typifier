@@ -25,7 +25,7 @@ import {containsThisUsage} from './find-types/function-declaration';
 export function binaryExpression(e: BinaryExpression, options: GenOptions): string {
    let left, right;
 
-   if (e.left.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.left.operator)
+   if (e.left.type === 'BinaryExpression' && operatorPrecedence(e.left.operator) < operatorPrecedence(e.operator)
       || e.left.type === 'ConditionalExpression') {
       left = `(${generate(e.left, options)})`;
    }
@@ -33,7 +33,7 @@ export function binaryExpression(e: BinaryExpression, options: GenOptions): stri
       left = `${generate(e.left, options)}`;
    }
 
-   if (e.right.type === 'BinaryExpression' && !operatorHasPrecedence(e.operator, e.right.operator)
+   if (e.right.type === 'BinaryExpression' && operatorPrecedence(e.right.operator) <= operatorPrecedence(e.operator)
       || e.right.type === 'ConditionalExpression') {
       right = `(${generate(e.right, options)})`;
    }

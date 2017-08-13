@@ -1,2 +1,2 @@
 
-var a = null;
+var s = "a" + "b" + "c" + "d";

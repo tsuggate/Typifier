@@ -1,4 +1,4 @@
-import {matchOutput} from './shared';
+import {checkTSOutput, matchOutput} from './shared';
 
 
 describe('parentheses tests', () => {
@@ -11,4 +11,5 @@ describe('parentheses tests', () => {
 
    matchOutput('var f = a => a * a;');
 
+   checkTSOutput('var s = "a" + "b" + "c" + "d";', 'const s = "a" + "b" + "c" + "d";');
 });
