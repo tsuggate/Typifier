@@ -7,12 +7,17 @@ const acorn = require('acorn');
 
 const useEsprima = true;
 
-export function parseJavaScript(code: string, includeComments = false): Program {
+export interface ParseOptions {
+   includeComments?: boolean;
+   locationData?: boolean;
+}
+
+export function parseJavaScript(code: string, parseOptions: ParseOptions = {}): Program {
    if (useEsprima) {
-      return parseWithEsprima(code, includeComments);
+      return parseWithEsprima(code, parseOptions);
    }
    else {
-      return parseWithAcorn(code, includeComments);
+      return parseWithAcorn(code, parseOptions);
    }
 }
 
@@ -21,27 +26,33 @@ export function printAST(code: string): void {
    console.log(JSON.stringify(ast, null, 3));
 }
 
-function parseWithAcorn(code: string, includeComments: boolean): Program {
-   if (includeComments) {
+function parseWithAcorn(code: string, parseOptions: ParseOptions): Program {
+   const locationData = typeof parseOptions.locationData === 'undefined' ? true : parseOptions.locationData;
+
+   if (parseOptions.includeComments) {
       let comments: any[] = [];
       let tokens: any[] = [];
 
-      const ast = acorn.parse(code, { onComment: comments, onToken: tokens, ranges: true });
+      const ast = acorn.parse(code, { onComment: comments, onToken: tokens, ranges: locationData, sourceType: 'module' });
 
       escodegen.attachComments(ast, comments, tokens);
 
       return ast;
    }
    else {
-      return acorn.parse(code, { ranges: true });
+      return acorn.parse(code, { ranges: locationData, sourceType: 'module' });
    }
 }
 
-function parseWithEsprima(code: string, includeComments: boolean): Program {
-   if (includeComments) {
-      return esprima.parse(code, { attachComment: true, loc: true, range: true, sourceType: 'module' });
-   }
-   else {
-      return esprima.parse(code, { loc: true, range: true, sourceType: 'module' });
-   }
+function parseWithEsprima(code: string, parseOptions: ParseOptions): Program {
+   const locationData = typeof parseOptions.locationData === 'undefined' ? true : parseOptions.locationData;
+
+   let options = {
+      sourceType: 'module' as 'script' | 'module',
+      attachComment: parseOptions.includeComments,
+      loc: locationData,
+      range: locationData
+   };
+
+   return esprima.parse(code, options);
 }

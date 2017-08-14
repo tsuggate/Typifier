@@ -7,6 +7,7 @@ import {GeneratorOptions, GenOptions} from '../transpiler/output/generator-optio
 import {addLogLn, logProgress} from './home/log/logger';
 import {parseJavaScript, printAST} from '../transpiler/util/javascript-parser';
 import {prettify} from '../transpiler/util/format-code';
+import * as _ from 'underscore';
 
 
 interface JavascriptOutput {
@@ -27,7 +28,17 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 
       const program = await logProgress<Program>(
          `Parsing ${getJavaScriptFile()}`,
-         () => parseJavaScript(code, true));
+         () => parseJavaScript(code, {includeComments: true}));
+
+      const estreesMatch = await logProgress<boolean>(
+         `Checking estrees match`,
+         () => checkJsGeneration(code));
+
+      if (!estreesMatch) {
+         addLogLn(`estrees didn't match`);
+
+         return {code: '', success: false, javascriptOutput: null};
+      }
 
       const javascriptOutput = await logProgress<JavascriptOutput>(
          `Checking code gen matches escodegen`,
@@ -37,11 +48,7 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
          addLogLn(`JS code generation didn't match`);
          console.log(javascriptOutput);
 
-         return {
-            code: '',
-            success: false,
-            javascriptOutput
-         }
+         return {code: '', success: false, javascriptOutput};
       }
 
       const out = await logProgress<string>(
@@ -50,21 +57,32 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
 
       const outputCode = prettify(out);
 
-      return {
-         code: outputCode,
-         success: true,
-         javascriptOutput
-      }
+      return {code: outputCode, success: true, javascriptOutput};
    }
    catch (e) {
       console.log(e);
       addLogLn(e.stack);
 
-      return {
-         code: '',
-         success: false,
-         javascriptOutput: null
-      };
+      return {code: '', success: false, javascriptOutput: null};
+   }
+}
+
+export function checkJsGeneration(code: string): boolean {
+   try {
+      const program = parseJavaScript(code, {locationData: false});
+
+      const options = new GenOptions({}, code);
+      const generatedCode = generate(program, options);
+
+      const program2 = parseJavaScript(generatedCode, {locationData: false});
+
+      return _.isEqual(program, program2) && JSON.stringify(program) === JSON.stringify(program2);
+   }
+   catch (e) {
+      addLogLn('checkJsGeneration failed:');
+      addLogLn(e.stack);
+      console.log(e);
+      return false;
    }
 }
 
