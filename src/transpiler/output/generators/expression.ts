@@ -99,13 +99,16 @@ export function functionExpressionTs(f: FunctionExpression, options: GenOptions)
 }
 
 export function memberExpression(e: MemberExpression, options: GenOptions): string {
-   const object = e.object.type === 'UnaryExpression' ?
-      `(${generate(e.object, options)})` : generate(e.object, options);
+   const wrapInParens = e.object.type === 'UnaryExpression'
+      || e.object.type === 'BinaryExpression'
+      || e.object.type === 'Literal' && parseFloat(`${e.object.value}`);
+
+   const object = wrapInParens ? `(${generate(e.object, options)})` : generate(e.object, options);
 
    if (e.computed) {
       return `${object}[${generate(e.property, options)}]`;
    }
-   return `${object}.${generate(e.property, options)}`
+   return `${object}.${generate(e.property, options)}`;
 }
 
 export function objectExpression(e: ObjectExpression, options: GenOptions): string {
