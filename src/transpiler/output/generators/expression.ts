@@ -17,7 +17,7 @@ import {
    UpdateExpression,
 } from 'estree';
 import {generate} from '../generate';
-import {operatorHasPrecedence, operatorPrecedence} from './operators';
+import {operatorPrecedence} from './operators';
 import {GenOptions} from '../generator-options';
 import {containsThisUsage} from './find-types/function-declaration';
 
@@ -53,6 +53,20 @@ export function expressionStatement(e: ExpressionStatement, options: GenOptions)
 }
 
 export function callExpression(e: CallExpression, options: GenOptions): string {
+
+   if (options.isTypeScript() && e.callee.type === 'MemberExpression') {
+      const member = e.callee;
+      if (member.object.type === 'FunctionExpression'
+         && !containsThisUsage(member.object.body)
+         && member.property.type === 'Identifier'
+         && member.property.name === 'bind'
+         && e.arguments.length === 1
+         && e.arguments[0].type === 'ThisExpression') {
+
+         return generate(member.object, options);
+      }
+   }
+
    const args = e.arguments.map(a => generate(a, options)).join(', ');
 
    if (e.callee.type === 'FunctionExpression') {

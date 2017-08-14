@@ -26,4 +26,12 @@ describe('any insertion', () => {
       checkTSOutput('var f = (a = []) => {};', 'const f = (a: any = []) => {};');
    });
 
+   describe(`remove bind on functions that don't use "this"`, () => {
+      checkTSOutput('const a = function() {}.bind(this);', 'const a = () => {};');
+      checkTSOutput('const a = function() {this.a = 5;}.bind(this);', 'const a = function(this: any) {this.a = 5;}.bind(this);');
+      checkTSOutput('const a = function() {this.a = 5;};', 'const a = function(this: any) {this.a = 5;};');
+      checkTSOutput('const a = ko.computed(function() {return this.a();}.bind(this));',
+         'const a = ko.computed(function(this: any) {return this.a();}.bind(this));');
+   });
+
 });

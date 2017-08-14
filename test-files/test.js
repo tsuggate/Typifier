@@ -1,2 +1,2 @@
 
-const a = () => ({a: 4});
+const a = function() {}.bind(this);
