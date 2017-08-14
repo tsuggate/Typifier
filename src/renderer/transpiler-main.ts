@@ -30,6 +30,8 @@ export async function transpile(code: string, generatorOptions?: GeneratorOption
          `Parsing ${getJavaScriptFile()}`,
          () => parseJavaScript(code, {includeComments: true}));
 
+      console.log(program);
+
       const estreesMatch = await logProgress<boolean>(
          `Checking estrees match`,
          () => checkJsGeneration(code));
@@ -87,7 +89,6 @@ export function checkJsGeneration(code: string): boolean {
 }
 
 export function jsGenerators(program: Program, code: string): JavascriptOutput {
-   console.log(program);
    // printAST(code);
 
    const options = new GenOptions({}, code);

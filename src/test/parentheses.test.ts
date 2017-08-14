@@ -14,4 +14,6 @@ describe('parentheses tests', () => {
 
    checkTSOutput('(5).toString();', '(5).toString();');
    checkTSOutput('(n * 5).toString();', '(n * 5).toString();');
+
+   checkTSOutput('const a = () => ({a: 4});', 'const a = () => ({a: 4});');
 });

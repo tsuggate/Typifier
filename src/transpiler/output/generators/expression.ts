@@ -173,6 +173,10 @@ export function arrowFunctionExpression(e: ArrowFunctionExpression, options: Gen
    // E.g. wrap in parenthesis if assignment pattern
    const params = e.params.length === 1 && e.params[0].type === 'Identifier' ? paramsArray : `(${paramsArray})`;
 
+   if (e.body.type === 'ObjectExpression') {
+      return `${e.async ? 'async ' : ''}${params || '()'} => (${generate(e.body, options)})`;
+   }
+
    return `${e.async ? 'async ' : ''}${params || '()'} => ${generate(e.body, options)}`;
 }
 
@@ -186,6 +190,10 @@ export function arrowFunctionExpressionTs(e: ArrowFunctionExpression, options: G
    });
 
    const params = `(${paramsArray.join(', ')})`;
+
+   if (e.body.type === 'ObjectExpression') {
+      return `${e.async ? 'async ' : ''}${params} => (${generate(e.body, options)})`;
+   }
 
    return `${e.async ? 'async ' : ''}${params} => ${generate(e.body, options)}`;
 }
