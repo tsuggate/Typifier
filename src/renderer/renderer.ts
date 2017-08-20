@@ -3,12 +3,14 @@ import {renderMainWindowMenu} from './home/menu';
 import {initStore} from './state/state';
 import {remote, ipcRenderer} from 'electron';
 import {nextFile, openFile, previousFile} from './global-actions';
+import {checkForNewVersion} from './util/check-version';
 
 
 initStore();
 renderMainWindowMenu();
 renderHome();
 openFileArg();
+checkForNewVersion().catch(e => console.log(e));
 
 
 document.onkeydown = async (e) => {
