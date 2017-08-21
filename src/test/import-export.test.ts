@@ -5,6 +5,7 @@ describe('one export', () => {
    checkTSOutput('define([], function() { var a = 5; return a; });', 'const a = 5;export = a;');
    checkTSOutput('define([], function() { var a = 5; return {a: a}; });', 'const a = 5;export = {a: a};');
    checkTSOutput('define([], function() { return {a: 5}; });', 'export = {a: 5};');
+   checkTSOutput(`define(['a'], function(a) {return a.b;});`, `const a = require('a'); export = (a.b);`);
 });
 
 describe('multi export', () => {

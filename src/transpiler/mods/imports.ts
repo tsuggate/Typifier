@@ -68,8 +68,12 @@ export function generateImports(es: ExpressionStatement, options: GenOptions): s
    return `${imports.join('')} ${body} ${definitions}`;
 }
 
-function makeDefaultExport(e: ReturnStatement, options: GenOptions) {
+function makeDefaultExport(e: ReturnStatement, options: GenOptions): string {
    if (e.argument) {
+      if (e.argument.type === 'MemberExpression') {
+         return `export = (${generate(e.argument, options)});`;
+      }
+
       return `export = ${generate(e.argument, options)};`;
    }
    return '';
