@@ -1,7 +1,11 @@
-import {Node, Program} from 'estree';
+import {Node} from 'estree';
 import * as escodegen from 'escodegen';
 import {
-   assignmentPattern, identifierToJs, literalToJs, programToJs, propertyToJs,
+   assignmentPattern,
+   identifierToJs,
+   literalToJs,
+   programToJs,
+   propertyToJs,
    templateLiteral
 } from './generators/misc';
 import {
@@ -18,7 +22,8 @@ import {
    logicalExpression,
    memberExpression,
    newExpression,
-   objectExpression, sequenceExpression,
+   objectExpression,
+   sequenceExpression,
    thisExpression,
    unaryExpression,
    updateExpression
@@ -28,7 +33,8 @@ import {
    breakStatement,
    catchClause,
    continueStatement,
-   doWhileStatement, emptyStatement,
+   doWhileStatement,
+   emptyStatement,
    forInStatement,
    forStatement,
    ifStatement,
@@ -42,7 +48,9 @@ import {
 import {
    exportDefaultDeclaration,
    functionDeclaration,
-   functionDeclarationTs, importDeclaration, importDefaultSpecifier,
+   functionDeclarationTs,
+   importDeclaration,
+   importDefaultSpecifier,
    objectPattern,
    variableDeclarationToJs,
    variableDeclarationToTs,

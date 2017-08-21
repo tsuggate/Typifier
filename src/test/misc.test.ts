@@ -12,9 +12,12 @@ describe('any insertion', () => {
       checkTSOutput('var o = {};', 'const o: Record<string, any> = {};');
    });
 
-   describe('empty array', () => {
+   describe('empty variable', () => {
       matchOutput('var a = null;');
       checkTSOutput('var a = null;', 'const a: any = null;');
+
+      matchOutput('var a = undefined;');
+      checkTSOutput('var a = undefined;', 'const a: any = undefined;');
    });
 
    describe('not inserted in for-in loop', () => {
