@@ -1,6 +1,9 @@
 import {getAppState, getCodeState, getJavaScriptFile} from '../state/state';
 import * as path from 'path';
 import * as fs from 'fs';
+import {getWindow} from '../global-actions';
+import {remote} from 'electron';
+const packageJson = require('../../../package.json');
 
 
 export function getTypeScriptFileName(): string {
@@ -65,4 +68,15 @@ export function normaliseFileIndex(index: number, numFiles: number): number {
       return numFiles - 1;
 
    return index;
+}
+
+export function aboutDialog() {
+   // const latestVersion = await getVersionRemote();
+
+   remote.dialog.showMessageBox(getWindow(), {
+      type: 'info',
+      title: packageJson.name,
+      message: packageJson.name,
+      detail: `Version ${packageJson.version}`//\nLatest ${latestVersion}`
+   });
 }

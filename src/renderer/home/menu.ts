@@ -1,7 +1,7 @@
 import {remote} from 'electron';
 import {clickOpenFolder, clickOpenJsFile, getWindow} from '../global-actions';
 import {platform} from "os";
-const packageJson = require('../../../package.json');
+import {aboutDialog} from '../util/util';
 
 
 type MenuItemOptions = Electron.MenuItemConstructorOptions;
@@ -12,14 +12,11 @@ function buildViewMenu() {
       label: 'View',
       submenu: [
          {role: 'reload'},
-         // {role: 'forcereload'},
          {role: 'toggledevtools'},
          {type: 'separator'},
          {role: 'resetzoom'},
          {role: 'zoomin'},
          {role: 'zoomout'},
-         // {type: 'separator'},
-         // {role: 'togglefullscreen'}
       ] as MenuItemOptions[]
    };
 }
@@ -29,14 +26,7 @@ function buildHelpMenu() {
       label: 'Help',
       submenu: [{
          label: 'About',
-         click: () => {
-            remote.dialog.showMessageBox(getWindow(), {
-               type: 'info',
-               title: packageJson.name,
-               message: packageJson.name,
-               detail: `Version ${packageJson.version}`
-            });
-         }
+         click: aboutDialog
       }]
    }
 }

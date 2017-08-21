@@ -52,6 +52,9 @@ export function variableDeclarator(dec: VariableDeclarator, options: GenOptions)
          else if (dec.init.type === 'Literal' && dec.init.raw === 'null') {
             return `${name}: any = null`;
          }
+         else if (dec.init.type === 'Identifier' && dec.init.name === 'undefined') {
+            return `${name}: any = undefined`;
+         }
       }
 
       return `${name} = ${generate(dec.init, options)}`;

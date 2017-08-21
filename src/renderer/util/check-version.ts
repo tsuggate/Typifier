@@ -19,14 +19,24 @@ async function requestRemotePackageJson(): Promise<Record<string, any> | null> {
 
 type VersionArray = [number, number, number];
 
-export async function checkForNewVersion(): Promise<void> {
+export async function getVersionRemote(): Promise<string | null> {
    const remoteJson = await requestRemotePackageJson();
 
    if (remoteJson && remoteJson.version) {
-      const remoteVersion = remoteJson.version.split('.').map(parseFloat) as VersionArray;
+      return remoteJson.version;
+   }
+
+   return null;
+}
+
+export async function checkForNewVersion(): Promise<void> {
+   const remoteVersionString = await getVersionRemote();
+
+   if (remoteVersionString) {
+      const remoteVersion = remoteVersionString.split('.').map(parseFloat) as VersionArray;
       const thisVersion = packageJson.version.split('.').map(parseFloat) as VersionArray;
 
-      console.log(`This version: ${packageJson.version}, remote version: ${remoteJson.version}`);
+      console.log(`This version: ${packageJson.version}, remote version: ${remoteVersionString}`);
 
       if (thisVersion[0] < remoteVersion[0] || thisVersion[1] < remoteVersion[1] || thisVersion[2] < remoteVersion[2]) {
          remote.dialog.showMessageBox(getWindow(), {
@@ -36,4 +46,6 @@ export async function checkForNewVersion(): Promise<void> {
          });
       }
    }
+
+   setTimeout(checkForNewVersion, 1000 * 60 * 60);
 }
