@@ -4,7 +4,7 @@ import {appName} from './config';
 const packageJson = require('../../../package.json');
 
 
-async function requestRemotePackageJson() {
+async function requestRemotePackageJson(): Promise<Record<string, any> | null> {
    try {
       const res = await fetch(`https://raw.githubusercontent.com/tsuggate/Typifier/master/package.json`);
 
@@ -19,12 +19,12 @@ async function requestRemotePackageJson() {
 
 type VersionArray = [number, number, number];
 
-export async function checkForNewVersion() {
+export async function checkForNewVersion(): Promise<void> {
    const remoteJson = await requestRemotePackageJson();
 
    if (remoteJson && remoteJson.version) {
-      const remoteVersion = remoteJson.version.split('.').map((n: string) => parseInt(n)) as VersionArray;
-      const thisVersion = packageJson.version.split('.').map((n: string) => parseInt(n)) as VersionArray;
+      const remoteVersion = remoteJson.version.split('.').map(parseFloat) as VersionArray;
+      const thisVersion = packageJson.version.split('.').map(parseFloat) as VersionArray;
 
       console.log(`This version: ${packageJson.version}, remote version: ${remoteJson.version}`);
 
