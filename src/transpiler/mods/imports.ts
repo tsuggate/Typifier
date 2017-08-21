@@ -4,12 +4,14 @@ import {
    Declaration,
    ExpressionStatement,
    FunctionExpression,
-   ReturnStatement
-} from "estree";
-import {generate} from "../output/generate";
-import {getNamesFromDeclaration, isDeclaration} from "../output/generators/declaration";
-import * as _ from "underscore";
-import {GenOptions} from "../output/generator-options";
+   Literal,
+   ReturnStatement,
+   VariableDeclaration
+} from 'estree';
+import {generate} from '../output/generate';
+import {getNamesFromDeclaration, isDeclaration} from '../output/generators/declaration';
+import * as _ from 'underscore';
+import {GenOptions} from '../output/generator-options';
 import {appName} from '../../renderer/util/config';
 
 
@@ -186,4 +188,38 @@ function makeDefinitionsForMissingExports(func: FunctionExpression, options: Gen
       // }
    }
    return '';
+}
+
+export function isRequireStatement(dec: VariableDeclaration): boolean {
+   if (dec.declarations.length === 1) {
+      const d = dec.declarations[0];
+
+      return !!d.init
+         && d.init.type === 'CallExpression'
+         && d.init.callee.type === 'Identifier'
+         && d.init.callee.name === 'require';
+   }
+   return false;
+}
+
+export function isRecognisedRequireStatement(dec: VariableDeclaration): boolean {
+   if (isRequireStatement(dec)) {
+      const d = dec.declarations[0].init as CallExpression;
+
+      if (d.arguments.length === 1 && d.arguments[0].type === 'Literal') {
+         const l = d.arguments[0] as Literal;
+
+         return recognisedLibraries.includes(`${l.value}`);
+      }
+   }
+
+   return false;
+}
+
+export function generateImportFromRequireStatement(dec: VariableDeclaration, options: GenOptions): string {
+   const d = dec.declarations[0];
+   const callExpression = d.init as CallExpression;
+   const l = callExpression.arguments[0] as Literal;
+
+   return `import * as ${generate(d.id, options)} from '${l.value}';`;
 }

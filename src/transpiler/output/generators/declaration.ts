@@ -1,5 +1,10 @@
 import {
-   Declaration, ExportDefaultDeclaration, FunctionDeclaration, ImportDeclaration, ImportDefaultSpecifier, Node,
+   Declaration,
+   ExportDefaultDeclaration,
+   FunctionDeclaration,
+   ImportDeclaration,
+   ImportDefaultSpecifier,
+   Node,
    ObjectPattern,
    VariableDeclaration,
    VariableDeclarator
@@ -9,7 +14,7 @@ import {GenOptions} from '../generator-options';
 import {containsThisUsage, getFunctionDeclarationTypes} from './find-types/function-declaration';
 import {findAssignmentTo} from './find-types/declaration-kind';
 import {CodeRange} from './find-types/shared';
-import * as escodegen from 'escodegen';
+import {generateImportFromRequireStatement, isRecognisedRequireStatement} from '../../mods/imports';
 
 
 export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOptions): string {
@@ -19,6 +24,10 @@ export function variableDeclarationToJs(dec: VariableDeclaration, options: GenOp
 }
 
 export function variableDeclarationToTs(dec: VariableDeclaration, options: GenOptions): string {
+   if (isRecognisedRequireStatement(dec)) {
+      return generateImportFromRequireStatement(dec, options);
+   }
+
    const declarations = dec.declarations.map(d => generate(d, options)).join(', ');
    let kind = 'const';
 

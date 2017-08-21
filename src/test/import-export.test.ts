@@ -37,4 +37,7 @@ describe('generate imports', () => {
 
    checkTSOutput(`import ctor from 'utility/ctor';`, `import ctor from 'utility/ctor';`);
 
+   checkTSOutput(`const $ = require('jquery');`, `import * as $ from 'jquery';`);
+   checkTSOutput(`const something = require('something');`, `const something = require('something');`);
+
 });
