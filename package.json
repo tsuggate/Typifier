@@ -42,7 +42,6 @@
     ]
   },
   "dependencies": {
-    "@types/react-redux": "^4.4.42",
     "acorn": "https://registry.npmjs.org/acorn/-/acorn-5.1.1.tgz",
     "commander": "^2.9.0",
     "css-loader": "^0.28.0",
@@ -61,8 +60,8 @@
     "react": "^15.5.4",
     "react-ace": "^5.1.1",
     "react-dom": "^15.5.4",
-    "react-redux": "^5.0.5",
-    "redux": "^3.6.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
     "style-loader": "^0.16.0",
     "ts-loader": "^2.0.0",
     "typescript": "^2.1.6",
@@ -71,6 +70,7 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "@types/react-redux": "^5.0.10",
     "@types/commander": "^2.9.0",
     "@types/diff": "^3.2.0",
     "@types/escodegen": "0.0.6",
