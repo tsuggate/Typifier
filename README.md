@@ -12,6 +12,8 @@ npm run make
 npm run dist
 ```
 
+This will create an installer in the `dist\` folder, or you can run Typifier directly from `dist\win-unpacked`.
+
 ### Develop:
 Get dependencies:
 `npm install`
