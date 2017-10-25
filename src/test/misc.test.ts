@@ -12,6 +12,10 @@ describe('any insertion', () => {
       checkTSOutput('var o = {};', 'const o: Record<string, any> = {};');
    });
 
+   describe('spread operator', () => {
+      checkTSOutput('var l = [a, ...b];', 'const l = [a, ...b];');
+   });
+
    describe('empty variable', () => {
       matchOutput('var a = null;');
       checkTSOutput('var a = null;', 'const a: any = null;');

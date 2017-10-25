@@ -5,7 +5,7 @@ import {
    identifierToJs,
    literalToJs,
    programToJs,
-   propertyToJs,
+   propertyToJs, spreadElement,
    templateLiteral
 } from './generators/misc';
 import {
@@ -119,6 +119,8 @@ function getGenerateFunctionJs(node: Node): (node: Node, options: GenOptions) =>
          return templateLiteral;
       case 'AssignmentPattern':
          return assignmentPattern;
+      case 'SpreadElement':
+         return spreadElement;
 
       case 'VariableDeclaration':
          return variableDeclarationToJs;

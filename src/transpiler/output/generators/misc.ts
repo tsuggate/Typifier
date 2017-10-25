@@ -1,4 +1,4 @@
-import {AssignmentPattern, Identifier, Literal, Program, Property, TemplateLiteral} from 'estree';
+import {AssignmentPattern, Identifier, Literal, Program, Property, SpreadElement, TemplateLiteral} from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
 
@@ -59,4 +59,8 @@ export function assignmentPattern(p: AssignmentPattern, options: GenOptions): st
       return `${generate(p.left, options)}: any = ${generate(p.right, options)}`;
    }
    return `${generate(p.left, options)} = ${generate(p.right, options)}`;
+}
+
+export function spreadElement(e: SpreadElement, options: GenOptions): string {
+   return `...${generate(e.argument, options)}`;
 }
