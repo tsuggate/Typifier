@@ -16,9 +16,9 @@ describe('any insertion', () => {
       checkTSOutput('var l = [a, ...b];', 'const l = [a, ...b];');
    });
 
-   xdescribe('method style properties', () => {
-      checkTSOutput('var o = {a() {}};', 'const o = {a() {}};');
-   });
+   // xdescribe('method style properties', () => {
+   //    checkTSOutput('var o = {a() {}};', 'const o = {a() {}};');
+   // });
 
    describe('empty variable', () => {
       matchOutput('var a = null;');
