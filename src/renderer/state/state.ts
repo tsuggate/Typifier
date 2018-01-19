@@ -1,10 +1,11 @@
 import {renderHome} from '../home/home';
 import {AppState, CodeState, State} from './schema';
-import {combineReducers, createStore, Store} from 'redux';
+import {applyMiddleware, combineReducers, createStore, Store} from 'redux'
 import {codeReducer} from './code-state/code-reducer';
 import {appReducer} from './app-state/app-reducer';
 import {CodeActions} from './code-state/code-actions';
 import {AppAction} from './app-state/app-actions';
+import {actionToPlainObject} from '../util/custom-middleware'
 
 
 
@@ -15,7 +16,10 @@ export type KAction = CodeActions | AppAction;
 export function initStore() {
    const app = combineReducers<State>({code: codeReducer, app: appReducer});
 
-   store = createStore(app);
+   store = createStore(
+      app,
+      applyMiddleware(actionToPlainObject)
+   );
 
    // store.subscribe(renderHome);
 }

@@ -7,6 +7,7 @@ import * as diff from 'diff';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
 import {addLogLn, logProgress} from './home/log/logger';
+import {SetFileIndex} from './state/code-state/code-actions'
 
 const packageJson = require('../../package.json');
 
@@ -154,7 +155,8 @@ async function setFileIndex(index: number): Promise<void> {
    const s = getCodeState();
    const jsFile = s.javascriptFiles[index];
 
-   dispatch({type: 'SET_FILE_INDEX', index});
+   // dispatch({type: 'SET_FILE_INDEX', index});
+   dispatch(new SetFileIndex(index));
    await generateTypeScript(jsFile);
 }
 

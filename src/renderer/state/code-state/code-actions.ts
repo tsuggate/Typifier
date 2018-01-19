@@ -29,12 +29,17 @@ export interface SetFolder {
    index: number;
 }
 
-export interface SetFileIndex {
-   type: 'SET_FILE_INDEX';
-   index: number;
-}
+// const SET_FILE_INDEX = 'SET_FILE_INDEX';
+// export interface SetFileIndex {
+//    type: 'SET_FILE_INDEX';
+//    index: number;
+// }
 
 export interface CloseFile {
    type: 'CLOSE_FILE';
 }
 
+export class SetFileIndex {
+   readonly type = 'SET_FILE_INDEX';
+   constructor(public index: number) {}
+}
