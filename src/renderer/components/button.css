@@ -1,0 +1,30 @@
+
+
+.Button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  color: #d6d6d6;
+  border-style: none;
+  padding: 6px 10px;
+  margin: 3px 2px;
+  border-top: solid 2px transparent;
+  border-bottom: solid 2px transparent;
+}
+
+.Button:hover:not(.disabled) {
+  background-color: rgba(0, 0, 0, 0.16);
+  color: white;
+}
+
+.Button.on {
+  border-bottom: solid 2px #d6d6d6;
+}
+
+.Button.disabled {
+  color: #7a7a7a;
+}
+
+button:focus {
+  outline:0;
+}

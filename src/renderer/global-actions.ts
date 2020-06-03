@@ -16,41 +16,42 @@ export function getWindow(): Electron.BrowserWindow {
 }
 
 export async function clickOpenJsFile(): Promise<void> {
-   const filePath = showOpenJsFileWindow();
+   const filePath = await showOpenJsFileWindow();
 
    if (filePath) {
       await openFile(filePath);
    }
 }
 
-function showOpenJsFileWindow(): string | null {
-   const files: string[] | undefined = remote.dialog.showOpenDialog(getWindow(), {
+async function showOpenJsFileWindow(): Promise<string | null> {
+   const {filePaths, canceled} = await remote.dialog.showOpenDialog(getWindow(), {
       properties: ['openFile'],
       filters: [{name: 'javascript', extensions: ['js']}]
    });
 
-   if (files && files.length > 0) {
-      return files[0];
+   if (!canceled && filePaths.length > 0) {
+      return filePaths[0];
    }
    return null;
 }
 
 export async function clickOpenFolder(): Promise<void> {
-   const folderPath = showOpenFolderWindow();
+   const folderPath = await showOpenFolderWindow();
 
    if (folderPath) {
       await openFolder(folderPath);
    }
 }
 
-export function showOpenFolderWindow(): string | null {
-   const paths: string[] | undefined = remote.dialog.showOpenDialog(getWindow(), {
+export async function showOpenFolderWindow(): Promise<string | null> {
+   const {filePaths, canceled} = await remote.dialog.showOpenDialog(getWindow(), {
       properties: ['openDirectory']
    });
 
-   if (paths && paths.length > 0) {
-      return paths[0];
+   if (!canceled && filePaths.length > 0) {
+      return filePaths[0];
    }
+
    return null;
 }
 

@@ -1,0 +1,47 @@
+
+.Editors {
+  display: flex;
+  height: 100%;
+  //border-bottom: 2px transparent;
+}
+
+.Editors .editorTitle {
+  font-size: 12px;
+  font-style: italic;
+  //font-weight: bold;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-right: 20px;
+  margin-top: 4px;
+  background: rgba(20, 20, 20, 0.55);
+  text-shadow: 0 0 4px #000000;
+  border-radius: 15px;
+  color: #cbcbcb;
+  text-align: center;
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  pointer-events: none;
+}
+
+.Editors .editorTitle.right {
+  //color: #1F5FB5;
+}
+
+.Editors .editorTitle.left {
+  //color: #126b0d;
+}
+
+.Editors .editor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.Editors .editor.left {
+  //border-top: solid 2px rgba(12, 218, 0, 0.35);
+}
+
+.Editors .editor.right {
+  //border-top: solid 2px rgba(0, 109, 255, 0.55);
+}

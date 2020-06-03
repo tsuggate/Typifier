@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './diff.less';
+import './diff.css';
 import {IDiffResult} from 'diff';
 import * as _ from 'underscore';
 import {generateDiffs} from "../../global-actions";

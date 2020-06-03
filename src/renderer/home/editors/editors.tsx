@@ -2,7 +2,7 @@ import * as React from 'react';
 import AceEditor from 'react-ace';
 import {EditorToolbarLeft, EditorToolbarRight} from './editor-toolbar';
 
-import './editors.less';
+import './editors.css';
 
 import 'brace';
 import 'brace/mode/javascript';

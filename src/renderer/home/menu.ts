@@ -61,7 +61,7 @@ export function renderMainWindowMenu(): void {
 
    const editMenuItems: MenuItemOptions[] = [
       {role: 'copy'},
-      {role: 'selectall'}
+      {role: 'selectAll'}
    ];
 
    const editMenu = {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {getAppState, getCodeState, getJavaScriptFile} from '../../state/state';
 import {getJavaScriptFileName} from '../../util/util';
 import {shell} from 'electron';
-import './file-navigation.less';
+import './file-navigation.css';
 import {nextFile, previousFile} from '../../global-actions';
 
 

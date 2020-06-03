@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Editors} from './editors/editors';
-import './root.less';
+import './root.css';
 import Toolbar from './toolbar/toolbar';
 import Log from './log/log';
 import {getState, getStore} from '../state/state';

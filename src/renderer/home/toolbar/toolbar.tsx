@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '../../components/button';
-import './toolbar.less';
+import './toolbar.css';
 import {getWindow, saveTypeScriptCode} from '../../global-actions';
 import {dispatch, getJavaScriptFile} from '../../state/state';
 import {remote} from 'electron';

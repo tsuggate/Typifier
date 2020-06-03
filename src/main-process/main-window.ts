@@ -3,7 +3,7 @@ import * as path from 'path';
 import {devMode, openFileArg, parseArgs} from './args';
 import * as winston from 'winston';
 import {appName, getOsAppDataPath} from '../renderer/util/config';
-import * as fs from 'fs-extra';
+import {ensureFileSync} from 'fs-extra'
 
 const windowState = require('electron-window-state');
 
@@ -23,7 +23,10 @@ function createWindow(): void {
       width: mainWindowState.width,
       height: mainWindowState.height,
       minWidth: 800,
-      minHeight: 600
+      minHeight: 600,
+      webPreferences: {
+         nodeIntegration: true
+      }
    });
 
    const htmlPath = `file://${path.join(__dirname, '..', 'resources', 'index.html')}`;
@@ -40,56 +43,73 @@ function createWindow(): void {
    mainWindowState.manage(mainWindow);
 
    const logPath = path.join(getOsAppDataPath(), appName, `log#${+new Date()}.json`);
-   fs.ensureFileSync(logPath);
+   ensureFileSync(logPath);
 
    winston.add(winston.transports.File, { filename: logPath });
 
    winston.log('info', process.argv.toString());
 }
 
-app.on('ready', createWindow);
-
-app.on('window-all-closed', () => {
-   if (process.platform !== 'darwin') {
-      app.quit();
-   }
-});
-
-app.on('activate', () => {
-   if (mainWindow === null) {
-      createWindow();
-   }
-});
-
 preventMultipleAppInstances();
 
 
 function preventMultipleAppInstances() {
-   const shouldQuit = app.makeSingleInstance((args: string[], workingDirectory: string) => {
-      if (mainWindow) {
-         if (mainWindow.isMinimized()) {
-            mainWindow.restore();
+   const lock = app.requestSingleInstanceLock()
+
+   if (!lock) {
+      app.quit()
+   } else {
+      app.on('second-instance', (event, args, workingDirectory) => {
+         if (mainWindow !== null) {
+            if (mainWindow.isMinimized()) mainWindow.restore()
+            mainWindow.focus()
+
+            parseArgs(args, (() => {
+               if (openFileArg) {
+                  // The second instance was going to open a file, so we should open
+                  // that file in this instance.
+                  const filePath = path.resolve(workingDirectory, openFileArg);
+
+                  if (mainWindow && mainWindow.webContents) {
+                     mainWindow.webContents.send('openFile', filePath);
+                  }
+               }
+            }));
          }
-         mainWindow.focus();
-      }
+      })
 
-      parseArgs(args, (() => {
-         if (openFileArg) {
-            // The second instance was going to open a file, so we should open
-            // that file in this instance.
-            const filePath = path.resolve(workingDirectory, openFileArg);
+      app.on('ready', createWindow)
 
-            if (mainWindow && mainWindow.webContents) {
-               mainWindow.webContents.send('openFile', filePath);
-            }
-         }
-      }));
-
-      return true;
-   });
-
-   if (shouldQuit) {
-      app.quit();
-      return;
+      app.on('window-all-closed', () => {
+         app.quit()
+      })
    }
+
+   // const shouldQuit = app.makeSingleInstance((args: string[], workingDirectory: string) => {
+   //    if (mainWindow) {
+   //       if (mainWindow.isMinimized()) {
+   //          mainWindow.restore();
+   //       }
+   //       mainWindow.focus();
+   //    }
+   //
+   //    parseArgs(args, (() => {
+   //       if (openFileArg) {
+   //          // The second instance was going to open a file, so we should open
+   //          // that file in this instance.
+   //          const filePath = path.resolve(workingDirectory, openFileArg);
+   //
+   //          if (mainWindow && mainWindow.webContents) {
+   //             mainWindow.webContents.send('openFile', filePath);
+   //          }
+   //       }
+   //    }));
+   //
+   //    return true;
+   // });
+   //
+   // if (shouldQuit) {
+   //    app.quit();
+   //    return;
+   // }
 }

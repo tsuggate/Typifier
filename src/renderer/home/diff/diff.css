@@ -1,0 +1,59 @@
+
+.Diff {
+  display: flex;
+  height: 100%;
+
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 13px;
+  color: white;
+}
+
+.Diff .pane {
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.Diff .margin {
+  width: 48px;
+  height: 100%;
+  background-color: #232323;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.Diff .margin .lineNumber {
+  text-align: right;
+  padding-right: 13px;
+  color: #e2e2e2;
+  background-color: #232323;
+}
+
+.Diff .line0 {
+  //padding-top: 3px;
+}
+
+.Diff .codeArea {
+  margin-left: 3px;
+  //margin-top: 3px;
+}
+
+.Diff .added {
+  background-color: rgba(151, 255, 116, 0.31);
+}
+
+.Diff .removed {
+  background-color: rgba(255, 122, 117, 0.3);
+}
+
+.Diff .bubble {
+  border-radius: 3px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.Diff span {
+  white-space:pre;
+}

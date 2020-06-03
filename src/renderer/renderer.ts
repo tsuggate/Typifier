@@ -4,6 +4,7 @@ import {initStore} from './state/state';
 import {remote, ipcRenderer} from 'electron';
 import {nextFile, openFile, previousFile} from './global-actions';
 import {checkForNewVersion} from './util/check-version';
+import IpcRendererEvent = Electron.IpcRendererEvent
 
 
 initStore();
@@ -36,7 +37,7 @@ function openFileArg(): void {
    }
 }
 
-ipcRenderer.on('openFile', (event: string, filePath: string) => {
+ipcRenderer.on('openFile', (event: IpcRendererEvent, filePath: string) => {
    if (filePath) {
       openFile(filePath).catch(e => console.log(e));
    }
