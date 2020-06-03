@@ -6,6 +6,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
