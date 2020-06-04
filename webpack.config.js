@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const packageJson = require('./package.json');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -35,13 +34,7 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    plugins: [
-      new webpack.DefinePlugin({
-        'global.GENTLY': false,
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      }),
-      new MiniCssExtractPlugin({filename: '[name].css'}),
-    ],
+    plugins: [new MiniCssExtractPlugin({filename: '[name].css'})],
     devtool: devMode ? 'eval-cheap-module-source-map' : undefined,
   };
 };
