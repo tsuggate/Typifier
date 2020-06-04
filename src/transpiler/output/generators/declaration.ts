@@ -3,6 +3,7 @@ import {
   Declaration,
   ExportDefaultDeclaration,
   FunctionDeclaration,
+  FunctionExpression,
   ImportDeclaration,
   ImportDefaultSpecifier,
   Node,
@@ -105,6 +106,33 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
   //    throw new Error(`functionDeclaration types don't match for ${generate(f.id, options)}`);
   // }
 
+  // const paramsArray = f.params.map((p, i) => {
+  //   if (p.type === 'AssignmentPattern') {
+  //     return generate(p, options);
+  //   }
+  //
+  //   const t = types[i] || 'any';
+  //   return generate(p, options) + `: ${t}`;
+  // });
+  //
+  // if (containsThisUsage(f.body)) {
+  //   paramsArray.unshift('this: any');
+  // }
+  //
+  // const params = paramsArray.join(', ');
+
+  const params = genFunctionParams(f, options, types);
+  const name = generate(f.id!, options);
+  const body = generate(f.body, options);
+
+  return `function ${name}(${params}) ${body}`;
+}
+
+export function genFunctionParams(
+  f: FunctionDeclaration | FunctionExpression,
+  options: GenOptions,
+  types: string[] = []
+): string {
   const paramsArray = f.params.map((p, i) => {
     if (p.type === 'AssignmentPattern') {
       return generate(p, options);
@@ -118,11 +146,7 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
     paramsArray.unshift('this: any');
   }
 
-  const params = paramsArray.join(', ');
-  const name = generate(f.id!, options);
-  const body = generate(f.body, options);
-
-  return `function ${name}(${params}) ${body}`;
+  return paramsArray.join(', ');
 }
 
 export function objectPattern(o: ObjectPattern, options: GenOptions): string {

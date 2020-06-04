@@ -54,4 +54,15 @@ describe('any insertion', () => {
   describe('array destructuring', () => {
     checkTSOutput('const [a, b] = [1, 2];', 'const [a, b] = [1, 2];');
   });
+
+  describe('new object method syntax', () => {
+    checkTSOutput('const a = {method: () => {}};', 'const a = {method: () => {}};');
+    checkTSOutput('const a = {method() {}};', 'const a = {method() {}};');
+    checkTSOutput('const a = {method(a) {}};', 'const a = {method(a: any) {}};');
+    checkTSOutput('const a = {method(a,b) {}};', 'const a = {method(a: any, b: any) {}};');
+    checkTSOutput(
+      'const a = {method(a,b) {let s = this;}};',
+      'const a = {method(this: any, a: any, b: any) {const s = this;}};'
+    );
+  });
 });

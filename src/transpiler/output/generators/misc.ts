@@ -9,6 +9,7 @@ import {
 } from 'estree';
 import {generate} from '../generate';
 import {GenOptions} from '../generator-options';
+import {genFunctionParams} from './declaration';
 
 export function programToJs(program: Program, options: GenOptions): string {
   // if (program.sourceType === 'script') {
@@ -30,6 +31,14 @@ export function literalToJs(l: Literal): string {
 
 export function propertyToJs(p: Property, options: GenOptions): string {
   if (p.method) {
+    // `${generate(p.key, options)} (${generate(p.value.params)}) ${generate(p.value.body, options)}`;
+
+    if (p.value.type === 'FunctionExpression') {
+      // const params = p.value.params.map((p) => generate(p, options)).join(', ');
+      const params = genFunctionParams(p.value, options);
+
+      return `${generate(p.key, options)}(${params}) ${generate(p.value.body, options)}`;
+    }
     throw 'propertyToJs.method not implemented!';
   } else if (p.shorthand) {
     return `${generate(p.value, options)}`;
