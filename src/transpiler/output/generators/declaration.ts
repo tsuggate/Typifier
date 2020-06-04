@@ -91,7 +91,7 @@ export function functionDeclaration(f: FunctionDeclaration, options: GenOptions)
   }
   const params = f.params.map((p) => generate(p, options)).join(', ');
 
-  return `function ${generate(f.id, options)}(${params}) ${generate(f.body, options)}`;
+  return `function ${generate(f.id!, options)}(${params}) ${generate(f.body, options)}`;
 }
 
 export function functionDeclarationTs(f: FunctionDeclaration, options: GenOptions): string {
@@ -119,7 +119,7 @@ export function functionDeclarationTs(f: FunctionDeclaration, options: GenOption
   }
 
   const params = paramsArray.join(', ');
-  const name = generate(f.id, options);
+  const name = generate(f.id!, options);
   const body = generate(f.body, options);
 
   return `function ${name}(${params}) ${body}`;
@@ -138,7 +138,7 @@ export function arrayPattern(o: ArrayPattern, options: GenOptions): string {
 }
 
 export function getFunctionDeclarationName(f: FunctionDeclaration, options: GenOptions): string {
-  return generate(f.id, options);
+  return generate(f.id!, options);
 }
 
 export function getNamesFromDeclaration(d: Declaration, options: GenOptions): string[] {

@@ -1,93 +1,102 @@
-import {BlockStatement, CallExpression, FunctionDeclaration, Identifier, Literal, Program} from 'estree';
+import {
+  BlockStatement,
+  CallExpression,
+  FunctionDeclaration,
+  Identifier,
+  Literal,
+  Program,
+} from 'estree';
 import {CodeRange, insideScope} from './shared';
 import {traverse} from '../../../util/misc';
 import {findParentNode} from '../../../symbols/symbols';
 import {GenOptions} from '../../generator-options';
 import * as _ from 'underscore';
 
+export function getFunctionDeclarationTypes(
+  dec: FunctionDeclaration,
+  options: GenOptions
+): string[] | null {
+  const program = options.getProgram();
+  const parent = findParentNode(program, dec);
 
+  if (parent) {
+    const calls = findFunctionCalls(program, dec, parent.range as CodeRange);
+    const types = getFunctionTypesFromCalls(calls);
 
-export function getFunctionDeclarationTypes(dec: FunctionDeclaration, options: GenOptions): string[] | null {
-   const program = options.getProgram();
-   const parent = findParentNode(program, dec);
-
-   if (parent) {
-      const calls = findFunctionCalls(program, dec, parent.range as CodeRange);
-      const types = getFunctionTypesFromCalls(calls);
-
-      // console.log(types);
-      return types;
-   }
-   return null;
+    // console.log(types);
+    return types;
+  }
+  return null;
 }
 
 function getFunctionTypesFromCalls(calls: CallExpression[]): string[] {
-   return _.zip(...calls.map(getArgumentTypesFromCall)).map(types => {
-      if (types.indexOf('any') !== -1) {
-         return 'any';
-      }
-      return types.join(' | ');
-   });
+  return _.zip(...calls.map(getArgumentTypesFromCall)).map((types) => {
+    if (types.indexOf('any') !== -1) {
+      return 'any';
+    }
+    return types.join(' | ');
+  });
 }
 
 function getArgumentTypesFromCall(call: CallExpression) {
-   let argTypes: string[] = [];
+  let argTypes: string[] = [];
 
-   call.arguments.forEach(a => {
-      if (a.type === 'Literal') {
-         const t = getTypeOfLiteral(a);
+  call.arguments.forEach((a) => {
+    if (a.type === 'Literal') {
+      const t = getTypeOfLiteral(a);
 
-         argTypes.push(t);
-      }
-      else {
-         argTypes.push('any');
-      }
-   });
+      argTypes.push(t);
+    } else {
+      argTypes.push('any');
+    }
+  });
 
-   return argTypes;
+  return argTypes;
 }
 
 function getTypeOfLiteral(l: Literal) {
-   return typeof l.value;
+  return typeof l.value;
 }
 
+function findFunctionCalls(
+  program: Program,
+  declaration: FunctionDeclaration,
+  parentRange: CodeRange
+): CallExpression[] {
+  let calls: CallExpression[] = [];
 
-function findFunctionCalls(program: Program, declaration: FunctionDeclaration, parentRange: CodeRange): CallExpression[] {
-   let calls: CallExpression[] = [];
+  traverse(program, (node) => {
+    switch (node.type) {
+      case 'CallExpression':
+        const name = (node.callee as Identifier).name;
 
-   traverse(program, (node) => {
-      switch (node.type) {
-         case 'CallExpression':
-            const name = (node.callee as Identifier).name;
+        if (name === declaration.id?.name && insideScope(node.range as CodeRange, parentRange)) {
+          calls.push(node);
+        }
+        break;
+    }
+  });
 
-            if (name === declaration.id.name && insideScope(node.range as CodeRange, parentRange)) {
-
-               calls.push(node);
-            }
-            break;
-      }
-   });
-
-   return calls;
+  return calls;
 }
 
 export function containsThisUsage(body: BlockStatement): boolean {
-   let foundThisExpression = false;
+  let foundThisExpression = false;
 
-   traverse(body, (node, parent, context) => {
-      switch (node.type) {
-         case 'ThisExpression':
-            foundThisExpression = true;
-            context.skip();
-            break;
-         case 'FunctionExpression':
-         case 'FunctionDeclaration':
-            context.skip();
-            break;
-      }
-   });
+  traverse(body, (node, parent, context) => {
+    switch (node.type) {
+      case 'ThisExpression':
+        foundThisExpression = true;
+        context.skip();
+        break;
+      case 'FunctionExpression':
+      case 'FunctionDeclaration':
+        context.skip();
+        break;
+    }
+  });
 
-   return foundThisExpression;
+  return foundThisExpression;
 }
 
 // function findFunctionDeclaration(program: Program, callee: Identifier) {

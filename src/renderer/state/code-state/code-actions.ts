@@ -1,40 +1,43 @@
-import {IDiffResult} from 'diff';
+import {Change} from 'diff';
 
-
-export type CodeActions = SetJavaScriptFile | SetTypeScriptCode | SetFolder | SetFileIndex | CloseFile | SetDiffs;
-
+export type CodeActions =
+  | SetJavaScriptFile
+  | SetTypeScriptCode
+  | SetFolder
+  | SetFileIndex
+  | CloseFile
+  | SetDiffs;
 
 export interface SetJavaScriptFile {
-   type: 'SET_JAVASCRIPT_FILE';
-   file: string;
-   code: string;
+  type: 'SET_JAVASCRIPT_FILE';
+  file: string;
+  code: string;
 }
 
 export interface SetTypeScriptCode {
-   type: 'SET_TYPESCRIPT_CODE';
-   code: string | null;
-   diffs: IDiffResult[] | null;
-   success: boolean;
+  type: 'SET_TYPESCRIPT_CODE';
+  code: string | null;
+  diffs: Change[] | null;
+  success: boolean;
 }
 
 export interface SetDiffs {
-   type: 'SET_DIFFS';
-   diffs: IDiffResult[];
+  type: 'SET_DIFFS';
+  diffs: Change[];
 }
 
 export interface SetFolder {
-   type: 'SET_FOLDER';
-   folderPath: string;
-   javaScriptFiles: string[];
-   index: number;
+  type: 'SET_FOLDER';
+  folderPath: string;
+  javaScriptFiles: string[];
+  index: number;
 }
 
 export interface SetFileIndex {
-   type: 'SET_FILE_INDEX';
-   index: number;
+  type: 'SET_FILE_INDEX';
+  index: number;
 }
 
 export interface CloseFile {
-   type: 'CLOSE_FILE';
+  type: 'CLOSE_FILE';
 }
-
